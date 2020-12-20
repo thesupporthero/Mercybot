@@ -1,5 +1,5 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
 from cogs.utils import checks, context, db
 from cogs.utils.config import Config
 import datetime, re
@@ -54,7 +54,7 @@ def _prefix_callable(bot, msg):
         base.extend(bot.prefixes.get(msg.guild.id, ['?m ', '!m ', 'mercy ']))
     return base
 
-class RoboDanny(commands.AutoShardedBot):
+class Mercybot(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
         super().__init__(command_prefix=_prefix_callable, description=description,

@@ -7,7 +7,7 @@ import discord
 import importlib
 import contextlib
 
-from bot import RoboDanny, initial_extensions
+from bot import Mercybot, initial_extensions
 from cogs.utils.db import Table
 
 from pathlib import Path
@@ -43,7 +43,7 @@ def setup_logging():
 
         log = logging.getLogger()
         log.setLevel(logging.INFO)
-        handler = RotatingFileHandler(filename='rdanny.log', encoding='utf-8', mode='w', maxBytes=max_bytes, backupCount=5)
+        handler = RotatingFileHandler(filename='mercy.log', encoding='utf-8', mode='w', maxBytes=max_bytes, backupCount=5)
         dt_fmt = '%Y-%m-%d %H:%M:%S'
         fmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
         handler.setFormatter(fmt)
@@ -71,8 +71,8 @@ def run_bot():
         click.echo('Could not set up PostgreSQL. Exiting.', file=sys.stderr)
         log.exception('Could not set up PostgreSQL. Exiting.')
         return
-
-    bot = RoboDanny()
+    bot = Mercybot()
+    #activity = discord.Game(name="Netflix", type=3)    
     bot.pool = pool
     bot.run()
 
@@ -305,15 +305,17 @@ def convertjson(ctx, cogs):
         return
 
     client = discord.AutoShardedClient()
-
+    
     @client.event
     async def on_ready():
         click.echo(f'successfully booted up bot {client.user} (ID: {client.user.id})')
         await client.logout()
-
+        #bot = Mercybot()
+        #await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Death"))
     try:
         run(client.login(config.token))
         run(client.connect(reconnect=False))
+        run(client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Death")))
     except:
         pass
 
