@@ -9,30 +9,30 @@ import os
 import lxml.etree as etree
 from collections import Counter
 
-DISCORD_API_ID    = 81384788765712384
+DISCORD_API_ID    = 697087031859478630
 DISCORD_BOTS_ID   = 110373943822540800
 USER_BOTS_ROLE    = 178558252869484544
-CONTRIBUTORS_ROLE = 111173097888993280
-DISCORD_PY_ID     = 84319995256905728
-DISCORD_PY_GUILD  = 336642139381301249
-DISCORD_PY_PROF_ROLE = 381978395270971407
-DISCORD_PY_HELPER_ROLE = 558559632637952010
-DISCORD_PY_HELP_CHANNELS = (381965515721146390, 564950631455129636, 738572311107469354)
+CONTRIBUTORS_ROLE = 790355499484708895
+DISCORD_PY_ID     = 789690861708509194
+DISCORD_PY_GUILD  = 789690861708509194
+DISCORD_PY_PROF_ROLE = 790355499484708895
+DISCORD_PY_HELPER_ROLE = 00000000000000000
+DISCORD_PY_HELP_CHANNELS = (789690861708509197)
 BOT_LIST_INFO = {
     DISCORD_API_ID: {
-        'channel':580184108794380298,
+        'channel':789690861708509197,
         'testing': (
-            381896832399310868, #testing
-            381896931724492800, #playground
+            790354498114551849, #testing
+            790354565455151125, #playground
         ),
         'terms': 'By requesting to add your bot, you agree to not spam or do things without user input.'
     },
     DISCORD_PY_GUILD: {
-        'channel': 579998326557114368,
+        'channel': 789690861708509197,
         'testing': (
-            381963689470984203, #testing
-            559455534965850142, #playground
-            568662293190148106, #mod-testing
+            790354498114551849, #testing
+            790354565455151125, #playground
+            790359645729849344, #mod-testing
         ),
         'terms': 'By requesting to add your bot, you must agree to the guidelines presented in the <#381974649019432981>.'
     }
@@ -46,6 +46,16 @@ def in_testing(info=BOT_LIST_INFO):
             return False
     return commands.check(predicate)
 
+def is_discord_py_helper(member):
+    guild_id = member.guild.id
+    if guild_id != DISCORD_PY_GUILD:
+        return False
+
+    if member.guild_permissions.manage_roles:
+        return False
+
+    return member._roles.has(DISCORD_PY_HELPER_ROLE)
+    
 def can_use_block():
     def predicate(ctx):
         if ctx.guild is None:
