@@ -57,10 +57,12 @@ def _prefix_callable(bot, msg):
 class Mercybot(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
+        intents = discord.Intents.all()
+        activity = discord.Activity(type=discord.ActivityType.watching, name="Death")
         super().__init__(command_prefix=_prefix_callable, description=description,
                          pm_help=None, help_attrs=dict(hidden=True),
                          fetch_offline_members=False, heartbeat_timeout=150.0,
-                         allowed_mentions=allowed_mentions)
+                         allowed_mentions=allowed_mentions, intents=intents, activity=activity)
 
         self.client_id = config.client_id
         # self.challonge_api_key = config.challonge_api_key
@@ -136,7 +138,7 @@ class Mercybot(commands.AutoShardedBot):
         return local_inject(self, proxy_msg)
 
     def get_raw_guild_prefixes(self, guild_id):
-        return self.prefixes.get(guild_id, ['?', '!'])
+        return self.prefixes.get(guild_id, ['?m', '!m'])
 
     async def set_guild_prefixes(self, guild, prefixes):
         if len(prefixes) == 0:

@@ -9,15 +9,15 @@ import base64
 import yarl
 import re
 
-DISCORD_PY_GUILD_ID = 336642139381301249
-DISCORD_PY_BOTS_ROLE = 381980817125015563
-DISCORD_PY_REWRITE_ROLE = 381981861041143808
-DISCORD_PY_TESTER_ROLE = 669155135829835787
-DISCORD_PY_JP_ROLE = 490286873311182850
-DISCORD_PY_PROF_ROLE = 381978395270971407
-DISCORD_PY_HELP_CHANNELS = (381965515721146390, 564950631455129636, 490289254757564426, 738572311107469354)
+DISCORD_PY_GUILD_ID = 789690861708509194
+DISCORD_PY_BOTS_ROLE = 790354060376539186
+DISCORD_PY_REWRITE_ROLE = 0
+DISCORD_PY_TESTER_ROLE = 0
+DISCORD_PY_JP_ROLE = 0
+DISCORD_PY_PROF_ROLE = 790355499484708895
+DISCORD_PY_HELP_CHANNELS = (789690861708509197)
 
-DISCORD_BOT_BLOG = 'https://blog.discord.com/the-future-of-bots-on-discord-4e6e050ab52e'
+DISCORD_BOT_BLOG = '0'
 DISCORD_BOT_BLOG_RESPONSE = f"""Hello! It seems you've sent a message involving <{DISCORD_BOT_BLOG}>.
 
 This blog post is mainly marketing, therefore:
@@ -30,9 +30,9 @@ This blog post is mainly marketing, therefore:
 Thank you for understanding!
 """
 
-GITHUB_TODO_COLUMN = 9341868
-GITHUB_PROGRESS_COLUMN = 9341869
-GITHUB_DONE_COLUMN = 9341870
+GITHUB_TODO_COLUMN = 0
+GITHUB_PROGRESS_COLUMN = 0
+GITHUB_DONE_COLUMN = 0
 
 TOKEN_REGEX = re.compile(r'[a-zA-Z0-9_-]{23,28}\.[a-zA-Z0-9_-]{6,7}\.[a-zA-Z0-9_-]{27}')
 
@@ -56,7 +56,7 @@ def is_proficient():
 
 def is_doc_helper():
     def predicate(ctx):
-        return ctx.author._roles.has(714516281293799438)
+        return ctx.author._roles.has(790355499484708895)
     return commands.check(predicate)
 
 def make_field_from_note(data, column_id):
@@ -100,7 +100,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
     async def github_request(self, method, url, *, params=None, data=None, headers=None):
         hdrs = {
             'Accept': 'application/vnd.github.inertia-preview+json',
-            'User-Agent': 'RoboDanny DPYExclusive Cog',
+            'User-Agent': 'Mercybot DPYExclusive Cog',
             'Authorization': f'token {self.bot.config.github_token}'
         }
 
@@ -158,13 +158,6 @@ class DPYExclusive(commands.Cog, name='discord.py'):
             await member.add_roles(discord.Object(id=DISCORD_PY_BOTS_ROLE))
             return
 
-        JP_INVITE_CODES = ('y9Bm8Yx', 'nXzj3dg')
-        invites = await member.guild.invites()
-        for invite in invites:
-            if invite.code in JP_INVITE_CODES and invite.uses > self._invite_cache[invite.code]:
-                await member.add_roles(discord.Object(id=DISCORD_PY_JP_ROLE))
-            self._invite_cache[invite.code] = invite.uses
-
     async def redirect_attachments(self, message):
         attachment = message.attachments[0]
         if not attachment.filename.endswith(('.txt', '.py', '.json')):
@@ -199,7 +192,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
             return
 
         # The "General" category
-        if DISCORD_BOT_BLOG in message.content and message.channel.category_id == 381963245382139916:
+        if DISCORD_BOT_BLOG in message.content and message.channel.category_id == 789690861708509195:
             try:
                 await message.delete()
                 await message.author.send(DISCORD_BOT_BLOG_RESPONSE)
@@ -213,7 +206,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
 
         # Handle some #emoji-suggestions auto moderator and things
         # Process is mainly informal anyway
-        if message.channel.id == 596308497671520256:
+        if message.channel.id == 790359645729849344:
             emoji = self.bot.get_cog('Emoji')
             if emoji is None:
                 return
@@ -251,12 +244,6 @@ class DPYExclusive(commands.Cog, name='discord.py'):
             await ctx.message.add_reaction('\N{NO ENTRY SIGN}')
         else:
             await ctx.message.add_reaction('\N{HEAVY PLUS SIGN}')
-
-    @commands.command(hidden=True, aliases=['日本語'])
-    async def nihongo(self, ctx):
-        """日本語チャットに参加したい場合はこの役職を付ける"""
-
-        await self.toggle_role(ctx, DISCORD_PY_JP_ROLE)
 
     @commands.command(hidden=True)
     async def tester(self, ctx):
@@ -386,7 +373,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
         """Fancy post the emoji lists"""
         emojis = sorted([e for e in ctx.guild.emojis if len(e.roles) == 0 and e.available], key=lambda e: e.name.lower())
         paginator = commands.Paginator(suffix='', prefix='')
-        channel = ctx.guild.get_channel(596549678393327616)
+        channel = ctx.guild.get_channel(790359645729849344)
 
         for emoji in emojis:
             paginator.add_line(f'{emoji} -- `{emoji}`')

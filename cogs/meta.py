@@ -421,7 +421,9 @@ class Meta(commands.Cog):
             return f'{dt:%Y-%m-%d %H:%M} ({time.human_timedelta(dt, accuracy=3)})'
 
         e.add_field(name='ID', value=user.id, inline=False)
-        e.add_field(name='Servers', value=f'{shared} shared', inline=False)
+        e.add_field(name='Ping', value=user.mention, inline=False)
+        e.add_field(name='Status', value=user.status, inline=True)
+        e.add_field(name='Servers', value=f'{shared} shared with Mercy', inline=False)
         e.add_field(name='Joined', value=format_date(getattr(user, 'joined_at', None)), inline=False)
         e.add_field(name='Created', value=format_date(user.created_at), inline=False)
 
@@ -486,8 +488,8 @@ class Meta(commands.Cog):
 
         channel_info = []
         key_to_emoji = {
-            discord.TextChannel: '<:text_channel:586339098172850187>',
-            discord.VoiceChannel: '<:voice_channel:586339098524909604>',
+            discord.TextChannel: '<:text_channel:790990616871960637>',
+            discord.VoiceChannel: ':speaker:',
         }
         for key, total in totals.items():
             secrets = secret[key]
@@ -522,7 +524,8 @@ class Meta(commands.Cog):
 
         for feature, label in all_features.items():
             if feature in features:
-                info.append(f'{ctx.tick(True)}: {label}')
+                emoji = '<a:checkgif:790987317372387348>'
+                info.append(f'{emoji}: {label}')
 
         if info:
             e.add_field(name='Features', value='\n'.join(info))
@@ -537,10 +540,10 @@ class Meta(commands.Cog):
             e.add_field(name='Boosts', value=boosts, inline=False)
 
         bots = sum(m.bot for m in guild.members)
-        fmt = f'<:online:316856575413321728> {member_by_status["online"]} ' \
-              f'<:idle:316856575098880002> {member_by_status["idle"]} ' \
-              f'<:dnd:316856574868193281> {member_by_status["dnd"]} ' \
-              f'<:offline:316856575501402112> {member_by_status["offline"]}\n' \
+        fmt = f'<:online:790991762943508561> {member_by_status["online"]} ' \
+              f'<:idle:790991762830262272> {member_by_status["idle"]} ' \
+              f'<:dnd:790991762839437382> {member_by_status["dnd"]} ' \
+              f'<:offline:790991762948489286> {member_by_status["offline"]}\n' \
               f'Total: {guild.member_count} ({formats.plural(bots):bot})'
 
         e.add_field(name='Members', value=fmt, inline=False)
