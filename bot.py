@@ -58,7 +58,7 @@ class Mercybot(commands.AutoShardedBot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
         intents = discord.Intents.all()
-        activity = discord.Activity(type=discord.ActivityType.watching, name="Death")
+        activity = discord.Activity(type=discord.ActivityType.watching, name="you cry out for help ¯\_(ツ)_/¯")
         super().__init__(command_prefix=_prefix_callable, description=description,
                          pm_help=None, help_attrs=dict(hidden=True),
                          fetch_offline_members=False, heartbeat_timeout=150.0,

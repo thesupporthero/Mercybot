@@ -29,7 +29,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
   YTDL_OPTIONS = {
     'format': 'bestaudio/best',
     'extractaudio': True,
-    'audioformat': 'mp3',
+    'audioformat': 'mp4',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
     'noplaylist': True,
@@ -289,7 +289,7 @@ class Music(commands.Cog):
     await ctx.send('An error occurred: {}'.format(str(error)))
   @commands.group(pass_context=True)
   async def music(self, ctx):
-        """Displays a random thing you request."""
+        """Plays a random thing you request."""
         if ctx.invoked_subcommand is None:
             await ctx.send(f'Incorrect music subcommand passed. Try {ctx.prefix}help music')
 
@@ -327,7 +327,7 @@ class Music(commands.Cog):
   async def _leave(self, ctx: commands.Context):
     """Clears the queue and leaves the voice channel."""
 
-    if ctx.voice_state.voice:
+    if not ctx.voice_state.voice:
       return await ctx.send('Not connected to any voice channel.')
 
     await ctx.voice_state.stop()
