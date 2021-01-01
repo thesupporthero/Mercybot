@@ -327,7 +327,7 @@ class Music(commands.Cog):
   async def _leave(self, ctx: commands.Context):
     """Clears the queue and leaves the voice channel."""
 
-    if ctx.voice_state.voice:
+    if not ctx.voice_state.voice:
       return await ctx.send('Not connected to any voice channel.')
 
     await ctx.voice_state.stop()
