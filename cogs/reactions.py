@@ -16,6 +16,10 @@ from discord.ext import commands, tasks
 from .utils import db, checks
 
 rand_color = randomcolor.RandomColor
+def check_DEV(ctx):
+      return ctx.message.author.id == 450044263720288257
+def check_CODEV(ctx):
+      return ctx.message.author.id == 382550762875518986
 
 class Reactions(commands.Cog, name='Reactions'):
   """React to shit"""
@@ -37,14 +41,18 @@ class Reactions(commands.Cog, name='Reactions'):
    # if 
    # await ctx.send("Beat them up, Beat them up, Beat them up, Beat them up, Beat them up, Beat them up.")
   @commands.command()
-  async def hello(self, ctx, *, member: discord.Member = None):
+  async def hello(self, ctx, *, member: discord.User = None):
     """Says hello to you"""
     member = member or ctx.author
-    if self._last_member is None or self._last_member.id != member.id:
-      await ctx.send('Hello {0.mention} ^.^'.format(member))
-    else:
-      await ctx.send('Hello {0.mention}... This feels familiar.'.format(member))
-    self._last_member = member
+    try:
+      if ctx.author.id == check_DEV:
+        await ctx.send('whoa, I know you from somewhere')
+    except:
+      if self._last_member is None or self._last_member.id != member.id:
+        await ctx.send('Hello {0.mention} ^.^'.format(member))
+      else:
+        await ctx.send('Hello {0.mention}... This feels familiar.'.format(member))
+      self._last_member = member
 
   @commands.command()
   async def greet(self, ctx, *, member: discord.User = None):

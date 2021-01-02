@@ -715,73 +715,7 @@ class API(commands.Cog):
         embed.colour = colour
         await self.bot.http.edit_message(payload.channel_id, payload.message_id, embed=embed.to_dict())
 
-    @commands.command()
-    @in_testing()
-    async def addbot(self, ctx, user: BotUser, *, reason: str):
-        """Requests your bot to be added to the server.
 
-        To request your bot you must pass your bot's user ID and a reason
-
-        You will get a DM regarding the status of your bot, so make sure you
-        have them on.
-        """
-
-        info = BOT_LIST_INFO[ctx.guild.id]
-        confirm = None
-        def terms_acceptance(msg):
-            nonlocal confirm
-            if msg.author.id != ctx.author.id:
-                return False
-            if msg.channel.id != ctx.channel.id:
-                return False
-            if msg.content in ('**I agree**', 'I agree'):
-                confirm = True
-                return True
-            elif msg.content in ('**Abort**', 'Abort'):
-                confirm = False
-                return True
-            return False
-
-        msg = f'{info["terms"]}. Moderators reserve the right to kick or reject your bot for any reason.\n\n' \
-               'If you agree, reply to this message with **I agree** within 1 minute. If you do not, reply with **Abort**.'
-        prompt = await ctx.send(msg)
-
-        try:
-            await self.bot.wait_for('message', check=terms_acceptance, timeout=60.0)
-        except asyncio.TimeoutError:
-            return await ctx.send('Took too long. Aborting.')
-        finally:
-            await prompt.delete()
-
-        if not confirm:
-            return await ctx.send('Aborting.')
-
-        url = f'https://discordapp.com/oauth2/authorize?client_id={user.id}&scope=bot&guild_id={ctx.guild.id}'
-        description = f'{reason}\n\n[Invite URL]({url})'
-        embed = discord.Embed(title='Bot Request', colour=discord.Colour.blurple(), description=description)
-        embed.add_field(name='Author', value=f'{ctx.author} (ID: {ctx.author.id})', inline=False)
-        embed.add_field(name='Bot', value=f'{user} (ID: {user.id})', inline=False)
-        embed.timestamp = ctx.message.created_at
-
-        # data for the bot to retrieve later
-        embed.set_footer(text=ctx.author.id)
-        embed.set_author(name=user.id, icon_url=user.avatar_url_as(format='png'))
-
-        channel = ctx.guild.get_channel(info['channel'])
-        try:
-            msg = await channel.send(embed=embed)
-            await msg.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-            await msg.add_reaction('\N{CROSS MARK}')
-            await msg.add_reaction('\N{NO ENTRY SIGN}')
-        except discord.HTTPException as e:
-            return await ctx.send(f'Failed to request your bot somehow. Tell Danny, {str(e)!r}')
-
-        await ctx.send('Your bot has been requested to the moderators. I will DM you the status of your request.')
-
-    @addbot.error
-    async def on_addbot_error(self, ctx, error):
-        if isinstance(error, (commands.BadArgument, commands.MissingRequiredArgument)):
-            return await ctx.send(error)
 
 def setup(bot):
     bot.add_cog(API(bot))

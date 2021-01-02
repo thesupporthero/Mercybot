@@ -30,7 +30,12 @@ class RaidMode(enum.Enum):
 
     def __str__(self):
         return self.name
-
+class ModLog(enum.Enum):
+    off = 0
+    on = 1
+    
+    def __str__(self):
+        return self.name
 ## Tables
 
 class GuildConfig(db.Table, table_name='guild_mod_config'):
@@ -41,12 +46,13 @@ class GuildConfig(db.Table, table_name='guild_mod_config'):
     safe_mention_channel_ids = db.Column(db.Array(db.Integer(big=True)))
     mute_role_id = db.Column(db.Integer(big=True))
     muted_members = db.Column(db.Array(db.Integer(big=True)))
-
+    modlog_enable = db.Column(db.Integer(small=True))
+    modlog_chid = db.Column(db.Integer(big=True))
 ## Configuration
 
 class ModConfig:
     __slots__ = ('raid_mode', 'id', 'bot', 'broadcast_channel_id', 'mention_count',
-                 'safe_mention_channel_ids', 'mute_role_id', 'muted_members')
+                 'safe_mention_channel_ids', 'mute_role_id', 'muted_members', 'modlog_chid', 'modlog_enable')
 
     @classmethod
     async def from_record(cls, record, bot):
@@ -61,6 +67,8 @@ class ModConfig:
         self.safe_mention_channel_ids = set(record['safe_mention_channel_ids'] or [])
         self.muted_members = set(record['muted_members'] or [])
         self.mute_role_id = record['mute_role_id']
+        self.modlog_enable = record['modlog_enable']
+        self.modlog_chid = record['modlog_chid']
         return self
 
     @property
@@ -72,7 +80,10 @@ class ModConfig:
     def mute_role(self):
         guild = self.bot.get_guild(self.id)
         return guild and self.mute_role_id and guild.get_role(self.mute_role_id)
-
+    @property
+    def modlog_channel(self):
+        guild = self.bot.get_guild(self.id)
+        return guild and guild.get_channel(self.get_channel(self.modlog_chid))
     def is_muted(self, member):
         return member.id in self.muted_members
 
@@ -672,6 +683,71 @@ class Mod(commands.Cog):
 
         deleted = await ctx.channel.purge(limit=search, check=check, before=ctx.message)
         return Counter(m.author.display_name for m in deleted)
+    @commands.group(aliases=['modlogs'], invoke_without_command=True)
+    @checks.is_mod()
+    async def modlog(self, ctx):
+        """Controls Logging on the server.
+
+        Calling this command with no arguments will show the current logging information.
+
+        You must have Manage Server permissions to use this command or
+        its subcommands.
+        """
+
+        query = "SELECT modlog_enable, modlog_chid FROM guild_mod_config WHERE id=$1;"
+
+        row = await ctx.db.fetchrow(query, ctx.guild.id)
+        if row is None:
+            fmt = 'Mod Log: off\n Channel: None'
+        else:
+            ch = f'<#{row[1]}>' if row[1] else None
+            mode = ModLog(row[0]) if row[0] is not None else ModLog.off
+            fmt = f'Mod Log: {mode}\nLogging Channel: {ch}'
+
+        await ctx.send(fmt)
+
+    @modlog.command(name='on', aliases=['enable', 'enabled'])
+    @checks.is_mod()
+    async def modlog_on(self, ctx, *, channel: discord.TextChannel = None):
+        """Enables Logging on the server
+        If no channel is given, then the bot will log
+        messages on the channel this command was used in.
+        """
+
+        channel = channel or ctx.channel
+
+        query = """INSERT INTO guild_mod_config (id, modlog_enable, modlog_chid)
+                   VALUES ($1, $2, $3) ON CONFLICT (id)
+                   DO UPDATE SET
+                        modlog_enable = EXCLUDED.modlog_enable,
+                        modlog_chid = EXCLUDED.modlog_chid;
+                """
+
+        await ctx.db.execute(query, ctx.guild.id, ModLog.on.value, channel.id)
+        self.get_guild_config.invalidate(self, ctx.guild.id)
+        await ctx.send(f'Logging mode enabled. Sending logs to {channel.mention}.')
+
+    async def disable_modlog_enable(self, guild_id):
+        query = """INSERT INTO guild_mod_config (id, modlog_enable, modlog_chid)
+                   VALUES ($1, $2, NULL) ON CONFLICT (id)
+                   DO UPDATE SET
+                        modlog_enable = EXCLUDED.modlog_enable,
+                        modlog_chid = NULL;
+                """
+
+        await self.bot.pool.execute(query, guild_id, RaidMode.off.value)
+        self._spam_check.pop(guild_id, None)
+        self.get_guild_config.invalidate(self, guild_id)
+
+    @modlog.command(name='off', aliases=['disable', 'disabled'])
+    @checks.is_mod()
+    async def modlog_off(self, ctx):
+        """Disables Logging on the server.
+        Aka, no more logging.
+        """
+
+        await self.disable_modlog_enable(ctx.guild.id)
+        await ctx.send('Logging disabled. I will no longer send log messages.')
 
     @commands.command()
     @checks.has_permissions(manage_messages=True)
