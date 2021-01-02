@@ -6,8 +6,8 @@ import json
 import discord
 from lxml import etree
 
-LOUNGE_GUILD_ID = 748380754588991524
-META_CHANNEL_ID = 752308428965150760
+LOUNGE_GUILD_ID = 791798930836553799
+META_CHANNEL_ID = 794468497471176707
 
 class CodeBlock:
     missing_error = 'Missing code block. Please use the following markdown\n\\`\\`\\`language\ncode here\n\\`\\`\\`'
