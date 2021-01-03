@@ -23,7 +23,7 @@ import gc
 
 log = logging.getLogger(__name__)
 
-LOGGING_CHANNEL = 772184335394013215
+LOGGING_CHANNEL = 794468497471176707
 
 class GatewayHandler(logging.Handler):
     def __init__(self, cog):
@@ -206,7 +206,7 @@ class Stats(commands.Cog):
 
         # [`hash`](url) message (offset)
         offset = time.human_timedelta(commit_time.astimezone(datetime.timezone.utc).replace(tzinfo=None), accuracy=1)
-        return f'[`{short_sha2}`](https://github.com/Rapptz/RoboDanny/commit/{commit.hex}) {short} ({offset})'
+        return f'[`{short_sha2}`](https://github.com/thesupporthero/Mercybot/commit/{commit.hex}) {short} ({offset})'
 
     def get_last_commits(self, count=3):
         repo = pygit2.Repository('.git')
@@ -220,7 +220,7 @@ class Stats(commands.Cog):
         revision = self.get_last_commits()
         embed = discord.Embed(description='Latest Changes:\n' + revision)
         embed.title = 'Official Bot Server Invite'
-        embed.url = 'https://discord.gg/7v4YcS7'
+        embed.url = 'https://discord.gg/CJsupmP2MG'
         embed.colour = discord.Colour.blurple()
 
         owner = self.bot.get_user(self.bot.owner_id)
@@ -773,7 +773,7 @@ class Stats(commands.Cog):
             # Shard Task failure
             # Shard Task complete (no failure)
             if shard.is_closed():
-                badge = '<:offline:316856575501402112>'
+                badge = '<:offline:790991762948489286>'
                 issues += 1
             elif shard._parent._task.done():
                 exc = shard._parent._task.exception()
@@ -784,7 +784,7 @@ class Stats(commands.Cog):
                     badge = '\U0001f504'
 
             if badge is None:
-                badge = '<:online:316856575413321728>'
+                badge = '<:online:790991762943508561>'
 
             stats = []
             identify = identifies.get(shard_id, 0)

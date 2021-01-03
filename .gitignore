@@ -8,3 +8,4 @@ migrations/current-*.json
 *.log
 venv/*
 config.py
+nohup.out
