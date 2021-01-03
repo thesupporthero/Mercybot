@@ -30,7 +30,7 @@ initial_extensions = (
     'cogs.profile',
     'cogs.tags',
     'cogs.lounge',
-    'cogs.carbonitex',
+    #'cogs.carbonitex',
     'cogs.api',
     'cogs.stars',
     'cogs.admin',

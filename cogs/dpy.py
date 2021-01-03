@@ -15,7 +15,7 @@ DISCORD_PY_REWRITE_ROLE = 0
 DISCORD_PY_TESTER_ROLE = 0
 DISCORD_PY_JP_ROLE = 0
 DISCORD_PY_PROF_ROLE = 790355499484708895
-DISCORD_PY_HELP_CHANNELS = (789690861708509197)
+DISCORD_PY_HELP_CHANNELS = 790359645729849344
 
 DISCORD_BOT_BLOG = '0'
 DISCORD_BOT_BLOG_RESPONSE = f"""Hello! It seems you've sent a message involving <{DISCORD_BOT_BLOG}>.
@@ -100,7 +100,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
     async def github_request(self, method, url, *, params=None, data=None, headers=None):
         hdrs = {
             'Accept': 'application/vnd.github.inertia-preview+json',
-            'User-Agent': 'Mercybot DPYExclusive Cog',
+            'User-Agent': 'Mercybot Cog',
             'Authorization': f'token {self.bot.config.github_token}'
         }
 
@@ -224,7 +224,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
 
         m = self.issue.search(message.content)
         if m is not None:
-            url = 'https://github.com/Rapptz/discord.py/issues/'
+            url = 'https://github.com/thesupporthero/Mercybot/issues/'
             await message.channel.send(url + m.group('number'))
 
     async def toggle_role(self, ctx, role_id):
@@ -245,39 +245,7 @@ class DPYExclusive(commands.Cog, name='discord.py'):
         else:
             await ctx.message.add_reaction('\N{HEAVY PLUS SIGN}')
 
-    @commands.command(hidden=True)
-    async def tester(self, ctx):
-        """Allows you to opt-in to being a tester for discord.py"""
-        await self.toggle_role(ctx, DISCORD_PY_TESTER_ROLE)
 
-    async def get_valid_labels(self):
-        labels = await self.github_request('GET', 'repos/Rapptz/discord.py/labels')
-        return {e['name'] for e in labels}
-
-    async def edit_issue(self, number, *, labels=None, state=None):
-        url_path = f'repos/Rapptz/discord.py/issues/{number}'
-        issue = await self.github_request('GET', url_path)
-        if issue.get('pull_request'):
-            raise GithubError('That is a pull request, not an issue.')
-
-        current_state = issue.get('state')
-        if state == 'closed' and current_state == 'closed':
-            raise GithubError('This issue is already closed.')
-
-        data = {}
-        if state:
-            data['state'] = state
-
-        if labels:
-            current_labels = {e['name'] for e in issue.get('labels', [])}
-            valid_labels = await self.get_valid_labels()
-            labels = set(labels)
-            diff = [repr(x) for x in (labels - valid_labels)]
-            if diff:
-                raise GithubError(f'Invalid labels passed: {human_join(diff, final="and")}')
-            data['labels'] = list(current_labels | labels)
-
-        return await self.github_request('PATCH', url_path, data=data)
 
     @commands.group(aliases=['gh'])
     async def github(self, ctx):
