@@ -14,7 +14,7 @@ import argparse, shlex
 import logging
 import asyncpg
 import io
-
+import random
 log = logging.getLogger(__name__)
 
 ## Misc utilities
@@ -83,7 +83,7 @@ class ModConfig:
     @property
     def modlog_channel(self):
         guild = self.bot.get_guild(self.id)
-        return guild and guild.get_channel(self.get_channel(self.modlog_chid))
+        return guild and guild.get_channel(self.modlog_chid)
     def is_muted(self, member):
         return member.id in self.muted_members
 
@@ -519,8 +519,64 @@ class Mod(commands.Cog):
             return
 
         query = """UPDATE guild_mod_config SET (mute_role_id, muted_members) = (NULL, '{}'::bigint[]) WHERE id=$1;"""
+        
         await self.bot.pool.execute(query, guild_id)
         self.get_guild_config.invalidate(self, guild_id)
+
+
+    @commands.Cog.listener()
+    async def on_raw_message_delete(self, payload):
+        message = payload.cached_message
+        guild_id = payload.guild_id
+        config = await self.get_guild_config(guild_id)
+        channel = message.channel #later we will translate to....the link, dw
+        if not config.modlog_enable:
+            return
+        author = message.author
+        title = 'Message deleted!'
+        now = datetime.datetime.utcnow()
+        e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
+        e.timestamp = now
+        e.set_author(name=str(author), icon_url=author.avatar_url)
+        e.add_field(name='Auther ID', value=author.id)
+        e.add_field(name='Channel', value=channel, inline=False)
+        e.add_field(name='Message ID', value=message.id)
+        e.add_field(name='Message', value=message.content, inline=False)
+        if config.modlog_channel:
+            try:
+                await config.modlog_channel.send(embed=e)
+            except discord.Forbidden:
+                async with self._disable_lock:
+                    await self.disable_modlog_enable(guild_id)
+
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        ginfo = before.guild
+        guild_id = ginfo.id
+        config = await self.get_guild_config(guild_id)
+        bmessage = before.content
+        amessage = after.content
+        channel = before.channel #later we will translate to....the mention, dw
+        if config is None:
+            return
+        author = before.author
+        title = 'Message edited!'
+        now = datetime.datetime.utcnow()
+        e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
+        e.timestamp = now
+        e.set_author(name=str(author), icon_url=author.avatar_url)
+        e.add_field(name='Auther ID', value=author.id)
+        e.add_field(name='Channel', value=channel, inline=False)
+        e.add_field(name='Message ID', value=before.id)
+        e.add_field(name='Message before', value=bmessage, inline=False)
+        e.add_field(name='Message after', value=amessage, inline=False)
+        if config.modlog_channel:
+            try:
+                await config.modlog_channel.send(embed=e)
+            except discord.Forbidden:
+                async with self._disable_lock:
+                    await self.disable_modlog_enable(guild_id)
 
     @commands.command(aliases=['newmembers'])
     @commands.guild_only()

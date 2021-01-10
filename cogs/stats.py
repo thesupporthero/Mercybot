@@ -23,7 +23,7 @@ import gc
 
 log = logging.getLogger(__name__)
 
-LOGGING_CHANNEL = 794468497471176707
+LOGGING_CHANNEL = 797918922039885824
 
 class GatewayHandler(logging.Handler):
     def __init__(self, cog):
@@ -209,7 +209,7 @@ class Stats(commands.Cog):
         return f'[`{short_sha2}`](https://github.com/thesupporthero/Mercybot/commit/{commit.hex}) {short} ({offset})'
 
     def get_last_commits(self, count=3):
-        repo = pygit2.Repository('https://github.com/thesupporthero/Mercybot')
+        repo = pygit2.Repository('git://github.com/thesupporthero/Mercybot.git')
         commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
         return '\n'.join(self.format_commit(c) for c in commits)
 
