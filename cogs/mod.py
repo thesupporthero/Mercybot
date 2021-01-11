@@ -530,9 +530,11 @@ class Mod(commands.Cog):
         guild_id = payload.guild_id
         config = await self.get_guild_config(guild_id)
         channel = message.channel #later we will translate to....the link, dw
-        if not config.modlog_enable:
+        if config is None:
             return
         author = message.author
+        if author.bot:
+            return
         title = 'Message deleted!'
         now = datetime.datetime.utcnow()
         e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
@@ -555,12 +557,14 @@ class Mod(commands.Cog):
         ginfo = before.guild
         guild_id = ginfo.id
         config = await self.get_guild_config(guild_id)
+        if config is None:
+            return
         bmessage = before.content
         amessage = after.content
         channel = before.channel #later we will translate to....the mention, dw
-        if config is None:
-            return
         author = before.author
+        if author.bot:
+            return
         title = 'Message edited!'
         now = datetime.datetime.utcnow()
         e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
