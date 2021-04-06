@@ -528,22 +528,29 @@ class Mod(commands.Cog):
     async def on_raw_message_delete(self, payload):
         message = payload.cached_message
         guild_id = payload.guild_id
+        channel = payload.channel_id
         config = await self.get_guild_config(guild_id)
-        channel = message.channel #later we will translate to....the link, dw
         if config is None:
             return
-        author = message.author
-        if author.bot:
-            return
+        if message is not None:
+            author = message.author
+            if author.bot:
+                return
+        else: 
+            author = 'who knows, I dont.'
         title = 'Message deleted!'
         now = datetime.datetime.utcnow()
         e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
         e.timestamp = now
-        e.set_author(name=str(author), icon_url=author.avatar_url)
-        e.add_field(name='Auther ID', value=author.id)
-        e.add_field(name='Channel', value=channel, inline=False)
-        e.add_field(name='Message ID', value=message.id)
-        e.add_field(name='Message', value=message.content, inline=False)
+        if message is not None:
+            e.set_author(name=str(author), icon_url=author.avatar_url)
+            e.add_field(name='Auther ID', value='<@{}>'.format(author.id))
+        e.add_field(name='Channel', value='<#{}>'.format(channel), inline=False)
+        e.add_field(name='Message ID', value=payload.message_id)
+        if message is not None:
+            e.add_field(name='Message', value=message.content, inline=False)
+        else:
+            e.add_field(name='Message', value='```Warning: This message was not in cache, this is usually because the bot has been rebooted since the message was created.```', inline=False)
         if config.modlog_channel:
             try:
                 await config.modlog_channel.send(embed=e)
@@ -565,13 +572,15 @@ class Mod(commands.Cog):
         author = before.author
         if author.bot:
             return
+        if bmessage == amessage:
+            return
         title = 'Message edited!'
         now = datetime.datetime.utcnow()
         e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
         e.timestamp = now
         e.set_author(name=str(author), icon_url=author.avatar_url)
-        e.add_field(name='Auther ID', value=author.id)
-        e.add_field(name='Channel', value=channel, inline=False)
+        e.add_field(name='Auther ID', value='<@{}>'.format(author.id))
+        e.add_field(name='Channel', value='<#{}>'.format(channel.id), inline=False)
         e.add_field(name='Message ID', value=before.id)
         e.add_field(name='Message before', value=bmessage, inline=False)
         e.add_field(name='Message after', value=amessage, inline=False)
@@ -811,7 +820,7 @@ class Mod(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(manage_messages=True)
-    async def cleanup(self, ctx, search=100):
+    async def cleanup(self, ctx, search=1000):
         """Cleans up the bot's messages from the channel.
 
         If a search number is specified, it searches that many messages to delete.

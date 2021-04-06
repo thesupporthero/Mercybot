@@ -1,4 +1,4 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import asyncio
 import traceback
 import discord
@@ -212,7 +212,9 @@ class Admin(commands.Cog):
                     statuses.append((ctx.tick(True), module))
 
         await ctx.send('\n'.join(f'{status}: `{module}`' for status, module in statuses))
-
+    @tasks.loop(seconds=60)
+    async def change_activity(self):
+        await self.bot.change_presence(activity=discord.ActivityType.watching, name="support cry out for help.")
     @commands.command(pass_context=True, hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""

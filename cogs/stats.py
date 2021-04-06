@@ -220,11 +220,13 @@ class Stats(commands.Cog):
         revision = self.get_last_commits()
         embed = discord.Embed(description='Latest Changes:\n' + revision)
         embed.title = 'Official Bot Server Invite'
-        embed.url = 'https://discord.gg/CJsupmP2MG'
+        embed.url = 'https://discord.gg/DWEaqMy'
         embed.colour = discord.Colour.blurple()
 
-        owner = self.bot.get_user(self.bot.owner_id)
-        embed.set_author(name=str(owner), icon_url=owner.avatar_url)
+        # To properly cache myself, I need to use the bot support server.
+        support_guild = self.bot.get_guild(789690861708509194)
+        owner = await self.bot.get_or_fetch_member(support_guild, self.bot.owner_id)
+        embed.set_author(name=str(owner))
 
         # statistics
         total_members = 0

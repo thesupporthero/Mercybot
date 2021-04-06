@@ -1,0 +1,2111 @@
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In greet:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 55, in greet
+    await ctx.send("{} {0.mention}!".format(greeting))
+ValueError: cannot switch from automatic field numbering to manual field specification
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+[tls @ 0x5643e03399e0] Error in the pull function.
+[tls @ 0x5643072a79c0] Error in the pull function.
+[tls @ 0x56430768dee0] Error in the pull function.
+[tls @ 0x5630c99a2a40] Error in the pull function.
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+[tls @ 0x55cbb1a169a0] Error in the pull function.
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Failed to load extension cogs.music.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 607, in _load_from_module_spec
+    spec.loader.exec_module(lib)
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 781, in get_code
+  File "<frozen importlib._bootstrap_external>", line 741, in source_to_code
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/localadmin/Mercybot/cogs/music.py", line 326
+    embed=discord.Embed(title=f"Till next time, "+ctx.message.author.name+"!", color=0xec59c8, image=(url="https://cdn.discordapp.com/attachments/704446238422204476/708075349602205767/cry1.gif"), footer="I will miss you :'(")
+                                                                                                         ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/bot.py", line 94, in __init__
+    self.load_extension(extension)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 610, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.music' raised an error: SyntaxError: invalid syntax (music.py, line 326)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In greet:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 56, in greet
+    await ctx.send("{} {0.mention}!".format(greeting))
+ValueError: cannot switch from automatic field numbering to manual field specification
+In pat:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 80, in pat
+    result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+IndexError: list index out of range
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In greet:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 56, in greet
+    await ctx.send("{} {0.mention}!".format(greeting))
+ValueError: cannot switch from automatic field numbering to manual field specification
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+ERROR: idv6J60gCkM: YouTube said: Unable to extract video data
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+ERROR: CYvm0P-v3Jk: YouTube said: Unable to extract video data
+In music play:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 481, in _play
+    source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 82, in create_source
+    data = await loop.run_in_executor(None, partial)
+  File "/usr/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 820, in extract_info
+    self.report_error(compat_str(e), e.format_traceback())
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 625, in report_error
+    self.trouble(error_message, tb)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 595, in trouble
+    raise DownloadError(message, exc_info)
+DownloadError: ERROR: idv6J60gCkM: YouTube said: Unable to extract video data
+ERROR: Unable to extract JS player URL
+In music play:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 481, in _play
+    source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 82, in create_source
+    data = await loop.run_in_executor(None, partial)
+  File "/usr/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 820, in extract_info
+    self.report_error(compat_str(e), e.format_traceback())
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 625, in report_error
+    self.trouble(error_message, tb)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 595, in trouble
+    raise DownloadError(message, exc_info)
+DownloadError: ERROR: CYvm0P-v3Jk: YouTube said: Unable to extract video data
+In pat:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 80, in pat
+    result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+IndexError: list index out of range
+In music play:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 481, in _play
+    source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+  File "/home/localadmin/Mercybot/cogs/music.py", line 82, in create_source
+    data = await loop.run_in_executor(None, partial)
+  File "/usr/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 820, in extract_info
+    self.report_error(compat_str(e), e.format_traceback())
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 625, in report_error
+    self.trouble(error_message, tb)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/youtube_dl/YoutubeDL.py", line 595, in trouble
+    raise DownloadError(message, exc_info)
+DownloadError: ERROR: Unable to extract JS player URL
+In sql_table:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/admin.py", line 408, in sql_table
+    headers = list(results[0].keys())
+IndexError: list index out of range
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 150, in convert
+    raise commands.BadArgument('Time is either in an inappropriate location, which ' \
+discord.ext.commands.errors.BadArgument: Time is either in an inappropriate location, which must be either at the end or beginning of your input, or I just flat out did not understand what you meant. Sorry.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 136, in convert
+    raise commands.BadArgument('Invalid time provided, try e.g. "tomorrow" or "3 days".')
+discord.ext.commands.errors.BadArgument: Invalid time provided, try e.g. "tomorrow" or "3 days".
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 150, in convert
+    raise commands.BadArgument('Time is either in an inappropriate location, which ' \
+discord.ext.commands.errors.BadArgument: Time is either in an inappropriate location, which must be either at the end or beginning of your input, or I just flat out did not understand what you meant. Sorry.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 150, in convert
+    raise commands.BadArgument('Time is either in an inappropriate location, which ' \
+discord.ext.commands.errors.BadArgument: Time is either in an inappropriate location, which must be either at the end or beginning of your input, or I just flat out did not understand what you meant. Sorry.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 150, in convert
+    raise commands.BadArgument('Time is either in an inappropriate location, which ' \
+discord.ext.commands.errors.BadArgument: Time is either in an inappropriate location, which must be either at the end or beginning of your input, or I just flat out did not understand what you meant. Sorry.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 150, in convert
+    raise commands.BadArgument('Time is either in an inappropriate location, which ' \
+discord.ext.commands.errors.BadArgument: Time is either in an inappropriate location, which must be either at the end or beginning of your input, or I just flat out did not understand what you meant. Sorry.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 179, in convert
+    return await result.check_constraints(ctx, now, remaining)
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 87, in check_constraints
+    raise commands.BadArgument('This time is in the past.')
+discord.ext.commands.errors.BadArgument: This time is in the past.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 179, in convert
+    return await result.check_constraints(ctx, now, remaining)
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 87, in check_constraints
+    raise commands.BadArgument('This time is in the past.')
+discord.ext.commands.errors.BadArgument: This time is in the past.
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 179, in convert
+    return await result.check_constraints(ctx, now, remaining)
+  File "/home/localadmin/Mercybot/cogs/utils/time.py", line 87, in check_constraints
+    raise commands.BadArgument('This time is in the past.')
+discord.ext.commands.errors.BadArgument: This time is in the past.
+In sql_table:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/admin.py", line 408, in sql_table
+    headers = list(results[0].keys())
+IndexError: list index out of range
+In sh:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/admin.py", line 461, in sh
+    await pages.start(ctx)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 948, in start
+    await super().start(ctx, channel=channel, wait=wait)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 688, in start
+    self.message = msg = await self.send_initial_message(ctx, channel)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 942, in send_initial_message
+    page = await self._source.get_page(0)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 1045, in get_page
+    return self.entries[page_number]
+TypeError: 'Paginator' object does not support indexing
+In sh:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/admin.py", line 461, in sh
+    await pages.start(ctx)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 948, in start
+    await super().start(ctx, channel=channel, wait=wait)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 688, in start
+    self.message = msg = await self.send_initial_message(ctx, channel)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 942, in send_initial_message
+    page = await self._source.get_page(0)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 1045, in get_page
+    return self.entries[page_number]
+TypeError: 'Paginator' object does not support indexing
+In sh:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/admin.py", line 461, in sh
+    await pages.start(ctx)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 948, in start
+    await super().start(ctx, channel=channel, wait=wait)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 688, in start
+    self.message = msg = await self.send_initial_message(ctx, channel)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 942, in send_initial_message
+    page = await self._source.get_page(0)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/menus/__init__.py", line 1045, in get_page
+    return self.entries[page_number]
+TypeError: 'Paginator' object does not support indexing
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In poke:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 147, in poke
+    result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+IndexError: list index out of range
+In slap:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 177, in slap
+    result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+IndexError: list index out of range
+In tags:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 858, in tags
+    await ctx.invoke(self._list, member=member)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/context.py", line 135, in invoke
+    ret = await command.callback(*arguments, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 841, in _list
+    rows = await ctx.db.fetch(query, ctx.guild.id, member.id)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/pool.py", line 542, in fetch
+    return await con.fetch(query, *args, timeout=timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 443, in fetch
+    return await self._execute(query, args, 0, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1446, in _execute
+    query, args, limit, timeout, return_status=return_status)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1454, in __execute
+    return await self._do_execute(query, executor, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1469, in _do_execute
+    stmt = await self._get_statement(query, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 351, in _get_statement
+    statement = await self._protocol.prepare(stmt_name, query, timeout)
+  File "asyncpg/protocol/protocol.pyx", line 163, in prepare
+UndefinedTableError: relation "tag_lookup" does not exist
+In tag:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 338, in tag
+    tag = await self.get_tag(ctx.guild.id, name, connection=ctx.db)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 261, in get_tag
+    row = await con.fetchrow(query, guild_id, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/pool.py", line 567, in fetchrow
+    return await con.fetchrow(query, *args, timeout=timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 477, in fetchrow
+    data = await self._execute(query, args, 1, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1446, in _execute
+    query, args, limit, timeout, return_status=return_status)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1454, in __execute
+    return await self._do_execute(query, executor, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1469, in _do_execute
+    stmt = await self._get_statement(query, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 351, in _get_statement
+    statement = await self._protocol.prepare(stmt_name, query, timeout)
+  File "asyncpg/protocol/protocol.pyx", line 163, in prepare
+UndefinedTableError: relation "tag_lookup" does not exist
+In tags:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 858, in tags
+    await ctx.invoke(self._list, member=member)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/context.py", line 135, in invoke
+    ret = await command.callback(*arguments, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 841, in _list
+    rows = await ctx.db.fetch(query, ctx.guild.id, member.id)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/pool.py", line 542, in fetch
+    return await con.fetch(query, *args, timeout=timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 443, in fetch
+    return await self._execute(query, args, 0, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1446, in _execute
+    query, args, limit, timeout, return_status=return_status)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1454, in __execute
+    return await self._do_execute(query, executor, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1469, in _do_execute
+    stmt = await self._get_statement(query, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 351, in _get_statement
+    statement = await self._protocol.prepare(stmt_name, query, timeout)
+  File "asyncpg/protocol/protocol.pyx", line 163, in prepare
+UndefinedTableError: relation "tag_lookup" does not exist
+In tag make:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 441, in make
+    row = await ctx.db.fetchrow(query, ctx.guild.id, name.lower())
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 477, in fetchrow
+    data = await self._execute(query, args, 1, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1446, in _execute
+    query, args, limit, timeout, return_status=return_status)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1454, in __execute
+    return await self._do_execute(query, executor, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1469, in _do_execute
+    stmt = await self._get_statement(query, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 351, in _get_statement
+    statement = await self._protocol.prepare(stmt_name, query, timeout)
+  File "asyncpg/protocol/protocol.pyx", line 163, in prepare
+UndefinedTableError: relation "tags" does not exist
+In tag all:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/tags.py", line 917, in _all
+    rows = await ctx.db.fetch(query, ctx.guild.id)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/pool.py", line 542, in fetch
+    return await con.fetch(query, *args, timeout=timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 443, in fetch
+    return await self._execute(query, args, 0, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1446, in _execute
+    query, args, limit, timeout, return_status=return_status)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1454, in __execute
+    return await self._do_execute(query, executor, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 1469, in _do_execute
+    stmt = await self._get_statement(query, timeout)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/asyncpg/connection.py", line 351, in _get_statement
+    statement = await self._protocol.prepare(stmt_name, query, timeout)
+  File "asyncpg/protocol/protocol.pyx", line 163, in prepare
+UndefinedTableError: relation "tag_lookup" does not exist
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Failed to load extension cogs.reactions.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 607, in _load_from_module_spec
+    spec.loader.exec_module(lib)
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 781, in get_code
+  File "<frozen importlib._bootstrap_external>", line 741, in source_to_code
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 35
+    async def chant(self,ctx)
+                            ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/bot.py", line 94, in __init__
+    self.load_extension(extension)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 610, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.reactions' raised an error: SyntaxError: invalid syntax (reactions.py, line 35)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Failed to load extension cogs.reactions.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 607, in _load_from_module_spec
+    spec.loader.exec_module(lib)
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 781, in get_code
+  File "<frozen importlib._bootstrap_external>", line 741, in source_to_code
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 35
+    async def chant(self,ctx)
+                            ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/bot.py", line 94, in __init__
+    self.load_extension(extension)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 610, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.reactions' raised an error: SyntaxError: invalid syntax (reactions.py, line 35)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+In user:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/meta.py", line 425, in user
+    e.add_field(name='Status', value=user.status, inline=True)
+AttributeError: 'User' object has no attribute 'status'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py:85: DeprecationWarning: request_offline_members is deprecated, use Guild.chunk instead.
+  ret = await coro(*args, **kwargs)
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Failed to load extension cogs.reactions.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 607, in _load_from_module_spec
+    spec.loader.exec_module(lib)
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 781, in get_code
+  File "<frozen importlib._bootstrap_external>", line 741, in source_to_code
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/localadmin/Mercybot/cogs/reactions.py", line 48
+    ctx.author.id = check_DEV:
+                             ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/bot.py", line 96, in __init__
+    self.load_extension(extension)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 610, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.reactions' raised an error: SyntaxError: invalid syntax (reactions.py, line 48)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Failed to load extension cogs.config.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 607, in _load_from_module_spec
+    spec.loader.exec_module(lib)
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/localadmin/Mercybot/cogs/config.py", line 165, in <module>
+    class Config(commands.Cog):
+  File "/home/localadmin/Mercybot/cogs/config.py", line 266, in Config
+    async def ignore(self, ctx, *entities: ChannelOrRole):
+NameError: name 'ChannelOrRole' is not defined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/localadmin/Mercybot/bot.py", line 96, in __init__
+    self.load_extension(extension)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/bot.py", line 610, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.config' raised an error: NameError: name 'ChannelOrRole' is not defined
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at .git
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at .git
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at .git
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=AttributeError("module 'config' has no attribute 'stat_webhook'",)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+AttributeError: module 'config' has no attribute 'stat_webhook'
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=ValueError('too many values to unpack (expected 2)',)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=ValueError('too many values to unpack (expected 2)',)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    if message.channel.id in DISCORD_PY_HELP_CHANNELS and len(message.attachments) == 1:
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=ValueError('too many values to unpack (expected 2)',)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=ValueError('too many values to unpack (expected 2)',)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Unhandled exception in internal background task 'gateway_worker'.
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Task exception was never retrieved
+future: <Task finished coro=<Loop._loop() done, defined at /home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py:88> exception=ValueError('too many values to unpack (expected 2)',)>
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 125, in _loop
+    raise exc
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/tasks/__init__.py", line 101, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 103, in gateway_worker
+    await self.notify_gateway_status(record)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 640, in notify_gateway_status
+    await self.webhook.send(msg, username='Gateway', avatar_url='https://i.imgur.com/4PnCKB3.png')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/utils.py", line 57, in __get__
+    value = self.function(instance)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 142, in webhook
+    wh_id, wh_token = self.bot.config.stat_webhook
+ValueError: too many values to unpack (expected 2)
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/client.py", line 333, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/dpy.py", line 204, in on_message
+    await ctx.send('Missing labels to assign.')
+TypeError: argument of type 'int' is not iterable
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('git://github.com/thesupporthero/Mercybot.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at git://github.com/thesupporthero/Mercybot.git
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+Ready: Mercy#6887 (ID: 697087031859478630)
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('git://github.com/thesupporthero/Mercybot.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at git://github.com/thesupporthero/Mercybot.git
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 220, in about
+    revision = self.get_last_commits()
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 212, in get_last_commits
+    repo = pygit2.Repository('.git')
+  File "/home/localadmin/.local/lib/python3.6/site-packages/pygit2/repository.py", line 1435, in __init__
+    path_backend = init_file_backend(path)
+GitError: Repository not found at .git
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 227, in about
+    embed.set_author(name=str(owner), icon_url=owner.avatar_url)
+AttributeError: 'NoneType' object has no attribute 'avatar_url'
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 227, in about
+    embed.set_author(name=str(owner), icon_url=owner.avatar_url)
+AttributeError: 'NoneType' object has no attribute 'avatar_url'
+Ready: Mercy#6887 (ID: 697087031859478630)
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+Shard ID 0 has resumed...
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 227, in about
+    embed.set_author(name=str(owner), icon_url=owner.avatar_url)
+AttributeError: 'NoneType' object has no attribute 'avatar_url'
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 227, in about
+    embed.set_author(name=str(owner), icon_url=owner.avatar_url)
+AttributeError: 'NoneType' object has no attribute 'avatar_url'
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 228, in about
+    owner = await self.bot.get_or_fetch_member(support_guild, self.bot.owner_id)
+AttributeError: 'Mercybot' object has no attribute 'get_or_fetch_member'
+Ready: Mercy#6887 (ID: 697087031859478630)
+In about:
+  File "/home/localadmin/.local/lib/python3.6/site-packages/discord/ext/commands/core.py", line 85, in wrapped
+    ret = await coro(*args, **kwargs)
+  File "/home/localadmin/Mercybot/cogs/stats.py", line 228, in about
+    owner = await self.bot.get_or_fetch_member(support_guild, self.bot.owner_id)
+  File "/home/localadmin/Mercybot/bot.py", line 202, in get_or_fetch_member
+    if shard.is_ws_ratelimited():
+AttributeError: 'ShardInfo' object has no attribute 'is_ws_ratelimited'
+Ready: Mercy#6887 (ID: 697087031859478630)
+[tls @ 0x558e5457a4c0] Error in the pull function.
+[tls @ 0x56342b27c4c0] Error in the pull function.
+[tls @ 0x557589d43a00] Error in the pull function.
+[tls @ 0x5651a936ea20] Error in the pull function.
+[tls @ 0x56438777da20] Error in the pull function.
+[tls @ 0x55c8405d4a40] Error in the pull function.

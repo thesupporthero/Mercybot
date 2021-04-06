@@ -53,7 +53,9 @@ class Reactions(commands.Cog, name='Reactions'):
       else:
         await ctx.send('Hello {0.mention}... This feels familiar.'.format(member))
       self._last_member = member
-
+  @commands.command()
+  async def owner(self, ctx):
+    await ctx.send(self.bot.owner_id)
   @commands.command()
   async def greet(self, ctx, *, member: discord.User = None):
     """Greets a user you tag"""
@@ -74,8 +76,8 @@ class Reactions(commands.Cog, name='Reactions'):
   async def boop(self, ctx, *, member: discord.User = None):
     """boop!"""
     variable = [
-      "<a:gassy:763052198858194954>",
-      "<:ghostderp:758822110088134706>",
+      "<a:gassy:798233801196830801>",
+      "<:ghostderp:796597978483392595>",
     ]
     izzys = "{}".format(random.choice(variable))
 
@@ -285,8 +287,13 @@ class Reactions(commands.Cog, name='Reactions'):
     color = random.randint(0, 0xffffff)
     embed=discord.Embed(title="Here is your color:", color=color, description=color)
     await ctx.send(embed=embed)
-  
-  async def good_bot(self, ctx, hidden=True):
+  @tasks.loop(second=60)
+  async def change_color(self):
+    color = random.randint(0, 0xffffff)
+  @commands.listener
+  @commands.Cog.listener()
+  async def on_message(self, message):  
+    
     await ctx.send("uwu")
 def setup(bot):
     bot.add_cog(Reactions(bot))

@@ -422,7 +422,8 @@ class Meta(commands.Cog):
 
         e.add_field(name='ID', value=user.id, inline=False)
         e.add_field(name='Ping', value=user.mention, inline=False)
-        e.add_field(name='Status', value=user.status, inline=True)
+        if isinstance(user, discord.Member):
+            e.add_field(name='Status', value=user.status, inline=False)
         e.add_field(name='Servers', value=f'{shared} shared with Mercy', inline=False)
         e.add_field(name='Joined', value=format_date(getattr(user, 'joined_at', None)), inline=False)
         e.add_field(name='Created', value=format_date(user.created_at), inline=False)

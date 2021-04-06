@@ -14,7 +14,7 @@ import io
 
 log = logging.getLogger(__name__)
 
-BLOB_GUILD_ID = 272885620769161216
+BLOB_GUILD_ID = 789690861708509194
 EMOJI_REGEX = re.compile(r'<a?:.+?:([0-9]{15,21})>')
 EMOJI_NAME_REGEX = re.compile(r'[0-9a-zA-Z\_]{2,32}')
 
@@ -145,7 +145,7 @@ class Emoji(commands.Cog):
         await message.attachments[0].save(data)
         data.seek(0)
 
-        ch = self.bot.get_channel(305838206119575552)
+        ch = self.bot.get_channel(798223188709474384)
         if ch is not None:
             fmt = f'Suggestion from {message.author}: {message.clean_content}'
             await ch.send(fmt, file=discord.File(data, message.attachments[0].filename))
@@ -162,7 +162,7 @@ class Emoji(commands.Cog):
             return # no bots.
 
         # handle the redirection from #suggestions
-        if message.channel.id == 295012914564169728:
+        if message.channel.id == 798222957113638955:
             return await self.do_redirect(message)
 
         matches = EMOJI_REGEX.findall(message.content)
@@ -185,7 +185,7 @@ class Emoji(commands.Cog):
             return # not the guild we care about
 
         # this is the backup channel
-        channel = self.bot.get_channel(305841865293430795)
+        channel = self.bot.get_channel(797918922039885824)
         if channel is None:
             return
 
