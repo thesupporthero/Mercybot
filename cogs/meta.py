@@ -434,6 +434,10 @@ class Meta(commands.Cog):
             other_people = len(vc.members) - 1
             voice = f'{vc.name} with {other_people} others' if other_people else f'{vc.name} by themselves'
             e.add_field(name='Voice', value=voice, inline=False)
+        
+        #if roles:
+        #   for roles in user(0):
+                
 
         if roles:
             e.add_field(name='Roles', value=', '.join(roles) if len(roles) < 20 else f'{len(roles)} roles', inline=False)

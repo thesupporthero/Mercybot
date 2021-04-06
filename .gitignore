@@ -8,3 +8,6 @@ migrations/current-*.json
 *.log
 venv/*
 config.py
+libgit2-1.1.0/*
+cogs/music.py
+*.sql

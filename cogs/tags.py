@@ -148,33 +148,13 @@ class FakeUser(discord.Object):
         return str(self.id)
 
 class TagMember(commands.Converter):
-    async def resolve_id(self, ctx, member_id):
-        member = ctx.guild.get_member(member_id)
-        if member is not None:
-            return member
-
-        try:
-            return await ctx.guild.fetch_member(member_id)
-        except discord.HTTPException:
-            return FakeUser(id=member_id)
-
     async def convert(self, ctx, argument):
-        if argument.isdigit():
-            return await self.resolve_id(ctx, int(argument))
-
-        match = re.match(r'<@!?([0-9]+)>$', argument)
-        if match is not None:
-            return await self.resolve_id(ctx, int(match.group(1)))
-
-        name, _, discrim = argument.partition('#')
-        if discrim:
-            result = discord.utils.get(ctx.guild.members, name=name, discriminator=discrim)
-        else:
-            result = discord.utils.get(ctx.guild.members, name=name)
-
-        if result is None:
-            raise commands.BadArgument(f'User "{argument}" not found.')
-        return result
+        try:
+            return await commands.MemberConverter().convert(ctx, argument)
+        except commands.BadArgument as e:
+            if argument.isdigit():
+                return FakeUser(id=int(argument))
+            raise e
 
 class Tags(commands.Cog):
     """The tag related commands."""
@@ -208,7 +188,6 @@ class Tags(commands.Cog):
 
     async def get_possible_tags(self, guild, *, connection=None):
         """Returns a list of Records of possible tags that the guild can execute.
-
         If this is a private message then only the generic tags are possible.
         Server specific tags will override the generic tags.
         """
@@ -329,7 +308,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def tag(self, ctx, *, name: TagName(lower=True)):
         """Allows you to tag text for later retrieval.
-
         If a subcommand is not called, then this will search the tag database
         for the tag requested.
         """
@@ -339,7 +317,7 @@ class Tags(commands.Cog):
         except RuntimeError as e:
             return await ctx.send(e)
 
-        await ctx.send(tag['content'])
+        await ctx.send(tag['content'], reference=ctx.replied_reference)
 
         # update the usage
         query = "UPDATE tags SET uses = uses + 1 WHERE name = $1 AND (location_id=$2 OR location_id IS NULL);"
@@ -349,10 +327,8 @@ class Tags(commands.Cog):
     @suggest_box()
     async def create(self, ctx, name: TagName, *, content: commands.clean_content):
         """Creates a new tag owned by you.
-
         This tag is server-specific and cannot be used in other servers.
         For global tags that others can use, consider using the tag box.
-
         Note that server moderators can delete your tag.
         """
 
@@ -365,10 +341,8 @@ class Tags(commands.Cog):
     @suggest_box()
     async def alias(self, ctx, new_name: TagName, *, old_name: TagName):
         """Creates an alias for a pre-existing tag.
-
         You own the tag alias. However, when the original
         tag is deleted the alias is deleted as well.
-
         Tag aliases cannot be edited. You must delete
         the alias and remake it to point it to another
         location.
@@ -395,7 +369,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def make(self, ctx):
         """Interactive makes a tag for you.
-
         This walks you through the process of creating a tag with
         its name and its content. This works similar to the tag
         create command.
@@ -632,7 +605,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def edit(self, ctx, name: TagName(lower=True), *, content: commands.clean_content):
         """Modifies an existing tag that you own.
-
         This command completely replaces the original text. If
         you want to get the old text back, consider using the
         tag raw command.
@@ -654,11 +626,9 @@ class Tags(commands.Cog):
     @suggest_box()
     async def remove(self, ctx, *, name: TagName(lower=True)):
         """Removes a tag that you own.
-
         The tag owner can always delete their own tags. If someone requests
         deletion and has Manage Server permissions then they can also
         delete it.
-
         Deleting a tag will delete all of its aliases as well.
         """
 
@@ -693,11 +663,9 @@ class Tags(commands.Cog):
     @suggest_box()
     async def remove_id(self, ctx, tag_id: int):
         """Removes a tag by ID.
-
         The tag owner can always delete their own tags. If someone requests
         deletion and has Manage Server permissions then they can also
         delete it.
-
         Deleting a tag will delete all of its aliases as well.
         """
 
@@ -785,7 +753,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def info(self, ctx, *, name: TagName(lower=True)):
         """Retrieves info about a tag.
-
         The info includes things like the owner and how many times it was used.
         """
 
@@ -813,7 +780,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def raw(self, ctx, *, name: TagName(lower=True)):
         """Gets the raw content of the tag.
-
         This is with markdown escaped. Useful for editing.
         """
 
@@ -894,9 +860,7 @@ class Tags(commands.Cog):
     @suggest_box()
     async def _all(self, ctx, *, args: str = None):
         """Lists all server-specific tags for this server.
-
         You can pass specific flags to this command to control the output:
-
         `--text`: Dumps into a text file
         """
 
@@ -932,7 +896,6 @@ class Tags(commands.Cog):
     @checks.has_guild_permissions(manage_messages=True)
     async def purge(self, ctx, member: TagMember):
         """Removes all server-specific tags by a user.
-
         You must have server-wide Manage Messages permissions to use this.
         """
 
@@ -958,7 +921,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def search(self, ctx, *, query: commands.clean_content):
         """Searches for a tag.
-
         The query must be at least 3 characters.
         """
 
@@ -989,7 +951,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def claim(self, ctx, *, tag: TagName):
         """Claims an unclaimed tag.
-
         An unclaimed tag is a tag that effectively
         has no owner because they have left the server.
         """
@@ -1000,11 +961,7 @@ class Tags(commands.Cog):
         if row is None:
             return await ctx.send(f'A tag with the name of "{tag}" does not exist.')
 
-        try:
-            member = ctx.guild.get_member(row[1]) or await ctx.guild.fetch_member(row[1])
-        except discord.NotFound:
-            member = None
-
+        member = await self.bot.get_or_fetch_member(ctx.guild, row[1])
         if member is not None:
             return await ctx.send('Tag owner is still in server.')
 
@@ -1021,7 +978,6 @@ class Tags(commands.Cog):
     @suggest_box()
     async def transfer(self, ctx, member: discord.Member, *, tag: TagName):
         """Transfers a tag to another member.
-
         You must own the tag before doing this.
         """
 
@@ -1045,12 +1001,10 @@ class Tags(commands.Cog):
     @can_use_box()
     async def box(self, ctx):
         """The tag box is where global tags are stored.
-
         The tags in the box are not part of your server's tag list
         unless you explicitly enable them. As a result, only those
         with Manage Messages can check out the tag box, or anyone
         if it's a private message.
-
         To play around with the tag box, you should use the subcommands
         provided.
         """
@@ -1061,7 +1015,6 @@ class Tags(commands.Cog):
     @box.command(name='put')
     async def box_put(self, ctx, name: TagName, *, content: commands.clean_content):
         """Puts a tag in the tag box.
-
         These are global tags that anyone can opt-in to receiving
         via the "tag box take" subcommand.
         """
@@ -1079,7 +1032,6 @@ class Tags(commands.Cog):
     @commands.guild_only()
     async def box_take(self, ctx, *, name: TagName(lower=True)):
         """Takes a tag from the tag box.
-
         When you take a tag from the tag box, you essentially
         duplicate the tag for use for your own server. Any updates
         to the tag in the tag box does not affect your duplicated
@@ -1115,9 +1067,7 @@ class Tags(commands.Cog):
     @box.command(name='edit', aliases=['change'])
     async def box_edit(self, ctx, name: TagName(lower=True), *, content: commands.clean_content):
         """Edits tag from the tag box.
-
         You must own the tag to edit it.
-
         Editing the tag does not affect tags where people
         took it for their own personal use.
         """
@@ -1133,9 +1083,7 @@ class Tags(commands.Cog):
     @box.command(name='delete', aliases=['remove'])
     async def box_delete(self, ctx, *, name: TagName(lower=True)):
         """Deletes a tag from the tag box.
-
         You must own the tag to delete it.
-
         Deleting the tag does not affect tags where people
         took it for their own personal use.
         """
@@ -1186,7 +1134,6 @@ class Tags(commands.Cog):
     @box.command(name='search')
     async def box_search(self, ctx, *, query: commands.clean_content):
         """Searches for a tag in the tag box.
-
         The query must be at least 3 characters long.
         """
 
@@ -1267,7 +1214,6 @@ class Tags(commands.Cog):
     @box.command(name='list')
     async def box_list(self, ctx, *, user: discord.User = None):
         """Lists all the tags in the box that belong to you or someone else.
-
         Unlike the regular tag list command, this one is sorted by uses.
         """
 

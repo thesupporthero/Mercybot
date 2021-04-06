@@ -6,8 +6,8 @@ import json
 import discord
 from lxml import etree
 
-LOUNGE_GUILD_ID = 791798930836553799
-META_CHANNEL_ID = 794468497471176707
+LOUNGE_GUILD_ID = 789690861708509194
+META_CHANNEL_ID = 802983126598942732
 
 class CodeBlock:
     missing_error = 'Missing code block. Please use the following markdown\n\\`\\`\\`language\ncode here\n\\`\\`\\`'
@@ -63,8 +63,8 @@ class ChannelSnapshot:
     def __str__(self):
         return f'<#{self.id}>'
 
-class Lounge(commands.Cog, name='Lounge<C++>'):
-    """Commands made for Lounge<C++>.
+class Coding(commands.Cog, name='Coding playground'):
+    """Allows you to play around with code.
 
     Don't abuse these.
     """
@@ -140,7 +140,6 @@ class Lounge(commands.Cog, name='Lounge<C++>'):
             await self.display_snapshot()
 
     @commands.command()
-    @checks.is_lounge_cpp()
     async def coliru(self, ctx, *, code: CodeBlock):
         """Compiles code via Coliru.
 
@@ -243,4 +242,4 @@ class Lounge(commands.Cog, name='Lounge<C++>'):
             await ctx.send(embed=e)
 
 def setup(bot):
-    bot.add_cog(Lounge(bot))
+    bot.add_cog(Coding(bot))

@@ -36,6 +36,13 @@ class ModLog(enum.Enum):
     
     def __str__(self):
         return self.name
+class NoPfp(enum.Enum):
+    off = 0
+    on = 1
+    
+    def __str__(self):
+        return self.name
+
 ## Tables
 
 class GuildConfig(db.Table, table_name='guild_mod_config'):
@@ -48,11 +55,12 @@ class GuildConfig(db.Table, table_name='guild_mod_config'):
     muted_members = db.Column(db.Array(db.Integer(big=True)))
     modlog_enable = db.Column(db.Integer(small=True))
     modlog_chid = db.Column(db.Integer(big=True))
+    no_pfp = db.Column(db.Integer(small=True))
 ## Configuration
 
 class ModConfig:
     __slots__ = ('raid_mode', 'id', 'bot', 'broadcast_channel_id', 'mention_count',
-                 'safe_mention_channel_ids', 'mute_role_id', 'muted_members', 'modlog_chid', 'modlog_enable')
+                 'safe_mention_channel_ids', 'mute_role_id', 'muted_members', 'modlog_chid', 'modlog_enable', 'no_pfp')
 
     @classmethod
     async def from_record(cls, record, bot):
@@ -69,6 +77,7 @@ class ModConfig:
         self.mute_role_id = record['mute_role_id']
         self.modlog_enable = record['modlog_enable']
         self.modlog_chid = record['modlog_chid']
+        self.no_pfp = record['no_pfp']
         return self
 
     @property
@@ -90,6 +99,7 @@ class ModConfig:
     async def apply_mute(self, member, reason):
         if self.mute_role_id:
             await member.add_roles(discord.Object(id=self.mute_role_id), reason=reason)
+
 
 ## Converters
 
@@ -446,8 +456,9 @@ class Mod(commands.Cog):
 
         if config.is_muted(member):
             return await config.apply_mute(member, 'Member was previously muted.')
-
-        if not config.raid_mode:
+        #check to see which modes are enabled
+        modes = config.raid_mode or config.modlog_enable or config.no_pfp or None
+        if modes is None:
             return
 
         now = datetime.datetime.utcnow()
@@ -458,23 +469,45 @@ class Mod(commands.Cog):
         # Do the broadcasted message to the channel
         title = 'Member Joined'
         if checker.is_fast_join(member):
-            colour = 0xdd5f53 # red
+            color = 0xdd5f53 # red
             if is_new:
                 title = 'Member Joined (Very New Member)'
         else:
-            colour = 0x53dda4 # green
+            color = 0xCAFFBF 
 
             if is_new:
-                colour = 0xdda453 # yellow
+                color = 0xdda453 # yellow
                 title = 'Member Joined (Very New Member)'
-
-        e = discord.Embed(title=title, colour=colour)
+        if config.no_pfp is not None or 0:
+           if member.avatar is None:
+                await member.kick(reason="blank pfp")
+                f = discord.Embed(title='User kicked for blank pfp', color=0xFFD6A5)
+                f.timestamp = now
+                f.set_author(name=str(member), icon_url=member.avatar_url)
+                f.add_field(name='ID', value=member.id)
+                f.add_field(name='Joined', value=member.joined_at)
+                f.add_field(name='Created', value=time.human_timedelta(member.created_at), inline=False)
+                if config.modlog_channel:
+                    try:
+                        await config.modlog_channel.send(embed=f)
+                    except discord.Forbidden:
+                        async with self._disable_lock:
+                            await self.disable_modlog_enable(guild_id)
+                return
+        e = discord.Embed(title=title, color=color)
         e.timestamp = now
         e.set_author(name=str(member), icon_url=member.avatar_url)
         e.add_field(name='ID', value=member.id)
         e.add_field(name='Joined', value=member.joined_at)
         e.add_field(name='Created', value=time.human_timedelta(member.created_at), inline=False)
 
+        if config.modlog_channel:
+            try:
+                await config.modlog_channel.send(embed=e)
+            except discord.Forbidden:
+                async with self._disable_lock:
+                    await self.disable_modlog_enable(guild_id)
+            return
         if config.broadcast_channel:
             try:
                 await config.broadcast_channel.send(embed=e)
@@ -523,37 +556,62 @@ class Mod(commands.Cog):
         await self.bot.pool.execute(query, guild_id)
         self.get_guild_config.invalidate(self, guild_id)
 
-
+    #on delete needs to handle a few possibilies and we still don't have all possiblities covered.
     @commands.Cog.listener()
     async def on_raw_message_delete(self, payload):
         message = payload.cached_message
         guild_id = payload.guild_id
         channel = payload.channel_id
         config = await self.get_guild_config(guild_id)
+        #if logging is off we just return.
         if config is None:
             return
+        #if the message was from a bot, we ignore it. Mainly because bots tend to have a lot of activity.
+        #We also are checking to see if we can pull the author in the first place. 
+        #If we can't, the Message is not cached. Here we add flavor text just to be silly.
         if message is not None:
             author = message.author
             if author.bot:
                 return
         else: 
             author = 'who knows, I dont.'
+        mlch = config.modlog_channel
         title = 'Message deleted!'
         now = datetime.datetime.utcnow()
-        e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
+        e = discord.Embed(title=title)
         e.timestamp = now
+        #we chack if we have have a message to send, if we do we collect all the info.
         if message is not None:
             e.set_author(name=str(author), icon_url=author.avatar_url)
-            e.add_field(name='Auther ID', value='<@{}>'.format(author.id))
+            e.add_field(name='Author ID', value='<@{}>'.format(author.id))
+            if message.content:
+                mcontent = message.content
+            else:
+                mcontent = '\u200b'
+            e.add_field(name='Message', value=mcontent, inline=False)
+            if message.attachments:
+                try:
+                    f = await message.attachments[0].to_file(use_cached=True)
+                    e.set_image(url=f"attachment://{f.filename}")
+                    Send_log = await mlch.send(file=f, embed=e)
+                except discord.errors.HTTPException:
+                    return
+            else:
+                Send_log = await mlch.send(embed=e)
+            e.color=(0xFFC6FF)
+        else:
+        #but if we don't have something to send, we assume it's not cached or something weird happened. 
+        #If all the message contains is an embed then this will also run for now.
+            e.set_author(name=str(author), icon_url='https://cdn.discordapp.com/avatars/697087031859478630/23188f307c0b7ce07fd0d0ba9847748a.png?size=1024')
+            e.add_field(name='Message', value='```Warning: This message was not in cache, this is usually because the bot has been rebooted since the message was created.```', inline=False)
+            e.color=(0xBDB2FF)
         e.add_field(name='Channel', value='<#{}>'.format(channel), inline=False)
         e.add_field(name='Message ID', value=payload.message_id)
-        if message is not None:
-            e.add_field(name='Message', value=message.content, inline=False)
-        else:
-            e.add_field(name='Message', value='```Warning: This message was not in cache, this is usually because the bot has been rebooted since the message was created.```', inline=False)
+        #We are sending it here. Problem is, we need to deal if the logging channel was deleted.
+        #So if the channel isn't there or we can't read it, clean the database, and clear the cache.
         if config.modlog_channel:
             try:
-                await config.modlog_channel.send(embed=e)
+                Send_log
             except discord.Forbidden:
                 async with self._disable_lock:
                     await self.disable_modlog_enable(guild_id)
@@ -562,6 +620,8 @@ class Mod(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         ginfo = before.guild
+        if ginfo is None:
+            return
         guild_id = ginfo.id
         config = await self.get_guild_config(guild_id)
         if config is None:
@@ -576,10 +636,10 @@ class Mod(commands.Cog):
             return
         title = 'Message edited!'
         now = datetime.datetime.utcnow()
-        e = discord.Embed(title=title, color=(random.randint(0, 0xffffff)))
+        e = discord.Embed(title=title, color=(0x9BF6FF))
         e.timestamp = now
         e.set_author(name=str(author), icon_url=author.avatar_url)
-        e.add_field(name='Auther ID', value='<@{}>'.format(author.id))
+        e.add_field(name='Author ID', value='<@{}>'.format(author.id))
         e.add_field(name='Channel', value='<#{}>'.format(channel.id), inline=False)
         e.add_field(name='Message ID', value=before.id)
         e.add_field(name='Message before', value=bmessage, inline=False)
@@ -804,7 +864,7 @@ class Mod(commands.Cog):
                         modlog_chid = NULL;
                 """
 
-        await self.bot.pool.execute(query, guild_id, RaidMode.off.value)
+        await self.bot.pool.execute(query, guild_id, ModLog.off.value)
         self._spam_check.pop(guild_id, None)
         self.get_guild_config.invalidate(self, guild_id)
 
@@ -818,6 +878,76 @@ class Mod(commands.Cog):
         await self.disable_modlog_enable(ctx.guild.id)
         await ctx.send('Logging disabled. I will no longer send log messages.')
 
+    @commands.group(aliases=['automods'], invoke_without_command=True)
+    @checks.is_mod()
+    async def automod(self, ctx):
+        """Controls automod actions.
+        For now this only kicks.
+
+        Options are: no pfp
+
+        Calling this command with no arguments will show the current state.
+
+        You must have Manage Server permissions to use this command or
+        its subcommands.
+        """
+        guild_id = ctx.guild.id
+        config = await self.get_guild_config(guild_id)
+
+        query = "SELECT no_pfp, modlog_chid FROM guild_mod_config WHERE id=$1;"
+        modes = config.modlog_enable or None
+        row = await ctx.db.fetchrow(query, ctx.guild.id)
+        if modes is None:
+            fmt = 'Logging is off you need to turn on logging for this module to work.'
+        else:
+            ch = f'<#{row[1]}>' if row[1] else None
+            mode = (row[0]) if row[0] is not None else NoPfp.off
+            fmt = f'Autokick: {mode}\nLogging Channel: {ch}'
+
+        await ctx.send(fmt)
+    @automod.command(name='nopfp_on', alias='nopfp_enable')
+    @checks.is_mod()
+    async def no_pfp_on(self, ctx):
+        """Enables Logging on the server
+        If no channel is given, then the bot will log
+        messages on the channel this command was used in.
+        """
+        guild_id = ctx.guild.id
+        config = await self.get_guild_config(guild_id)
+
+        query = """INSERT INTO guild_mod_config (id, no_pfp)
+                   VALUES ($1, $2) ON CONFLICT (id)
+                   DO UPDATE SET
+                    no_pfp = EXCLUDED.no_pfp
+                """
+        modes = config.modlog_enable or None
+        if modes is None:
+            await ctx.send('Logging must be enabled to use this module.')
+        else:
+            await ctx.db.execute(query, ctx.guild.id, NoPfp.on.value)
+            self.get_guild_config.invalidate(self, ctx.guild.id)
+            await ctx.send(f'Automod enabled with the `No pfp` option. Sending logs to #{config.modlog_channel}.')
+
+    async def disable_NoPfp(self, guild_id):
+        query = """INSERT INTO guild_mod_config (id, no_pfp)
+                   VALUES ($1, $2) ON CONFLICT (id)
+                   DO UPDATE SET
+                        no_pfp = EXCLUDED.no_pfp
+                """
+
+        await self.bot.pool.execute(query, guild_id, NoPfp.off.value)
+        self._spam_check.pop(guild_id, None)
+        self.get_guild_config.invalidate(self, guild_id)
+    
+    @automod.command(name='nopfp_off', alias='nopfp_disable')
+    @checks.is_mod()
+    async def no_pfp_off(self, ctx):
+        """Disables Logging on the server.
+        Aka, no more logging.
+        """
+
+        await self.disable_NoPfp(ctx.guild.id)
+        await ctx.send('Autokick based on no pfp disabled')
     @commands.command()
     @checks.has_permissions(manage_messages=True)
     async def cleanup(self, ctx, search=1000):
@@ -1599,6 +1729,29 @@ class Mod(commands.Cog):
                 skipped += 1
         return success, failure, skipped
 
+    @commands.group(name='roles', invoke_without_command=True)
+    async def role(self, ctx):
+        return
+    
+
+    @commands.command(name='addrole')
+    async def add_role(self, ctx, members: commands.Greedy[discord.Member], role: discord.Role):
+        """I add a role to the member you choose.
+        how cool!
+        But seriously I must have Manage roles permission."""
+        total = len(members)
+        if total == 0:
+            return await ctx.send('LMAO, Who do you want me to give a role to?')
+        async with ctx.typing():
+            for member in members:
+                try:
+                    await member.add_roles(role, reason=None) #add the role
+                except Exception as e:
+                    await ctx.send('Oops! There was an error running this command ' + str(e))
+                else:
+                    await ctx.send(f"hey {ctx.author.name}, {member.name} has been giving a role called: {role.name}")
+
+           
     @commands.group(name='mute', invoke_without_command=True)
     @can_mute()
     async def _mute(self, ctx, members: commands.Greedy[discord.Member], *, reason: ActionReason = None):

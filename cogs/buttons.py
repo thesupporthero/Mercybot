@@ -229,7 +229,7 @@ class Buttons(commands.Cog):
         """
 
         e = discord.Embed(title='Feedback', colour=0x738bd7)
-        channel = self.bot.get_channel(772184335394013215)
+        channel = self.bot.get_channel(798222957113638955)
         if channel is None:
             return
 
@@ -244,7 +244,7 @@ class Buttons(commands.Cog):
         e.set_footer(text=f'Author ID: {ctx.author.id}')
 
         await channel.send(embed=e)
-        await ctx.send(f'{ctx.tick(True)} Successfully sent feedback')
+        await ctx.send('<a:checkgif:790987317372387348> Successfully sent feedback')
 
     @commands.command()
     @commands.is_owner()
@@ -261,7 +261,7 @@ class Buttons(commands.Cog):
             await ctx.send('PM successfully sent.')
 
     async def redirect_post(self, ctx, title, text):
-        storage = self.bot.get_guild(182325885867786241).get_channel(430229522340773899)
+        storage = self.bot.get_guild(789690861708509194).get_channel(797918922039885824)
 
         supported_attachments = ('.png', '.jpg', '.jpeg', '.webm', '.gif', '.mp4', '.txt')
         if not all(attach.filename.lower().endswith(supported_attachments) for attach in ctx.message.attachments):

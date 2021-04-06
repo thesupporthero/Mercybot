@@ -220,7 +220,7 @@ class Stats(commands.Cog):
         revision = self.get_last_commits()
         embed = discord.Embed(description='Latest Changes:\n' + revision)
         embed.title = 'Official Bot Server Invite'
-        embed.url = 'https://discord.gg/DWEaqMy'
+        embed.url = 'https://discord.gg/GJu882MzVK'
         embed.colour = discord.Colour.blurple()
 
         # To properly cache myself, I need to use the bot support server.

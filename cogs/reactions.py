@@ -22,7 +22,7 @@ def check_CODEV(ctx):
       return ctx.message.author.id == 382550762875518986
 
 class Reactions(commands.Cog, name='Reactions'):
-  """React to shit"""
+  """RP stuff and boops"""
   def __init__(self, bot):
     self.bot = bot
     self._last_member = None
@@ -44,14 +44,12 @@ class Reactions(commands.Cog, name='Reactions'):
   async def hello(self, ctx, *, member: discord.User = None):
     """Says hello to you"""
     member = member or ctx.author
-    try:
-      if ctx.author.id == check_DEV:
-        await ctx.send('whoa, I know you from somewhere')
-    except:
-      if self._last_member is None or self._last_member.id != member.id:
-        await ctx.send('Hello {0.mention} ^.^'.format(member))
-      else:
-        await ctx.send('Hello {0.mention}... This feels familiar.'.format(member))
+    if ctx.author.id == self.bot.owner_id:
+      await ctx.send('whoa, I know you from somewhere')
+    if self._last_member is None or self._last_member.id != member.id:
+      await ctx.send('Hello {0.mention} ^.^'.format(member))
+    else:
+      await ctx.send('Hello {0.mention}... This feels familiar.'.format(member))
       self._last_member = member
   @commands.command()
   async def owner(self, ctx):
@@ -98,7 +96,9 @@ class Reactions(commands.Cog, name='Reactions'):
      embed.set_footer(text="UWU")
      await ctx.send(embed=embed)
     else:
-      await ctx.send("oops you forgot to mention someone")
+      embed=discord.Embed(title="T-thank you!", color=0xec59c8)
+      embed.set_image(url='https://cdn.discordapp.com/attachments/704446238422204476/800911677733470248/Z.png')
+      await ctx.send(embed=embed)
 
   @commands.command()
   async def hug(self, ctx, *, member: discord.User = None):
@@ -115,6 +115,36 @@ class Reactions(commands.Cog, name='Reactions'):
     else:
       await ctx.send("oops you forgot to mention someone")
   
+  @commands.command()
+  async def bite(self, ctx, *, member: discord.User = None):
+    """Hugs a user you tag"""
+    if member:
+     response = requests.get('https://api.tenor.com/v1/search?q=bite-anime&key=ZCLO5M7CU85U&limit=20')
+     data = json.loads(response.text)
+     gif_choice = random.randint(0, 19)
+     result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+     embed=discord.Embed(title=ctx.message.author.name+" has bit you!", color=0xec59c8)
+     embed.set_image(url=result_gif)
+     embed.set_footer(text="ow")
+     await ctx.send(embed=embed)
+    else:
+      await ctx.send("oops you forgot to mention someone")
+
+  @commands.command()
+  async def lick(self, ctx, *, member: discord.User = None):
+    """Hugs a user you tag"""
+    if member:
+     response = requests.get('https://api.tenor.com/v1/search?q=lick-anime&key=ZCLO5M7CU85U&limit=20')
+     data = json.loads(response.text)
+     gif_choice = random.randint(0, 19)
+     result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+     embed=discord.Embed(title=ctx.message.author.name+" has licked you!", color=0xec59c8)
+     embed.set_image(url=result_gif)
+     embed.set_footer(text="uwu")
+     await ctx.send(embed=embed)
+    else:
+      await ctx.send("oops you forgot to mention someone")
+
   @commands.command()
   async def dance(self, ctx, *, member: discord.User = None):
     """Dances with a user you tag"""
@@ -218,7 +248,7 @@ class Reactions(commands.Cog, name='Reactions'):
      data = json.loads(response.text)
      gif_choice = random.randint(0, 19)
      result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
-     embed=discord.Embed(title=ctx.message.author.name+" is staring you!", color=0xec59c8)
+     embed=discord.Embed(title=ctx.message.author.name+" is staring at you!", color=0xec59c8)
      embed.set_image(url=result_gif)
      embed.set_footer(text="uh oh")
      await ctx.send(embed=embed)
@@ -233,7 +263,7 @@ class Reactions(commands.Cog, name='Reactions'):
      data = json.loads(response.text)
      gif_choice = random.randint(0, 19)
      result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
-     embed=discord.Embed(title=ctx.message.author.name+" aww feel better there cutie!", color=0xec59c8)
+     embed=discord.Embed(title="Aww feel better "+ctx.message.author.name+"!", color=0xec59c8)
      embed.set_image(url=result_gif)
      embed.set_footer(text="Everything is going to be okay!")
      await ctx.send(embed=embed)
@@ -245,6 +275,28 @@ class Reactions(commands.Cog, name='Reactions'):
      embed2=discord.Embed(title="Aw, {}, {} is crying at you.".format(member.name, ctx.message.author.name), color=0xec59c8)
      embed2.set_image(url=result_gif)
      embed2.set_footer(text="What did you do!?")
+     await ctx.send(embed=embed2)
+
+  @commands.command()
+  async def happy(self, ctx, *, member: discord.Member = None, user: discord.User = None):
+    """I cry big tears, it's not pretty."""
+    if not member:
+     response = requests.get('https://api.tenor.com/v1/search?q=happy-anime&key=ZCLO5M7CU85U&limit=20')
+     data = json.loads(response.text)
+     gif_choice = random.randint(0, 19)
+     result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+     embed=discord.Embed(title="You are looking pretty happy there "+ctx.message.author.name+"!", color=0xec59c8)
+     embed.set_image(url=result_gif)
+     embed.set_footer(text="Such happy!")
+     await ctx.send(embed=embed)
+    else:
+     response = requests.get('https://api.tenor.com/v1/search?q=happy-anime&key=ZCLO5M7CU85U&limit=20')
+     data = json.loads(response.text)
+     gif_choice = random.randint(0, 19)
+     result_gif = data['results'][gif_choice]['media'][0]['gif']['url']
+     embed2=discord.Embed(title="UWU seems, {}, {} is happy thanks to you.".format(member.name, ctx.message.author.name), color=0xec59c8)
+     embed2.set_image(url=result_gif)
+     embed2.set_footer(text="Yay!")
      await ctx.send(embed=embed2)
 
   @commands.command()
@@ -281,19 +333,13 @@ class Reactions(commands.Cog, name='Reactions'):
      embed.set_image(url="https://cdn.discordapp.com/attachments/704446238422204476/773729435442348082/bye.gif")
      embed.set_footer(text="RIP "+ctx.message.author.name)
      await ctx.send(embed=embed)
+     
   @commands.command()
   async def color(self, ctx):
     """Gives you a random color"""
     color = random.randint(0, 0xffffff)
     embed=discord.Embed(title="Here is your color:", color=color, description=color)
     await ctx.send(embed=embed)
-  @tasks.loop(second=60)
-  async def change_color(self):
-    color = random.randint(0, 0xffffff)
-  @commands.listener
-  @commands.Cog.listener()
-  async def on_message(self, message):  
-    
-    await ctx.send("uwu")
+
 def setup(bot):
     bot.add_cog(Reactions(bot))
