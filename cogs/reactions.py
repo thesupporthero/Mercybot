@@ -8,6 +8,7 @@ import random
 import time
 import discord
 import json
+from discord import client
 import requests
 import randomcolor
 
@@ -333,13 +334,29 @@ class Reactions(commands.Cog, name='Reactions'):
      embed.set_image(url="https://cdn.discordapp.com/attachments/704446238422204476/773729435442348082/bye.gif")
      embed.set_footer(text="RIP "+ctx.message.author.name)
      await ctx.send(embed=embed)
-     
+  #from here down is for testing. Reactions is lightweight, and very minimal. Restarting reactions usually doesn't interupt anything.
   @commands.command()
   async def color(self, ctx):
     """Gives you a random color"""
     color = random.randint(0, 0xffffff)
     embed=discord.Embed(title="Here is your color:", color=color, description=color)
     await ctx.send(embed=embed)
+
+  @commands.command(pass_context=True)
+  async def rolemenu(self, ctx):
+      await ctx.send('Thank you for choosing me for your rolemenus! \nPlease give me the message ID for where you want the role menu:')
+      responses = []
+      def check(m):
+        responses.append(m.content)
+        return m.channel == ctx.channel
+      responsectx = await self.bot.wait_for('message', check=check)
+      sctx = responsectx.content
+      #rctx = await ctx.fetch_message(sctx)
+      await ctx.send('Please send the emoji you would like as a reaction(must be from a server I am in):')
+      remojiq = await self.bot.wait_for('message')
+      remoji = remojiq.content
+      mfetch = rctx
+      await mfetch.add_reaction(remoji)
 
 def setup(bot):
     bot.add_cog(Reactions(bot))
