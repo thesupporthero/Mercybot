@@ -1,0 +1,15 @@
+node_modules/*
+
+*.json
+!migrations/*
+migrations/current-*.json
+
+*.pyc
+*.log
+venv/*
+config.py
+libgit2-1.1.0/*
+cogs/music.py
+*.sql
+logs/*
+nohup.out
