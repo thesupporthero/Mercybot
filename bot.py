@@ -45,6 +45,7 @@ initial_extensions = (
     'cogs.config',
     #'cogs.dpy',
     'cogs.funhouse',
+    'cogs.tickets',
 )
 
 def _prefix_callable(bot: Mercybot, msg: discord.Message):
