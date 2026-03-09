@@ -177,10 +177,13 @@ class Admin(commands.Cog):
         # however, things like "fast forward" and files
         # along with the text "already up-to-date" are in stdout
 
-        if stdout.startswith('Already up-to-date.'):
+        if stdout.startswith(('Already up-to-date.', 'Already up to date.')):
             return await ctx.send(stdout)
 
         modules = self.find_modules_from_git(stdout)
+        if not modules:
+            return await ctx.send('No cog modules were changed.')
+
         mods_text = '\n'.join(f'{index}. `{module}`' for index, (_, module) in enumerate(modules, start=1))
         prompt_text = f'This will update the following modules, are you sure?\n{mods_text}'
         confirm = await ctx.prompt(prompt_text)

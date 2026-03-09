@@ -219,6 +219,22 @@ async def create_pool() -> asyncpg.Pool:
 
 async def run_bot():
     log = logging.getLogger()
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            'git', 'pull',
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd='/home/Mercybot',
+        )
+        stdout, stderr = await proc.communicate()
+        if proc.returncode == 0:
+            log.info('Git pull successful: %s', stdout.decode().strip())
+        else:
+            log.warning('Git pull failed (continuing anyway): %s', stderr.decode().strip())
+    except Exception as e:
+        log.warning('Git pull error (continuing anyway): %s', e)
+
     try:
         pool = await create_pool()
     except Exception:
