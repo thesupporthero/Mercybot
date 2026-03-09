@@ -4,9 +4,10 @@ from typing import TYPE_CHECKING, Optional
 
 from .utils.translator import translate
 
-from discord.ext import commands
+from discord.ext import commands, tasks
 import discord
 import io
+import random
 
 if TYPE_CHECKING:
     from bot import Mercybot
@@ -20,6 +21,36 @@ GENERAL_VOICE_ID = 8188301630924800
 class Funhouse(commands.Cog):
     def __init__(self, bot: Mercybot):
         self.bot: Mercybot = bot
+        self.color_roles: dict[int, int] = {}
+        self.rotate_role_colors.start()
+
+    async def cog_load(self):
+        query = "SELECT guild_id, role_id FROM guild_role_color;"
+        rows = await self.bot.pool.fetch(query)
+        self.color_roles = {r['guild_id']: r['role_id'] for r in rows}
+
+    async def cog_unload(self):
+        self.rotate_role_colors.cancel()
+
+    @tasks.loop(hours=24)
+    async def rotate_role_colors(self):
+        for guild_id, role_id in list(self.color_roles.items()):
+            guild = self.bot.get_guild(guild_id)
+            if guild is None:
+                continue
+            role = guild.get_role(role_id)
+            if role is None:
+                continue
+            color = discord.Color.from_rgb(
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+            )
+            await role.edit(color=color)
+
+    @rotate_role_colors.before_loop
+    async def before_rotate(self):
+        await self.bot.wait_until_ready()
 
     @property
     def display_emoji(self) -> discord.PartialEmoji:
@@ -30,6 +61,38 @@ class Funhouse(commands.Cog):
 
     def is_inside_voice(self, state: discord.VoiceState) -> bool:
         return state.channel is not None and state.channel.id == GENERAL_VOICE_ID
+
+    @commands.group(name='rolecolor', invoke_without_command=True)
+    @commands.guild_only()
+    async def rolecolor(self, ctx: Context):
+        """Manages automatic role color rotation."""
+        await ctx.send_help(ctx.command)
+
+    @rolecolor.command(name='set')
+    @commands.guild_only()
+    async def rolecolor_set(self, ctx: Context, role: discord.Role):
+        """Sets a role to have its color randomized every 24 hours. Guild owner only."""
+        if ctx.author != ctx.guild.owner:
+            return await ctx.send('Only the server owner can use this command.')
+        query = """INSERT INTO guild_role_color(guild_id, role_id)
+                   VALUES ($1, $2)
+                   ON CONFLICT (guild_id) DO UPDATE SET role_id = $2;"""
+        await self.bot.pool.execute(query, ctx.guild.id, role.id)
+        self.color_roles[ctx.guild.id] = role.id
+        await ctx.send(f'Role `{role.name}` will have its color randomized every 24 hours.')
+
+    @rolecolor.command(name='stop')
+    @commands.guild_only()
+    async def rolecolor_stop(self, ctx: Context):
+        """Stops the automatic color rotation. Guild owner only."""
+        if ctx.author != ctx.guild.owner:
+            return await ctx.send('Only the server owner can use this command.')
+        if ctx.guild.id not in self.color_roles:
+            return await ctx.send('No role color rotation is active.')
+        query = "DELETE FROM guild_role_color WHERE guild_id = $1;"
+        await self.bot.pool.execute(query, ctx.guild.id)
+        self.color_roles.pop(ctx.guild.id)
+        await ctx.send('Role color rotation stopped.')
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
