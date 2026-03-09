@@ -62,7 +62,7 @@ class RNG(commands.Cog):
     @commands.guild_only()
     async def rolecolor_set(self, ctx: Context, role: discord.Role):
         """Sets a role to have its color randomized every 24 hours. Guild owner only."""
-        if ctx.author != ctx.guild.owner:
+        if ctx.author.id != ctx.guild.owner_id:
             return await ctx.send('Only the server owner can use this command.')
         query = """INSERT INTO guild_role_color(guild_id, role_id)
                    VALUES ($1, $2)
@@ -75,7 +75,7 @@ class RNG(commands.Cog):
     @commands.guild_only()
     async def rolecolor_stop(self, ctx: Context):
         """Stops the automatic color rotation. Guild owner only."""
-        if ctx.author != ctx.guild.owner:
+        if ctx.author.id != ctx.guild.owner_id:
             return await ctx.send('Only the server owner can use this command.')
         if ctx.guild.id not in self.color_roles:
             return await ctx.send('No role color rotation is active.')
