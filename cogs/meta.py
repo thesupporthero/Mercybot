@@ -451,6 +451,14 @@ class Meta(commands.Cog):
         """Quits the bot."""
         await self.bot.close()
 
+    @commands.command(name='restart', hidden=True)
+    @commands.is_owner()
+    async def _restart(self, ctx: Context):
+        """Restarts the bot."""
+        await ctx.send('\N{SLEEPING SYMBOL}')
+        self.bot._restart = True
+        await self.bot.close()
+
     @commands.command()
     async def avatar(self, ctx: Context, *, user: Union[discord.Member, discord.User] = None):
         """Shows a user's enlarged avatar (if possible)."""

@@ -113,6 +113,7 @@ class Mercybot(commands.AutoShardedBot):
         # A counter to auto-ban frequent spammers
         # Triggering the rate limit 5 times in a row will auto-ban the user from the bot.
         self._auto_spam_count = Counter()
+        self._restart: bool = False
 
     async def setup_hook(self) -> None:
         self.session = aiohttp.ClientSession()

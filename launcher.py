@@ -245,6 +245,7 @@ async def run_bot():
     async with Mercybot() as bot:
         bot.pool = pool
         await bot.start()
+    return bot._restart
 
 
 @click.group(invoke_without_command=True, options_metavar='[options]')
@@ -253,7 +254,8 @@ def main(ctx):
     """Launches the bot."""
     if ctx.invoked_subcommand is None:
         with setup_logging():
-            asyncio.run(run_bot())
+            while asyncio.run(run_bot()):
+                pass
 
 
 @main.group(short_help='database stuff', options_metavar='[options]')
