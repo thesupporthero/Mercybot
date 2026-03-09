@@ -133,9 +133,17 @@ class Admin(commands.Cog):
 
     @commands.group(name='reload', hidden=True, invoke_without_command=True)
     async def _reload(self, ctx: Context, *, module: str):
-        """Reloads a module."""
+        """Reloads a module, pulling from git first."""
+        async with ctx.typing():
+            stdout, stderr = await self.run_process('git pull')
+
+        if not stdout.startswith(('Already up-to-date.', 'Already up to date.')):
+            modules = self.find_modules_from_git(stdout)
+            if modules and not any(m == module for _, m in modules):
+                await ctx.send(f'Warning: `{module}` was not changed in the git pull.')
+
         try:
-            await self.bot.reload_extension(module)
+            await self.reload_or_load_extension(module)
         except commands.ExtensionError as e:
             await ctx.send(f'{e.__class__.__name__}: {e}')
         else:
