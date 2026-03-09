@@ -12,7 +12,6 @@ from .utils.formats import plural
 if TYPE_CHECKING:
     from bot import Mercybot
     from .utils.context import GuildContext, Context
-    from .splatoon import Splatoon
     from .tags import Tags
 
 
@@ -95,56 +94,6 @@ class RNG(commands.Cog):
             await ctx.send(f'Incorrect random subcommand passed. Try {ctx.prefix}help random')
 
     @random.command()
-    async def weapon(self, ctx: Context, count: int = 1):
-        """Displays a random Splatoon 3 weapon.
-
-        The count parameter is how many to generate. It cannot be
-        negative. If it's negative or zero then only one weapon will be
-        selected. The maximum number of random weapons generated is 8.
-        """
-
-        splatoon: Optional[Splatoon] = self.bot.get_cog('Splatoon')  # type: ignore
-        if splatoon is None:
-            return await ctx.send('Splatoon commands currently disabled.')
-
-        count = min(max(count, 1), 8)
-        weapons = splatoon.splat3_data.get('weapons', [])
-        if weapons:
-            if count == 1:
-                weapon = rng.choice(weapons)
-                await ctx.send(f'{weapon.name} with {weapon.sub} and {weapon.special} special.')
-            else:
-                sample = rng.sample(weapons, count)
-                await ctx.send('\n'.join(w.name for w in sample))
-
-    @random.command()
-    async def private(self, ctx: Context):
-        """Displays an all private Splatoon 3 match.
-
-        The map and mode is randomised along with both team's weapons.
-        """
-        splatoon: Optional[Splatoon] = self.bot.get_cog('Splatoon')  # type: ignore
-        if splatoon is None:
-            return await ctx.send('Splatoon commands currently disabled.')
-
-        maps: list[str] = splatoon.splat3_data.get('maps', [])
-
-        stage = rng.choice(maps) if maps else 'Random Stage'
-        modes = ['Turf War', 'Splat Zones', 'Rainmaker', 'Tower Control', 'Clam Blitz']
-        mode = rng.choice(modes)
-        result = [f'Playing {mode} on {stage}', '', '**Team Alpha**']
-
-        weapons = rng.sample(splatoon.splat3_data.get('weapons', []), 8)
-        for i in range(8):
-            if i == 4:
-                result.append('')
-                result.append('**Team Bravo**')
-
-            result.append(f'Player {i + 1}: {weapons[i].name}')
-
-        await ctx.send('\n'.join(result))
-
-    @random.command()
     @commands.guild_only()
     async def tag(self, ctx: GuildContext):
         """Displays a random tag.
@@ -160,42 +109,6 @@ class RNG(commands.Cog):
             return await ctx.send('This server has no tags.')
 
         await ctx.send(f'Random tag found: {tag["name"]}\n{tag["content"]}')
-
-    @random.command(name='map')
-    async def _map(self, ctx: Context):
-        """Displays a random Splatoon 3 map."""
-        splatoon: Optional[Splatoon] = self.bot.get_cog('Splatoon')  # type: ignore
-        if splatoon is None:
-            await ctx.send('Splatoon commands currently disabled.')
-            return
-
-        maps = splatoon.splat3_data.get('maps', [])
-        if maps:
-            await ctx.send(rng.choice(maps))
-
-        del splatoon
-
-    @random.command()
-    async def mode(self, ctx: Context):
-        """Displays a random Splatoon 3 mode."""
-        mode = rng.choice(['Turf War', 'Splat Zones', 'Clam Blitz', 'Rainmaker', 'Tower Control'])
-        await ctx.send(mode)
-
-    @random.command()
-    async def game(self, ctx: Context):
-        """Displays a random map/mode combination (no Turf War)"""
-        splatoon: Optional[Splatoon] = self.bot.get_cog('Splatoon')  # type: ignore
-        if splatoon is None:
-            await ctx.send('Splatoon commands currently disabled.')
-            return
-
-        maps = splatoon.splat3_data.get('maps', [])
-        if maps:
-            mode = rng.choice(['Splat Zones', 'Tower Control', 'Rainmaker', 'Clam Blitz'])
-            stage = rng.choice(maps)
-            await ctx.send(f'{mode} on {stage}')
-
-        del splatoon
 
     @random.command()
     async def number(self, ctx: Context, minimum: int = 0, maximum: int = 100):

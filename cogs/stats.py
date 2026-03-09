@@ -51,7 +51,7 @@ class LoggingHandler(logging.Handler):
         super().__init__(logging.INFO)
 
     def filter(self, record: logging.LogRecord) -> bool:
-        return record.name in ('discord.gateway', 'cogs.splatoon')
+        return record.name == 'discord.gateway'
 
     def emit(self, record: logging.LogRecord) -> None:
         self.cog.add_record(record)

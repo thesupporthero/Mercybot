@@ -30,7 +30,6 @@ initial_extensions = (
     'cogs.meta',
     # 'cogs.reactions',
     #'cogs.music',
-   #'cogs.splatoon',
     'cogs.rng',
     'cogs.mod',
     'cogs.profile',
