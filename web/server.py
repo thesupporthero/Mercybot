@@ -11,13 +11,25 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-# Module-level reference so it survives across bot attribute resets
-_runner: Optional[aiohttp.web.AppRunner] = None
+# Module-level reference so it survives across bot attribute resets.
+# Use globals().setdefault so importlib.reload() does NOT reset it.
+globals().setdefault('_runner', None)
+_runner: Optional[aiohttp.web.AppRunner]
 
 
 async def start_web_server(bot: Mercybot, pool: asyncpg.Pool, *, host: str = 'localhost', port: int = 8080) -> aiohttp.web.AppRunner:
     """Start the web server and return the runner for cleanup."""
     global _runner
+
+    # Defensively stop any lingering server before binding
+    if _runner is not None:
+        log.info('Cleaning up previous web server before restart...')
+        try:
+            await _runner.cleanup()
+        except Exception:
+            pass
+        _runner = None
+
     from . import create_app
 
     app = create_app(bot, pool)
