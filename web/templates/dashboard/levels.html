@@ -1,0 +1,96 @@
+{% extends "dashboard/layout.html" %}
+{% set active_page = 'levels' %}
+
+{% block title %}Levels - {{ guild.name }}{% endblock %}
+
+{% block dashboard_content %}
+<h1 class="text-2xl font-bold mb-6">Levels & XP</h1>
+
+{% if request.query.get('saved') %}
+<div class="bg-green-900/30 border border-green-700/50 text-green-300 rounded-lg px-4 py-3 mb-6">
+    Settings saved successfully.
+</div>
+{% endif %}
+
+<form method="POST" action="/dashboard/{{ guild.id }}/levels">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <!-- Master Toggle -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">General</h2>
+        <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" name="enabled" value="1"
+                   {% if not config or config.enabled %}checked{% endif %}
+                   class="w-4 h-4 rounded bg-gray-700 border-gray-600 text-discord-blurple focus:ring-discord-blurple">
+            <div>
+                <div class="text-sm font-medium">Enable XP System</div>
+                <div class="text-xs text-gray-500">Members earn XP from chatting and voice chat</div>
+            </div>
+        </label>
+    </div>
+
+    <!-- Message XP -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Message XP</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Min XP per Message</label>
+                <input type="number" name="xp_min" min="1" max="100"
+                       value="{{ config.xp_min if config else 15 }}"
+                       class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                <p class="text-xs text-gray-500 mt-1">Minimum XP earned per qualifying message</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Max XP per Message</label>
+                <input type="number" name="xp_max" min="1" max="100"
+                       value="{{ config.xp_max if config else 25 }}"
+                       class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                <p class="text-xs text-gray-500 mt-1">Maximum XP earned per qualifying message</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Cooldown (seconds)</label>
+                <input type="number" name="cooldown" min="10" max="300"
+                       value="{{ config.cooldown if config else 60 }}"
+                       class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                <p class="text-xs text-gray-500 mt-1">Seconds between XP-earning messages</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice XP -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Voice XP</h2>
+        <div class="max-w-xs">
+            <label class="block text-sm font-medium text-gray-300 mb-2">XP per Minute</label>
+            <input type="number" name="voice_xp_rate" min="1" max="50"
+                   value="{{ config.voice_xp_rate if config else 5 }}"
+                   class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+            <p class="text-xs text-gray-500 mt-1">XP earned per minute in an active voice channel (not AFK, not server-muted/deafened)</p>
+        </div>
+    </div>
+
+    <!-- Level Speed -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Leveling Speed</h2>
+        <div class="max-w-xs">
+            <label class="block text-sm font-medium text-gray-300 mb-2">Level Speed</label>
+            <select name="level_formula"
+                    class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                {% set current_formula = config.level_formula if config else 50 %}
+                <option value="80" {% if current_formula == 80 %}selected{% endif %}>Slow (more XP needed per level)</option>
+                <option value="50" {% if current_formula == 50 %}selected{% endif %}>Normal</option>
+                <option value="30" {% if current_formula == 30 %}selected{% endif %}>Fast</option>
+                <option value="15" {% if current_formula == 15 %}selected{% endif %}>Very Fast (less XP needed per level)</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Controls how much XP is needed to level up</p>
+        </div>
+    </div>
+
+    <div class="flex justify-end">
+        <button type="submit"
+                class="px-6 py-2.5 rounded-lg font-medium bg-discord-blurple text-white hover:bg-indigo-500 transition">
+            Save Changes
+        </button>
+    </div>
+</form>
+{% endblock %}

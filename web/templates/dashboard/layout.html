@@ -36,6 +36,14 @@
                class="block px-3 py-2 rounded-md text-sm {% if active_page == 'stats' %}bg-discord-blurple text-white{% else %}text-gray-400 hover:text-white hover:bg-gray-700/50{% endif %} transition">
                 Stats
             </a>
+            <a href="/dashboard/{{ guild.id }}/levels"
+               class="block px-3 py-2 rounded-md text-sm {% if active_page == 'levels' %}bg-discord-blurple text-white{% else %}text-gray-400 hover:text-white hover:bg-gray-700/50{% endif %} transition">
+                Levels
+            </a>
+            <a href="/dashboard/{{ guild.id }}/leaderboard"
+               class="block px-3 py-2 rounded-md text-sm {% if active_page == 'leaderboard' %}bg-discord-blurple text-white{% else %}text-gray-400 hover:text-white hover:bg-gray-700/50{% endif %} transition">
+                Leaderboard
+            </a>
         </nav>
         <div class="mt-6 pt-4 border-t border-gray-700/50">
             <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm text-gray-500 hover:text-white hover:bg-gray-700/50 transition">

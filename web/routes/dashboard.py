@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import math
 
 import aiohttp.web
 import aiohttp_jinja2
@@ -442,4 +443,146 @@ async def stats_view(request: aiohttp.web.Request) -> dict:
         'top_commands': [dict(c) for c in top_commands],
         'recent_count': recent_count or 0,
         'total_count': total_count or 0,
+    }
+
+
+# -- Levels (XP config) --
+
+@routes.get('/dashboard/{guild_id}/levels')
+@aiohttp_jinja2.template('dashboard/levels.html')
+async def levels_view(request: aiohttp.web.Request) -> dict:
+    """View/edit XP and leveling configuration."""
+    guild_id = int(request.match_info['guild_id'])
+    await require_guild_access(request, guild_id)
+
+    bot = get_bot(request)
+    pool = request.app['pool']
+    guild = bot.get_guild(guild_id)
+
+    if not guild:
+        raise aiohttp.web.HTTPNotFound(text='Guild not found.')
+
+    config = await pool.fetchrow('SELECT * FROM xp_config WHERE guild_id = $1', guild_id)
+    csrf_token = await generate_csrf_token(request)
+
+    return {
+        'guild': _guild_dict(guild),
+        'config': dict(config) if config else None,
+        'csrf_token': csrf_token,
+    }
+
+
+@routes.post('/dashboard/{guild_id}/levels')
+async def levels_save(request: aiohttp.web.Request) -> aiohttp.web.Response:
+    """Save XP and leveling configuration."""
+    guild_id = int(request.match_info['guild_id'])
+    await require_guild_access(request, guild_id)
+    await validate_csrf_token(request)
+
+    bot = get_bot(request)
+    pool = request.app['pool']
+
+    data = await request.post()
+
+    enabled = bool(data.get('enabled'))
+    xp_min = min(max(int(data.get('xp_min', 15)), 1), 100)
+    xp_max = min(max(int(data.get('xp_max', 25)), 1), 100)
+    cooldown = min(max(int(data.get('cooldown', 60)), 10), 300)
+    voice_xp_rate = min(max(int(data.get('voice_xp_rate', 5)), 1), 50)
+    level_formula = int(data.get('level_formula', 50))
+
+    # Ensure xp_min <= xp_max
+    if xp_min > xp_max:
+        xp_min, xp_max = xp_max, xp_min
+
+    # Clamp level_formula to allowed presets
+    if level_formula not in (15, 30, 50, 80):
+        level_formula = 50
+
+    query = """
+        INSERT INTO xp_config (guild_id, enabled, xp_min, xp_max, cooldown, voice_xp_rate, level_formula)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        ON CONFLICT (guild_id) DO UPDATE SET
+            enabled = EXCLUDED.enabled,
+            xp_min = EXCLUDED.xp_min,
+            xp_max = EXCLUDED.xp_max,
+            cooldown = EXCLUDED.cooldown,
+            voice_xp_rate = EXCLUDED.voice_xp_rate,
+            level_formula = EXCLUDED.level_formula;
+    """
+    await pool.execute(query, guild_id, enabled, xp_min, xp_max, cooldown, voice_xp_rate, level_formula)
+
+    # Invalidate the cog's in-memory cache
+    profile_cog = bot.get_cog('Profile')
+    if profile_cog and hasattr(profile_cog, 'invalidate_config'):
+        profile_cog.invalidate_config(guild_id)
+
+    raise aiohttp.web.HTTPFound(f'/dashboard/{guild_id}/levels?saved=1')
+
+
+# -- Leaderboard --
+
+def _get_level(xp: int, base: int = 50) -> int:
+    if xp <= 0 or base <= 0:
+        return 0
+    return int(math.sqrt(xp / base))
+
+
+def _format_voice_time(minutes: int) -> str:
+    if minutes < 60:
+        return f'{minutes}m'
+    hours, mins = divmod(minutes, 60)
+    return f'{hours}h {mins}m'
+
+
+@routes.get('/dashboard/{guild_id}/leaderboard')
+@aiohttp_jinja2.template('dashboard/leaderboard.html')
+async def leaderboard_view(request: aiohttp.web.Request) -> dict:
+    """View server XP leaderboard."""
+    guild_id = int(request.match_info['guild_id'])
+    await require_guild_access(request, guild_id)
+
+    bot = get_bot(request)
+    pool = request.app['pool']
+    guild = bot.get_guild(guild_id)
+
+    if not guild:
+        raise aiohttp.web.HTTPNotFound(text='Guild not found.')
+
+    # Get XP config for level formula
+    xp_config = await pool.fetchrow('SELECT level_formula FROM xp_config WHERE guild_id = $1', guild_id)
+    base = xp_config['level_formula'] if xp_config else 50
+
+    page = max(1, int(request.query.get('page', 1)))
+    per_page = 25
+    offset = (page - 1) * per_page
+
+    total = await pool.fetchval('SELECT COUNT(*) FROM guild_profiles WHERE guild_id = $1', guild_id)
+    rows = await pool.fetch(
+        'SELECT user_id, xp, message_count, voice_minutes FROM guild_profiles WHERE guild_id = $1 ORDER BY xp DESC LIMIT $2 OFFSET $3',
+        guild_id, per_page, offset,
+    )
+
+    # Resolve member names from bot cache
+    entries = []
+    for i, row in enumerate(rows):
+        member = guild.get_member(row['user_id'])
+        entries.append({
+            'rank': offset + i + 1,
+            'user_id': row['user_id'],
+            'name': member.display_name if member else f'Unknown ({row["user_id"]})',
+            'level': _get_level(row['xp'], base),
+            'xp': row['xp'],
+            'message_count': row['message_count'],
+            'voice_time': _format_voice_time(row['voice_minutes']),
+        })
+
+    total_pages = max(1, (total + per_page - 1) // per_page) if total else 1
+
+    return {
+        'guild': _guild_dict(guild),
+        'entries': entries,
+        'page': page,
+        'total': total or 0,
+        'total_pages': total_pages,
     }
