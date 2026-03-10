@@ -6,15 +6,14 @@
 {% block dashboard_content %}
 <h1 class="text-2xl font-bold mb-6">Ticket System</h1>
 
-{% if not config %}
-<div class="bg-discord-darker rounded-lg p-12 text-center border border-gray-700/50">
-    <p class="text-gray-400 mb-2">Tickets are not configured for this server.</p>
-    <p class="text-sm text-gray-500">Use the <code class="bg-gray-700 px-1.5 py-0.5 rounded">!m ticket setup</code> command in Discord to get started.</p>
+{% if request.query.get('saved') %}
+<div class="bg-green-900/30 border border-green-700/50 text-green-300 rounded-lg px-4 py-3 mb-6">
+    Settings saved successfully.
 </div>
-{% else %}
+{% endif %}
 
-<!-- Stats -->
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<!-- Stats (always shown) -->
+<div class="grid grid-cols-2 gap-4 mb-8">
     <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Open Tickets</div>
         <div class="text-2xl font-bold text-discord-green">{{ stats.open_count }}</div>
@@ -23,63 +22,196 @@
         <div class="text-sm text-gray-400 mb-1">Closed Tickets</div>
         <div class="text-2xl font-bold text-gray-400">{{ stats.closed_count }}</div>
     </div>
-    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
-        <div class="text-sm text-gray-400 mb-1">Panel Channel</div>
-        <div class="text-lg font-semibold">{{ '#' + panel_channel if panel_channel else 'Not set' }}</div>
-    </div>
-    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
-        <div class="text-sm text-gray-400 mb-1">Close Behavior</div>
-        <div class="text-lg font-semibold">{{ 'Auto-delete' if config.auto_delete else 'Keep (read-only)' }}</div>
-    </div>
 </div>
 
-<!-- Configuration -->
-<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
-    <h2 class="text-lg font-semibold mb-4">Configuration</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <div>
-            <span class="text-gray-400">Log Channel:</span>
-            <span class="ml-2">{{ '#' + log_channel if log_channel else 'Not set' }}</span>
-        </div>
-        <div>
-            <span class="text-gray-400">Auto Delete:</span>
-            <span class="ml-2">{{ 'Yes' if config.auto_delete else 'No' }}</span>
+<form method="POST" action="/dashboard/{{ guild.id }}/tickets" id="ticket-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <!-- Channels -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Channels</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Panel Channel</label>
+                <select name="channel_id"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                    <option value="">Not set</option>
+                    {% for channel in guild.channels %}
+                    <option value="{{ channel.id }}" {% if config and config.channel_id == channel.id %}selected{% endif %}>
+                        #{{ channel.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Where the ticket creation panel is posted</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Ticket Category</label>
+                <select name="category_id"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                    <option value="">Not set</option>
+                    {% for cat in guild.category_channels %}
+                    <option value="{{ cat.id }}" {% if config and config.category_id == cat.id %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Discord category for new ticket channels</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Log Channel</label>
+                <select name="log_channel_id"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                    <option value="">None</option>
+                    {% for channel in guild.channels %}
+                    <option value="{{ channel.id }}" {% if config and config.log_channel_id == channel.id %}selected{% endif %}>
+                        #{{ channel.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Channel for ticket open/close logs</p>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Categories -->
-<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
-    <h2 class="text-lg font-semibold mb-4">Categories</h2>
-    {% if categories %}
-    <div class="divide-y divide-gray-700/50">
-        {% for cat in categories %}
-        <div class="py-3 {% if loop.first %}pt-0{% endif %}">
-            <div class="font-medium">{{ cat.name }}</div>
-            {% if cat.description %}
-            <div class="text-sm text-gray-500">{{ cat.description }}</div>
+    <!-- Options -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Options</h2>
+        <div class="space-y-3">
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="checkbox" name="ping_roles" value="1" {% if config and config.ping_roles %}checked{% endif %}
+                       class="w-4 h-4 rounded bg-gray-700 border-gray-600 text-discord-blurple focus:ring-discord-blurple">
+                <div>
+                    <div class="text-sm font-medium">Ping Support Roles</div>
+                    <div class="text-xs text-gray-500">Mention support roles when a new ticket is opened</div>
+                </div>
+            </label>
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="checkbox" name="auto_delete" value="1" {% if config and config.auto_delete %}checked{% endif %}
+                       class="w-4 h-4 rounded bg-gray-700 border-gray-600 text-discord-blurple focus:ring-discord-blurple">
+                <div>
+                    <div class="text-sm font-medium">Auto-Delete on Close</div>
+                    <div class="text-xs text-gray-500">Delete ticket channels when closed (otherwise made read-only)</div>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <!-- Ticket Categories -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold">Ticket Categories</h2>
+            <button type="button" onclick="addCategory()"
+                    class="px-3 py-1.5 rounded-md text-sm bg-discord-blurple text-white hover:bg-indigo-500 transition">
+                + Add Category
+            </button>
+        </div>
+        <p class="text-xs text-gray-500 mb-4">Users choose from these categories when opening a ticket. At least one is required.</p>
+        <div id="categories-list" class="space-y-3">
+            {% if categories %}
+                {% for cat in categories %}
+                <div class="category-row flex items-start gap-3 p-3 rounded-lg bg-discord-dark border border-gray-700/50">
+                    <div class="flex-1 space-y-2">
+                        <input type="text" name="cat_name_{{ loop.index0 }}" value="{{ cat.name }}" placeholder="Category name"
+                               required maxlength="100"
+                               class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">
+                        <input type="text" name="cat_desc_{{ loop.index0 }}" value="{{ cat.description or '' }}" placeholder="Description (optional)"
+                               maxlength="200"
+                               class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">
+                    </div>
+                    <button type="button" onclick="removeCategory(this)"
+                            class="mt-2 px-2 py-1 rounded text-sm text-gray-400 hover:text-discord-red hover:bg-gray-700 transition"
+                            title="Remove category">&times;</button>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="category-row flex items-start gap-3 p-3 rounded-lg bg-discord-dark border border-gray-700/50">
+                    <div class="flex-1 space-y-2">
+                        <input type="text" name="cat_name_0" value="" placeholder="Category name"
+                               required maxlength="100"
+                               class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">
+                        <input type="text" name="cat_desc_0" value="" placeholder="Description (optional)"
+                               maxlength="200"
+                               class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">
+                    </div>
+                    <button type="button" onclick="removeCategory(this)"
+                            class="mt-2 px-2 py-1 rounded text-sm text-gray-400 hover:text-discord-red hover:bg-gray-700 transition"
+                            title="Remove category">&times;</button>
+                </div>
             {% endif %}
         </div>
-        {% endfor %}
     </div>
-    {% else %}
-    <p class="text-gray-500 text-sm">No categories configured.</p>
-    {% endif %}
-</div>
 
-<!-- Support Roles -->
-<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50">
-    <h2 class="text-lg font-semibold mb-4">Support Roles</h2>
-    {% if support_roles %}
-    <div class="flex flex-wrap gap-2">
-        {% for role in support_roles %}
-        <span class="px-3 py-1 rounded-full text-sm bg-gray-700 text-gray-300">@{{ role.name }}</span>
-        {% endfor %}
+    <!-- Support Roles -->
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Support Roles</h2>
+        <p class="text-xs text-gray-500 mb-4">Roles that can see and manage tickets</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-64 overflow-y-auto">
+            {% for role in guild.roles %}
+            <label class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer transition">
+                <input type="checkbox" name="support_roles" value="{{ role.id }}"
+                       {% if role.id in support_role_ids %}checked{% endif %}
+                       class="w-4 h-4 rounded bg-gray-700 border-gray-600 text-discord-blurple focus:ring-discord-blurple">
+                <span class="text-sm text-gray-300 truncate">@{{ role.name }}</span>
+            </label>
+            {% endfor %}
+        </div>
     </div>
-    {% else %}
-    <p class="text-gray-500 text-sm">No support roles configured.</p>
-    {% endif %}
-</div>
 
-{% endif %}
+    <div class="flex justify-end">
+        <button type="submit"
+                class="px-6 py-2.5 rounded-lg font-medium bg-discord-blurple text-white hover:bg-indigo-500 transition">
+            Save Changes
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function reindexCategories() {
+    var rows = document.querySelectorAll('#categories-list .category-row');
+    rows.forEach(function(row, i) {
+        var inputs = row.querySelectorAll('input');
+        inputs[0].name = 'cat_name_' + i;
+        inputs[1].name = 'cat_desc_' + i;
+    });
+}
+
+function addCategory() {
+    var list = document.getElementById('categories-list');
+    var count = list.querySelectorAll('.category-row').length;
+    if (count >= 25) {
+        alert('Maximum 25 categories allowed.');
+        return;
+    }
+    var idx = count;
+    var html =
+        '<div class="category-row flex items-start gap-3 p-3 rounded-lg bg-discord-dark border border-gray-700/50">' +
+            '<div class="flex-1 space-y-2">' +
+                '<input type="text" name="cat_name_' + idx + '" value="" placeholder="Category name" ' +
+                    'required maxlength="100" ' +
+                    'class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">' +
+                '<input type="text" name="cat_desc_' + idx + '" value="" placeholder="Description (optional)" ' +
+                    'maxlength="200" ' +
+                    'class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-discord-blurple">' +
+            '</div>' +
+            '<button type="button" onclick="removeCategory(this)" ' +
+                'class="mt-2 px-2 py-1 rounded text-sm text-gray-400 hover:text-discord-red hover:bg-gray-700 transition" ' +
+                'title="Remove category">&times;</button>' +
+        '</div>';
+    list.insertAdjacentHTML('beforeend', html);
+}
+
+function removeCategory(btn) {
+    var list = document.getElementById('categories-list');
+    if (list.querySelectorAll('.category-row').length <= 1) {
+        alert('At least one category is required.');
+        return;
+    }
+    btn.closest('.category-row').remove();
+    reindexCategories();
+}
+</script>
 {% endblock %}

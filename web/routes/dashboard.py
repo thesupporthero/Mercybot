@@ -179,7 +179,7 @@ async def mod_settings_save(request: aiohttp.web.Request) -> aiohttp.web.Respons
 @routes.get('/dashboard/{guild_id}/tickets')
 @aiohttp_jinja2.template('dashboard/tickets.html')
 async def tickets_view(request: aiohttp.web.Request) -> dict:
-    """View ticket configuration."""
+    """View/edit ticket configuration."""
     guild_id = int(request.match_info['guild_id'])
     await require_guild_access(request, guild_id)
 
@@ -202,23 +202,101 @@ async def tickets_view(request: aiohttp.web.Request) -> dict:
 
     # Resolve role names
     role_names = []
+    support_role_ids = set()
     for row in support_roles:
         role = guild.get_role(row['role_id'])
         role_names.append({'id': row['role_id'], 'name': role.name if role else 'Deleted Role'})
+        support_role_ids.add(row['role_id'])
 
-    # Resolve channel names
-    panel_channel = guild.get_channel(config['channel_id']) if config and config['channel_id'] else None
-    log_channel = guild.get_channel(config['log_channel_id']) if config and config['log_channel_id'] else None
+    csrf_token = await generate_csrf_token(request)
 
     return {
-        'guild': _guild_dict(guild),
+        'guild': _guild_dict(
+            guild,
+            channels=[{'id': c.id, 'name': c.name} for c in guild.text_channels],
+            category_channels=[{'id': c.id, 'name': c.name} for c in guild.categories],
+            roles=[{'id': r.id, 'name': r.name} for r in guild.roles if not r.is_default()],
+        ),
         'config': dict(config) if config else None,
-        'panel_channel': panel_channel.name if panel_channel else None,
-        'log_channel': log_channel.name if log_channel else None,
         'categories': [dict(c) for c in categories],
         'support_roles': role_names,
+        'support_role_ids': support_role_ids,
         'stats': dict(ticket_stats) if ticket_stats else {'open_count': 0, 'closed_count': 0},
+        'csrf_token': csrf_token,
     }
+
+
+@routes.post('/dashboard/{guild_id}/tickets')
+async def tickets_save(request: aiohttp.web.Request) -> aiohttp.web.Response:
+    """Save ticket configuration."""
+    guild_id = int(request.match_info['guild_id'])
+    await require_guild_access(request, guild_id)
+    await validate_csrf_token(request)
+
+    bot = get_bot(request)
+    pool = request.app['pool']
+    guild = bot.get_guild(guild_id)
+
+    if not guild:
+        raise aiohttp.web.HTTPNotFound(text='Guild not found.')
+
+    data = await request.post()
+
+    channel_id = int(data['channel_id']) if data.get('channel_id') else None
+    category_id = int(data['category_id']) if data.get('category_id') else None
+    log_channel_id = int(data['log_channel_id']) if data.get('log_channel_id') else None
+    ping_roles = bool(data.get('ping_roles'))
+    auto_delete = bool(data.get('auto_delete'))
+
+    # Upsert config
+    query = """
+        INSERT INTO ticket_config (id, channel_id, log_channel_id, category_id, ping_roles, auto_delete)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (id) DO UPDATE SET
+            channel_id = EXCLUDED.channel_id,
+            log_channel_id = EXCLUDED.log_channel_id,
+            category_id = EXCLUDED.category_id,
+            ping_roles = EXCLUDED.ping_roles,
+            auto_delete = EXCLUDED.auto_delete;
+    """
+    await pool.execute(query, guild_id, channel_id, log_channel_id, category_id, ping_roles, auto_delete)
+
+    # Parse categories from form (cat_name_0, cat_desc_0, cat_name_1, ...)
+    await pool.execute("DELETE FROM ticket_categories WHERE guild_id=$1;", guild_id)
+    i = 0
+    while True:
+        name = data.get(f'cat_name_{i}')
+        if name is None:
+            break
+        name = name.strip()
+        if name:
+            desc = (data.get(f'cat_desc_{i}') or '').strip() or None
+            await pool.execute(
+                "INSERT INTO ticket_categories (guild_id, name, description) VALUES ($1, $2, $3);",
+                guild_id, name, desc,
+            )
+        i += 1
+
+    # Parse support roles from form (multi-select checkboxes)
+    await pool.execute("DELETE FROM ticket_support_roles WHERE guild_id=$1;", guild_id)
+    role_ids = data.getall('support_roles', [])
+    for role_id in role_ids:
+        await pool.execute(
+            "INSERT INTO ticket_support_roles (guild_id, role_id) VALUES ($1, $2);",
+            guild_id, int(role_id),
+        )
+
+    # Re-post panel if panel channel is set
+    if channel_id:
+        ticket_cog = bot.get_cog('Tickets')
+        panel_channel = guild.get_channel(channel_id)
+        if ticket_cog and panel_channel:
+            try:
+                await ticket_cog.post_panel(panel_channel, guild_id)
+            except Exception:
+                log.warning('Failed to re-post ticket panel for guild %d', guild_id, exc_info=True)
+
+    raise aiohttp.web.HTTPFound(f'/dashboard/{guild_id}/tickets?saved=1')
 
 
 @routes.get('/dashboard/{guild_id}/tags')
