@@ -184,10 +184,10 @@ class Admin(commands.Cog):
         async with ctx.typing():
             await self.run_process('git pull')
 
-            if runner is not None:
-                from web.server import stop_web_server
-                await stop_web_server(runner)
-                self.bot.web_runner = None
+            # stop_web_server falls back to the module-level runner if needed
+            from web.server import stop_web_server
+            await stop_web_server(runner)
+            self.bot.web_runner = None
 
             # Reload all web submodules so code changes take effect
             web_modules = sorted(
