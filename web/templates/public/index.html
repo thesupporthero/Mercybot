@@ -50,20 +50,6 @@
         </div>
     </div>
 
-    <!-- Top Commands -->
-    {% if stats.top_commands %}
-    <div class="max-w-2xl mx-auto">
-        <h2 class="text-2xl font-bold text-center mb-6">Top Commands</h2>
-        <div class="bg-discord-darker rounded-lg border border-gray-700/50 divide-y divide-gray-700/50">
-            {% for cmd in stats.top_commands %}
-            <div class="flex items-center justify-between px-6 py-3">
-                <span class="text-gray-300 font-mono">{{ cmd.name }}</span>
-                <span class="text-gray-500">{{ cmd.count | format_number }}</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}
 
