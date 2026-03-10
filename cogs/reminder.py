@@ -575,7 +575,6 @@ class Reminder(commands.Cog):
         """Sets a reminder to remind you of something at a specific time."""
 
         await interaction.response.defer()
-        message = await interaction.original_response()
         zone = await self.get_timezone(interaction.user.id)
         timer = await self.create_timer(
             when,
@@ -584,11 +583,18 @@ class Reminder(commands.Cog):
             interaction.channel_id,
             text,
             created=interaction.created_at,
-            message_id=message.id,
             timezone=zone or 'UTC',
         )
         delta = time.human_timedelta(when, source=timer.created_at)
-        await interaction.followup.send(f"Alright {interaction.user.mention}, in {delta}: {text}")
+        msg = await interaction.followup.send(f"Alright {interaction.user.mention}, in {delta}: {text}", wait=True)
+        # Store the sent message ID so the reminder notification can link back to it.
+        # Short timers (≤60s) have no DB row (timer.id is None), so skip the update for those.
+        if timer.id is not None:
+            await self.bot.pool.execute(
+                "UPDATE reminders SET extra = jsonb_set(extra, '{kwargs,message_id}', to_jsonb($1::bigint)) WHERE id = $2",
+                msg.id,
+                timer.id,
+            )
 
     @reminder_set.error
     async def reminder_set_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
