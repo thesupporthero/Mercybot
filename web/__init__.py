@@ -62,14 +62,15 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
     env.filters['format_uptime'] = format_uptime
 
     # Set up encrypted cookie sessions
+    # EncryptedCookieStorage expects a base64-encoded string (NOT bytes).
+    # Passing bytes causes it to re-encode with base64, breaking the key.
     secret_key = getattr(bot.config, 'dashboard_secret_key', None)
     if not secret_key:
         log.warning('dashboard_secret_key not set in config.py — generating a temporary key. Sessions will not persist across restarts.')
-        secret_key = Fernet.generate_key()
-    if isinstance(secret_key, str):
-        secret_key = secret_key.encode()
+        secret_key = Fernet.generate_key().decode()
+    if isinstance(secret_key, bytes):
+        secret_key = secret_key.decode()
 
-    # Fernet key must be url-safe base64-encoded (44 chars). Validate it.
     try:
         Fernet(secret_key)
     except Exception:
