@@ -573,9 +573,12 @@ class Reminder(commands.Cog):
         self,
         interaction: discord.Interaction,
         when: app_commands.Transform[datetime.datetime, time.TimeTransformer],
-        text: app_commands.Range[str, 1, 1500] = '…',
+        text: app_commands.Range[str, 1, 1500] = '...',
     ):
         """Sets a reminder to remind you of something at a specific time."""
+
+        # DB is SQL_ASCII encoded — strip characters it can't store
+        safe_text = text.encode('ascii', errors='replace').decode('ascii')
 
         await interaction.response.defer()
         try:
@@ -585,12 +588,12 @@ class Reminder(commands.Cog):
                 'reminder',
                 interaction.user.id,
                 interaction.channel_id,
-                text,
+                safe_text,
                 created=interaction.created_at,
                 timezone=zone or 'UTC',
             )
             delta = time.human_timedelta(when, source=timer.created_at)
-            msg = await interaction.followup.send(f"Alright {interaction.user.mention}, in {delta}: {text}", wait=True)
+            msg = await interaction.followup.send(f"Alright {interaction.user.mention}, in {delta}: {safe_text}", wait=True)
             # Store the sent message ID so the reminder notification can link back to it.
             # Short timers (≤60s) have no DB row (timer.id is None), so skip the update for those.
             if timer.id is not None:
