@@ -250,7 +250,8 @@ async def run_bot():
         try:
             from web.server import start_web_server, stop_web_server
             port = getattr(config, 'dashboard_port', 8080)
-            runner = await start_web_server(bot, pool, host='localhost', port=port)
+            host = getattr(config, 'dashboard_host', '0.0.0.0')
+            runner = await start_web_server(bot, pool, host=host, port=port)
         except Exception:
             log.warning('Failed to start web server (continuing without it)', exc_info=True)
 
