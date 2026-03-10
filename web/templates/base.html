@@ -26,6 +26,34 @@
             }
         }
     </script>
+    <script>
+        // Run before first paint to prevent flash
+        var __LIGHT_CSS = [
+            'body { background-color: #f0f2f5 !important; color: #111827 !important; }',
+            '.bg-discord-darkest { background-color: #f0f2f5 !important; }',
+            '.bg-discord-darker  { background-color: #ffffff !important; }',
+            '.bg-discord-dark    { background-color: #e4e6ea !important; }',
+            '.text-gray-100 { color: #111827 !important; }',
+            '.text-gray-300 { color: #374151 !important; }',
+            '.text-gray-400 { color: #4b5563 !important; }',
+            '.text-gray-500 { color: #6b7280 !important; }',
+            '.text-white    { color: #111827 !important; }',
+            '.bg-gray-700   { background-color: #e5e7eb !important; color: #374151 !important; }',
+            '.hover\\:bg-gray-700\\/50:hover { background-color: rgba(0,0,0,0.06) !important; }',
+            '.border-gray-700\\/50 { border-color: rgba(0,0,0,0.12) !important; }',
+            'input, select, textarea { background-color: #f9fafb !important; color: #111827 !important; border-color: #d1d5db !important; }',
+        ].join('\n');
+
+        (function () {
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.remove('dark');
+                var s = document.createElement('style');
+                s.id = 'light-theme';
+                s.textContent = __LIGHT_CSS;
+                document.head.appendChild(s);
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/static/css/style.css">
     {% block head %}{% endblock %}
 </head>
@@ -48,7 +76,7 @@
                     <!-- Light/Dark toggle -->
                     <button id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"
                         class="w-8 h-8 flex items-center justify-center rounded-md text-gray-400 hover:text-white hover:bg-gray-700/50 transition text-lg">
-                        <span id="theme-icon">☀️</span>
+                        <span id="theme-icon"></span>
                     </button>
                     {% if user %}
                     <div class="flex items-center space-x-2">
@@ -78,28 +106,36 @@
 
     <script src="/static/js/dashboard.js"></script>
     <script>
-        // Apply saved theme immediately (before paint)
-        (function() {
-            const saved = localStorage.getItem('theme');
-            const html = document.getElementById('html-root');
-            if (saved === 'light') {
-                html.classList.remove('dark');
-            }
-            updateThemeIcon();
-        })();
-
         function updateThemeIcon() {
-            const isDark = document.getElementById('html-root').classList.contains('dark');
-            const icon = document.getElementById('theme-icon');
+            var isDark = document.documentElement.classList.contains('dark');
+            var icon = document.getElementById('theme-icon');
             if (icon) icon.textContent = isDark ? '☀️' : '🌙';
         }
 
         function toggleTheme() {
-            const html = document.getElementById('html-root');
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            var html = document.documentElement;
+            var isNowDark = html.classList.toggle('dark');
+            var sheet = document.getElementById('light-theme');
+
+            if (!isNowDark) {
+                // Switched to light — inject overrides
+                if (!sheet) {
+                    sheet = document.createElement('style');
+                    sheet.id = 'light-theme';
+                    sheet.textContent = __LIGHT_CSS;
+                    document.head.appendChild(sheet);
+                }
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switched to dark — remove overrides
+                if (sheet) sheet.remove();
+                localStorage.setItem('theme', 'dark');
+            }
             updateThemeIcon();
         }
+
+        // Set icon on page load
+        updateThemeIcon();
     </script>
     {% block scripts %}{% endblock %}
 </body>

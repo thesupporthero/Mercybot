@@ -174,6 +174,46 @@ class Admin(commands.Cog):
         except commands.ExtensionNotLoaded:
             await self.bot.load_extension(module)
 
+    @_reload.command(name='web', hidden=True)
+    async def _reload_web(self, ctx: Context):
+        """Stops the web server, reloads all web modules, and restarts it."""
+        runner = getattr(self.bot, 'web_runner', None)
+        if runner is None:
+            return await ctx.send('Web server is not running.')
+
+        host = getattr(self.bot, 'web_host', '0.0.0.0')
+        port = getattr(self.bot, 'web_port', 8080)
+
+        async with ctx.typing():
+            await self.run_process('git pull')
+
+            from web.server import stop_web_server
+            await stop_web_server(runner)
+            self.bot.web_runner = None
+
+            # Reload all web submodules so code changes take effect
+            web_modules = sorted(
+                (name for name in sys.modules if name == 'web' or name.startswith('web.')),
+                key=lambda n: n.count('.'),
+                reverse=True,
+            )
+            for name in web_modules:
+                try:
+                    importlib.reload(sys.modules[name])
+                except Exception as e:
+                    return await ctx.send(f'Failed to reload `{name}`: {e}')
+
+            try:
+                from web.server import start_web_server
+                new_runner = await start_web_server(self.bot, self.bot.pool, host=host, port=port)
+                self.bot.web_runner = new_runner
+                self.bot.web_host = host
+                self.bot.web_port = port
+            except Exception as e:
+                return await ctx.send(f'Failed to restart web server: {e}')
+
+        await ctx.send('\N{OK HAND SIGN}')
+
     @_reload.command(name='all', hidden=True)
     async def _reload_all(self, ctx: Context):
         """Reloads all modules, while pulling from git."""
