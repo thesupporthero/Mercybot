@@ -4,6 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ bot_name }}{% endblock %}</title>
+
+    <!-- Theme CSS variables — must be before Tailwind so the vars exist when it generates styles -->
+    <style>
+        /* Dark (default) */
+        :root {
+            --discord-darkest: #0f0f23;
+            --discord-darker:  #16213e;
+            --discord-dark:    #1a1a2e;
+        }
+        /* Light — applied when .dark class is removed from <html> */
+        html:not(.dark) {
+            --discord-darkest: #f0f2f5;
+            --discord-darker:  #ffffff;
+            --discord-dark:    #e4e6ea;
+        }
+        /* Text & border overrides for light mode */
+        html:not(.dark) body           { color: #111827; }
+        html:not(.dark) .text-white    { color: #111827 !important; }
+        html:not(.dark) .text-gray-100 { color: #111827 !important; }
+        html:not(.dark) .text-gray-300 { color: #374151 !important; }
+        html:not(.dark) .text-gray-400 { color: #4b5563 !important; }
+        html:not(.dark) .text-gray-500 { color: #6b7280 !important; }
+        html:not(.dark) .border-gray-700\/50 { border-color: rgba(0,0,0,0.12) !important; }
+        html:not(.dark) .bg-gray-700   { background-color: #e5e7eb !important; color: #374151 !important; }
+        html:not(.dark) .hover\:bg-gray-700\/50:hover { background-color: rgba(0,0,0,0.06) !important; }
+        html:not(.dark) input, html:not(.dark) select, html:not(.dark) textarea {
+            background-color: #f9fafb !important;
+            color: #111827 !important;
+            border-color: #d1d5db !important;
+        }
+    </style>
+
+    <!-- Apply saved theme before first paint (no flash) -->
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,48 +51,21 @@
                 extend: {
                     colors: {
                         discord: {
-                            blurple: '#5865F2',
-                            green: '#57F287',
-                            yellow: '#FEE75C',
-                            fuchsia: '#EB459E',
-                            red: '#ED4245',
-                            dark: '#1a1a2e',
-                            darker: '#16213e',
-                            darkest: '#0f0f23',
+                            blurple:  '#5865F2',
+                            green:    '#57F287',
+                            yellow:   '#FEE75C',
+                            fuchsia:  '#EB459E',
+                            red:      '#ED4245',
+                            dark:    'var(--discord-dark)',
+                            darker:  'var(--discord-darker)',
+                            darkest: 'var(--discord-darkest)',
                         }
                     }
                 }
             }
         }
     </script>
-    <script>
-        // Run before first paint to prevent flash
-        var __LIGHT_CSS = [
-            'body { background-color: #f0f2f5 !important; color: #111827 !important; }',
-            '.bg-discord-darkest { background-color: #f0f2f5 !important; }',
-            '.bg-discord-darker  { background-color: #ffffff !important; }',
-            '.bg-discord-dark    { background-color: #e4e6ea !important; }',
-            '.text-gray-100 { color: #111827 !important; }',
-            '.text-gray-300 { color: #374151 !important; }',
-            '.text-gray-400 { color: #4b5563 !important; }',
-            '.text-gray-500 { color: #6b7280 !important; }',
-            '.text-white    { color: #111827 !important; }',
-            '.bg-gray-700   { background-color: #e5e7eb !important; color: #374151 !important; }',
-            '.hover\\:bg-gray-700\\/50:hover { background-color: rgba(0,0,0,0.06) !important; }',
-            '.border-gray-700\\/50 { border-color: rgba(0,0,0,0.12) !important; }',
-            'input, select, textarea { background-color: #f9fafb !important; color: #111827 !important; border-color: #d1d5db !important; }',
-        ].join('\n');
 
-        (function () {
-            if (localStorage.getItem('theme') === 'light') {
-                document.documentElement.classList.remove('dark');
-                var s = document.createElement('style');
-                s.id = 'light-theme';
-                s.textContent = __LIGHT_CSS;
-                document.head.appendChild(s);
-            }
-        })();
-    </script>
     <link rel="stylesheet" href="/static/css/style.css">
     {% block head %}{% endblock %}
 </head>
@@ -73,7 +85,6 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <!-- Light/Dark toggle -->
                     <button id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"
                         class="w-8 h-8 flex items-center justify-center rounded-md text-gray-400 hover:text-white hover:bg-gray-700/50 transition text-lg">
                         <span id="theme-icon"></span>
@@ -107,34 +118,16 @@
     <script src="/static/js/dashboard.js"></script>
     <script>
         function updateThemeIcon() {
-            var isDark = document.documentElement.classList.contains('dark');
             var icon = document.getElementById('theme-icon');
-            if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+            if (icon) icon.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
         }
 
         function toggleTheme() {
-            var html = document.documentElement;
-            var isNowDark = html.classList.toggle('dark');
-            var sheet = document.getElementById('light-theme');
-
-            if (!isNowDark) {
-                // Switched to light — inject overrides
-                if (!sheet) {
-                    sheet = document.createElement('style');
-                    sheet.id = 'light-theme';
-                    sheet.textContent = __LIGHT_CSS;
-                    document.head.appendChild(sheet);
-                }
-                localStorage.setItem('theme', 'light');
-            } else {
-                // Switched to dark — remove overrides
-                if (sheet) sheet.remove();
-                localStorage.setItem('theme', 'dark');
-            }
+            var isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
             updateThemeIcon();
         }
 
-        // Set icon on page load
         updateThemeIcon();
     </script>
     {% block scripts %}{% endblock %}
