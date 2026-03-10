@@ -50,20 +50,8 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
     app['bot'] = bot
     app['pool'] = pool
 
-    # Set up Jinja2 templates
-    env = aiohttp_jinja2.setup(
-        app,
-        loader=jinja2.FileSystemLoader(str(BASE_DIR / 'templates')),
-        context_processors=[default_context],
-    )
-
-    # Register custom filters
-    env.filters['format_number'] = format_number
-    env.filters['format_uptime'] = format_uptime
-
-    # Set up encrypted cookie sessions
-    # EncryptedCookieStorage expects a base64-encoded string (NOT bytes).
-    # Passing bytes causes it to re-encode with base64, breaking the key.
+    # Set up encrypted cookie sessions FIRST
+    # (must be before jinja2 setup so session middleware runs before context processors)
     secret_key = getattr(bot.config, 'dashboard_secret_key', None)
     if not secret_key:
         log.warning('dashboard_secret_key not set in config.py — generating a temporary key. Sessions will not persist across restarts.')
@@ -80,6 +68,17 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
         )
 
     setup_session(app, EncryptedCookieStorage(secret_key, cookie_name='mercybot_session', max_age=3600))
+
+    # Set up Jinja2 templates AFTER session (context processors need session access)
+    env = aiohttp_jinja2.setup(
+        app,
+        loader=jinja2.FileSystemLoader(str(BASE_DIR / 'templates')),
+        context_processors=[default_context],
+    )
+
+    # Register custom filters
+    env.filters['format_number'] = format_number
+    env.filters['format_uptime'] = format_uptime
 
     # Set up static file serving
     app.router.add_static('/static', str(BASE_DIR / 'static'), name='static')
