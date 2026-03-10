@@ -154,12 +154,11 @@ class Profile(commands.Cog):
         await self.bot.wait_until_ready()
         now = discord.utils.utcnow().timestamp()
         for guild in self.bot.guilds:
-            for vs in guild.voice_states.values():
-                member = guild.get_member(vs)
-                if member and not member.bot:
-                    state = member.voice
-                    if state and self._is_voice_active(state):
-                        self._voice_join_times[(guild.id, member.id)] = now
+            for channel in guild.channels:
+                if isinstance(channel, discord.VoiceChannel):
+                    for member in channel.members:
+                        if not member.bot and member.voice and self._is_voice_active(member.voice):
+                            self._voice_join_times[(guild.id, member.id)] = now
 
     # -- XP config helpers --
 
