@@ -25,8 +25,10 @@ if TYPE_CHECKING:
 BASE_DIR = Path(__file__).parent
 
 
-def format_number(value: int) -> str:
+def format_number(value) -> str:
     """Format large numbers with commas."""
+    if value is None or not isinstance(value, (int, float)):
+        return '0'
     return f'{value:,}'
 
 

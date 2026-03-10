@@ -13,6 +13,18 @@ log = logging.getLogger(__name__)
 routes = aiohttp.web.RouteTableDef()
 
 
+def _guild_dict(guild, **extra) -> dict:
+    """Build a standard guild context dict for templates."""
+    d = {
+        'id': guild.id,
+        'name': guild.name,
+        'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
+        'member_count': guild.member_count or 0,
+    }
+    d.update(extra)
+    return d
+
+
 @routes.get('/dashboard')
 @aiohttp_jinja2.template('dashboard/guild_list.html')
 async def guild_list(request: aiohttp.web.Request) -> dict:
@@ -53,12 +65,7 @@ async def guild_overview(request: aiohttp.web.Request) -> dict:
     starboard = await pool.fetchrow('SELECT * FROM starboard WHERE id = $1', guild_id)
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-            'member_count': guild.member_count,
-        },
+        'guild': _guild_dict(guild),
         'mod_config': dict(mod_config) if mod_config else None,
         'ticket_stats': dict(ticket_stats) if ticket_stats else {'open_tickets': 0, 'closed_tickets': 0},
         'tag_count': tag_count or 0,
@@ -86,13 +93,11 @@ async def mod_settings(request: aiohttp.web.Request) -> dict:
     automod_flags = config['automod_flags'] or 0 if config else 0
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-            'channels': [{'id': c.id, 'name': c.name} for c in guild.text_channels],
-            'roles': [{'id': r.id, 'name': r.name} for r in guild.roles if not r.is_default()],
-        },
+        'guild': _guild_dict(
+            guild,
+            channels=[{'id': c.id, 'name': c.name} for c in guild.text_channels],
+            roles=[{'id': r.id, 'name': r.name} for r in guild.roles if not r.is_default()],
+        ),
         'config': dict(config) if config else {},
         'flags': {
             'joins': bool(automod_flags & 1),
@@ -185,11 +190,7 @@ async def tickets_view(request: aiohttp.web.Request) -> dict:
     log_channel = guild.get_channel(config['log_channel_id']) if config and config['log_channel_id'] else None
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-        },
+        'guild': _guild_dict(guild),
         'config': dict(config) if config else None,
         'panel_channel': panel_channel.name if panel_channel else None,
         'log_channel': log_channel.name if log_channel else None,
@@ -224,11 +225,7 @@ async def tags_view(request: aiohttp.web.Request) -> dict:
     )
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-        },
+        'guild': _guild_dict(guild),
         'tags': [dict(t) for t in tags],
         'page': page,
         'total': total or 0,
@@ -257,11 +254,7 @@ async def starboard_view(request: aiohttp.web.Request) -> dict:
     star_channel = guild.get_channel(config['channel_id']) if config and config['channel_id'] else None
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-        },
+        'guild': _guild_dict(guild),
         'config': dict(config) if config else None,
         'star_channel': star_channel.name if star_channel else None,
         'total_entries': total_entries or 0,
@@ -297,11 +290,7 @@ async def stats_view(request: aiohttp.web.Request) -> dict:
     total_count = await pool.fetchval('SELECT COUNT(*) FROM commands WHERE guild_id = $1', guild_id)
 
     return {
-        'guild': {
-            'id': guild.id,
-            'name': guild.name,
-            'icon_url': guild_icon_url(guild.id, guild.icon.key if guild.icon else None),
-        },
+        'guild': _guild_dict(guild),
         'top_commands': [dict(c) for c in top_commands],
         'recent_count': recent_count or 0,
         'total_count': total_count or 0,
