@@ -563,14 +563,25 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
         guild_id, per_page, offset,
     )
 
-    # Resolve member names from bot cache
+    # Resolve member names: guild cache -> global user cache -> fetch from Discord
     entries = []
     for i, row in enumerate(rows):
-        member = guild.get_member(row['user_id'])
+        user_id = row['user_id']
+        member = guild.get_member(user_id)
+        if member:
+            name = member.display_name
+        else:
+            user = bot.get_user(user_id)
+            if user is None:
+                try:
+                    user = await bot.fetch_user(user_id)
+                except Exception:
+                    user = None
+            name = str(user) if user else f'Unknown ({user_id})'
         entries.append({
             'rank': offset + i + 1,
-            'user_id': row['user_id'],
-            'name': member.display_name if member else f'Unknown ({row["user_id"]})',
+            'user_id': user_id,
+            'name': name,
             'level': _get_level(row['xp'], base),
             'xp': row['xp'],
             'message_count': row['message_count'],
