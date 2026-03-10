@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ bot_name }}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        discord: {
+                            blurple: '#5865F2',
+                            green: '#57F287',
+                            yellow: '#FEE75C',
+                            fuchsia: '#EB459E',
+                            red: '#ED4245',
+                            dark: '#1a1a2e',
+                            darker: '#16213e',
+                            darkest: '#0f0f23',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-discord-darkest text-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-discord-darker border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-xl font-bold text-white hover:text-discord-blurple transition">
+                        {{ bot_name }}
+                    </a>
+                    <div class="hidden sm:flex space-x-2">
+                        <a href="/" class="px-3 py-2 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700/50 transition">Home</a>
+                        {% if user %}
+                        <a href="/dashboard" class="px-3 py-2 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700/50 transition">Dashboard</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    {% if user %}
+                    <div class="flex items-center space-x-2">
+                        <img src="{{ user.avatar_url }}" alt="" class="w-8 h-8 rounded-full">
+                        <span class="text-sm text-gray-300">{{ user.username }}</span>
+                    </div>
+                    <a href="/auth/logout" class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">Logout</a>
+                    {% else %}
+                    <a href="/auth/login" class="px-4 py-2 rounded-md text-sm font-medium bg-discord-blurple text-white hover:bg-indigo-500 transition">
+                        Login with Discord
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-discord-darker border-t border-gray-700/50 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            {{ bot_name }} &mdash; A Discord bot by The Support Hero
+        </div>
+    </footer>
+
+    <script src="/static/js/dashboard.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

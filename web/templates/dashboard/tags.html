@@ -1,0 +1,50 @@
+{% extends "dashboard/layout.html" %}
+{% set active_page = 'tags' %}
+
+{% block title %}Tags - {{ guild.name }}{% endblock %}
+
+{% block dashboard_content %}
+<h1 class="text-2xl font-bold mb-2">Tags</h1>
+<p class="text-gray-400 mb-6">{{ total }} tags in this server</p>
+
+{% if tags %}
+<div class="bg-discord-darker rounded-xl border border-gray-700/50 overflow-hidden">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-gray-700/50 text-left text-gray-400">
+                <th class="px-5 py-3 font-medium">Name</th>
+                <th class="px-5 py-3 font-medium">Uses</th>
+                <th class="px-5 py-3 font-medium hidden md:table-cell">Created</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700/50">
+            {% for tag in tags %}
+            <tr class="hover:bg-gray-700/20">
+                <td class="px-5 py-3 font-mono">{{ tag.name }}</td>
+                <td class="px-5 py-3 text-gray-400">{{ tag.uses | format_number }}</td>
+                <td class="px-5 py-3 text-gray-500 hidden md:table-cell">{{ tag.created_at.strftime('%Y-%m-%d') if tag.created_at else 'Unknown' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<div class="flex justify-center space-x-2 mt-6">
+    {% if page > 1 %}
+    <a href="?page={{ page - 1 }}" class="px-3 py-1.5 rounded-lg text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">Previous</a>
+    {% endif %}
+    <span class="px-3 py-1.5 rounded-lg text-sm bg-discord-blurple text-white">{{ page }} / {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a href="?page={{ page + 1 }}" class="px-3 py-1.5 rounded-lg text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">Next</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="bg-discord-darker rounded-xl p-12 text-center border border-gray-700/50">
+    <p class="text-gray-400">No tags found in this server.</p>
+</div>
+{% endif %}
+{% endblock %}

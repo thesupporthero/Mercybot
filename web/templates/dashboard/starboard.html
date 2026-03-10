@@ -1,0 +1,48 @@
+{% extends "dashboard/layout.html" %}
+{% set active_page = 'starboard' %}
+
+{% block title %}Starboard - {{ guild.name }}{% endblock %}
+
+{% block dashboard_content %}
+<h1 class="text-2xl font-bold mb-6">Starboard</h1>
+
+{% if not config %}
+<div class="bg-discord-darker rounded-xl p-12 text-center border border-gray-700/50">
+    <p class="text-gray-400 mb-2">Starboard is not configured for this server.</p>
+    <p class="text-sm text-gray-500">Use the <code class="bg-gray-700 px-1.5 py-0.5 rounded">!m star</code> commands in Discord to set it up.</p>
+</div>
+{% else %}
+
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Channel</div>
+        <div class="text-lg font-semibold">{{ '#' + star_channel if star_channel else 'Not set' }}</div>
+    </div>
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Threshold</div>
+        <div class="text-lg font-semibold">{{ config.threshold }} stars</div>
+    </div>
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Total Entries</div>
+        <div class="text-lg font-semibold">{{ total_entries | format_number }}</div>
+    </div>
+</div>
+
+<div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50">
+    <h2 class="text-lg font-semibold mb-4">Configuration</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div>
+            <span class="text-gray-400">Locked:</span>
+            <span class="ml-2">{{ 'Yes' if config.locked else 'No' }}</span>
+        </div>
+        {% if config.max_age %}
+        <div>
+            <span class="text-gray-400">Max Message Age:</span>
+            <span class="ml-2">{{ config.max_age }}</span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

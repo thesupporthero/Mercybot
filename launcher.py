@@ -244,7 +244,22 @@ async def run_bot():
 
     async with Mercybot() as bot:
         bot.pool = pool
-        await bot.start()
+
+        # Start web dashboard
+        runner = None
+        try:
+            from web.server import start_web_server, stop_web_server
+            port = getattr(config, 'dashboard_port', 8080)
+            runner = await start_web_server(bot, pool, host='localhost', port=port)
+        except Exception:
+            log.warning('Failed to start web server (continuing without it)', exc_info=True)
+
+        try:
+            await bot.start()
+        finally:
+            if runner is not None:
+                await stop_web_server(runner)
+
     return bot._restart
 
 

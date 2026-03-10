@@ -11,3 +11,6 @@ python-dateutil
 pygit2
 mmh3
 setuptools
+aiohttp-jinja2>=1.5
+aiohttp-session>=2.12
+cryptography

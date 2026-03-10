@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - {{ bot_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-2">Your Servers</h1>
+    <p class="text-gray-400 mb-8">Select a server to manage.</p>
+
+    {% if guilds %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for guild in guilds %}
+        <a href="/dashboard/{{ guild.id }}"
+           class="bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 hover:bg-discord-dark transition group">
+            <div class="flex items-center space-x-4">
+                <img src="{{ guild.icon_url }}" alt="" class="w-12 h-12 rounded-full">
+                <div class="min-w-0">
+                    <div class="font-semibold truncate group-hover:text-discord-blurple transition">{{ guild.name }}</div>
+                    <div class="text-sm text-gray-500">{{ guild.member_count | format_number }} members</div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-discord-darker rounded-xl p-12 text-center border border-gray-700/50">
+        <p class="text-gray-400">No servers found where you have Manage Server permission and the bot is present.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

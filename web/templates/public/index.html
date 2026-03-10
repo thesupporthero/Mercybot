@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bot_name }} - Discord Bot{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Hero -->
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold mb-4">{{ bot_name }}</h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+            A feature-rich Discord bot providing moderation, tickets, tags, starboard, and more.
+        </p>
+        <div class="flex justify-center space-x-4">
+            <a href="/auth/login" class="px-6 py-3 rounded-lg font-medium bg-discord-blurple text-white hover:bg-indigo-500 transition">
+                Dashboard
+            </a>
+            <a href="https://discord.com/oauth2/authorize?client_id={{ stats.client_id }}&permissions=8&scope=bot%20applications.commands"
+               class="px-6 py-3 rounded-lg font-medium bg-gray-700 text-white hover:bg-gray-600 transition"
+               target="_blank" rel="noopener">
+                Invite Bot
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16" id="stats-grid">
+        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+            <div class="text-3xl font-bold text-discord-blurple" id="stat-guilds">{{ stats.guild_count }}</div>
+            <div class="text-sm text-gray-400 mt-1">Servers</div>
+        </div>
+        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+            <div class="text-3xl font-bold text-discord-green" id="stat-members">{{ stats.total_members | format_number }}</div>
+            <div class="text-sm text-gray-400 mt-1">Members</div>
+        </div>
+        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+            <div class="text-3xl font-bold text-discord-yellow" id="stat-commands">{{ stats.commands_run | format_number }}</div>
+            <div class="text-sm text-gray-400 mt-1">Commands Run</div>
+        </div>
+        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+            <div class="text-3xl font-bold text-discord-fuchsia" id="stat-uptime">{{ stats.uptime_seconds | format_uptime }}</div>
+            <div class="text-sm text-gray-400 mt-1">Uptime</div>
+        </div>
+    </div>
+
+    <!-- Latency -->
+    <div class="text-center mb-16">
+        <div class="inline-flex items-center space-x-2 bg-discord-darker rounded-full px-5 py-2 border border-gray-700/50">
+            <span class="w-2 h-2 rounded-full {% if stats.latency_ms < 100 %}bg-discord-green{% elif stats.latency_ms < 200 %}bg-discord-yellow{% else %}bg-discord-red{% endif %}"></span>
+            <span class="text-sm text-gray-400">Latency: <span id="stat-latency" class="text-white">{{ stats.latency_ms }}</span>ms</span>
+        </div>
+    </div>
+
+    <!-- Top Commands -->
+    {% if stats.top_commands %}
+    <div class="max-w-2xl mx-auto">
+        <h2 class="text-2xl font-bold text-center mb-6">Top Commands</h2>
+        <div class="bg-discord-darker rounded-xl border border-gray-700/50 divide-y divide-gray-700/50">
+            {% for cmd in stats.top_commands %}
+            <div class="flex items-center justify-between px-6 py-3">
+                <span class="text-gray-300 font-mono">{{ cmd.name }}</span>
+                <span class="text-gray-500">{{ cmd.count | format_number }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-refresh stats every 15 seconds
+    setInterval(async () => {
+        try {
+            const resp = await fetch('/api/stats');
+            const data = await resp.json();
+            document.getElementById('stat-guilds').textContent = data.guild_count;
+            document.getElementById('stat-members').textContent = formatNumber(data.total_members);
+            document.getElementById('stat-commands').textContent = formatNumber(data.commands_run);
+            document.getElementById('stat-uptime').textContent = formatUptime(data.uptime_seconds);
+            document.getElementById('stat-latency').textContent = data.latency_ms;
+        } catch (e) {}
+    }, 15000);
+</script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "dashboard/layout.html" %}
+{% set active_page = 'overview' %}
+
+{% block title %}{{ guild.name }} - Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<h1 class="text-2xl font-bold mb-6">Overview</h1>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Members</div>
+        <div class="text-2xl font-bold">{{ guild.member_count | format_number }}</div>
+    </div>
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Open Tickets</div>
+        <div class="text-2xl font-bold">{{ ticket_stats.open_tickets }}</div>
+    </div>
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Tags</div>
+        <div class="text-2xl font-bold">{{ tag_count }}</div>
+    </div>
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Starboard</div>
+        <div class="text-2xl font-bold">
+            {% if starboard %}Enabled{% else %}Disabled{% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Module Status -->
+<h2 class="text-lg font-semibold mb-4">Modules</h2>
+<div class="space-y-3">
+    <a href="/dashboard/{{ guild.id }}/mod" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Moderation</div>
+                <div class="text-sm text-gray-400">
+                    {% if mod_config %}
+                        Automod flags: {{ mod_config.automod_flags or 0 }}
+                        {% if mod_config.mention_count %} &middot; Mention limit: {{ mod_config.mention_count }}{% endif %}
+                    {% else %}
+                        Not configured
+                    {% endif %}
+                </div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
+
+    <a href="/dashboard/{{ guild.id }}/tickets" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Tickets</div>
+                <div class="text-sm text-gray-400">
+                    {{ ticket_stats.open_tickets }} open &middot; {{ ticket_stats.closed_tickets }} closed
+                </div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
+
+    <a href="/dashboard/{{ guild.id }}/tags" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Tags</div>
+                <div class="text-sm text-gray-400">{{ tag_count }} tags</div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
+
+    <a href="/dashboard/{{ guild.id }}/starboard" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Starboard</div>
+                <div class="text-sm text-gray-400">
+                    {% if starboard %}
+                        Threshold: {{ starboard.threshold }} &middot; #{{ starboard.channel_id }}
+                    {% else %}
+                        Not configured
+                    {% endif %}
+                </div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
+
+    <a href="/dashboard/{{ guild.id }}/stats" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Statistics</div>
+                <div class="text-sm text-gray-400">Command usage &amp; activity</div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
+</div>
+{% endblock %}

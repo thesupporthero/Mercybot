@@ -1,0 +1,44 @@
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f0f23;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* Smooth transitions */
+a, button, input, select {
+    transition: all 0.15s ease;
+}
+
+/* Focus styles */
+input:focus, select:focus {
+    outline: none;
+    border-color: #5865F2;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.25);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+    accent-color: #5865F2;
+}
+
+/* Pulsing status indicator */
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+}
