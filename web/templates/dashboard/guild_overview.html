@@ -37,7 +37,13 @@
                 <div class="font-medium">Moderation</div>
                 <div class="text-sm text-gray-400">
                     {% if mod_config %}
-                        Automod flags: {{ mod_config.automod_flags or 0 }}
+                        {% set flags = mod_config.automod_flags or 0 %}
+                        {% set active = [] %}
+                        {% if flags & 1 %}{% if active.append('Joins') %}{% endif %}{% endif %}
+                        {% if flags & 2 %}{% if active.append('Raid') %}{% endif %}{% endif %}
+                        {% if flags & 4 %}{% if active.append('Alerts') %}{% endif %}{% endif %}
+                        {% if flags & 8 %}{% if active.append('Gatekeeper') %}{% endif %}{% endif %}
+                        {% if active %}Automod: {{ active | join(', ') }}{% else %}No automod flags{% endif %}
                         {% if mod_config.mention_count %} &middot; Mention limit: {{ mod_config.mention_count }}{% endif %}
                     {% else %}
                         Not configured
@@ -76,7 +82,7 @@
                 <div class="font-medium">Starboard</div>
                 <div class="text-sm text-gray-400">
                     {% if starboard %}
-                        Threshold: {{ starboard.threshold }} &middot; #{{ starboard.channel_id }}
+                        Threshold: {{ starboard.threshold }}{% if star_channel %} &middot; #{{ star_channel }}{% endif %}
                     {% else %}
                         Not configured
                     {% endif %}

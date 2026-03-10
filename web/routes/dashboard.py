@@ -64,12 +64,19 @@ async def guild_overview(request: aiohttp.web.Request) -> dict:
     tag_count = await pool.fetchval('SELECT COUNT(*) FROM tags WHERE location_id = $1', guild_id)
     starboard = await pool.fetchrow('SELECT * FROM starboard WHERE id = $1', guild_id)
 
+    # Resolve starboard channel name
+    star_channel = None
+    if starboard and starboard['channel_id']:
+        ch = guild.get_channel(starboard['channel_id'])
+        star_channel = ch.name if ch else None
+
     return {
         'guild': _guild_dict(guild),
         'mod_config': dict(mod_config) if mod_config else None,
         'ticket_stats': dict(ticket_stats) if ticket_stats else {'open_tickets': 0, 'closed_tickets': 0},
         'tag_count': tag_count or 0,
         'starboard': dict(starboard) if starboard else None,
+        'star_channel': star_channel,
     }
 
 
