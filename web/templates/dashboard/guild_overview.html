@@ -8,19 +8,19 @@
 
 <!-- Stats Cards -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Members</div>
         <div class="text-2xl font-bold">{{ guild.member_count | format_number }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Open Tickets</div>
         <div class="text-2xl font-bold">{{ ticket_stats.open_tickets }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Tags</div>
         <div class="text-2xl font-bold">{{ tag_count }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Starboard</div>
         <div class="text-2xl font-bold">
             {% if starboard %}Enabled{% else %}Disabled{% endif %}
@@ -31,7 +31,7 @@
 <!-- Module Status -->
 <h2 class="text-lg font-semibold mb-4">Modules</h2>
 <div class="space-y-3">
-    <a href="/dashboard/{{ guild.id }}/mod" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+    <a href="/dashboard/{{ guild.id }}/mod" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
         <div class="flex items-center justify-between">
             <div>
                 <div class="font-medium">Moderation</div>
@@ -48,7 +48,7 @@
         </div>
     </a>
 
-    <a href="/dashboard/{{ guild.id }}/tickets" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+    <a href="/dashboard/{{ guild.id }}/tickets" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
         <div class="flex items-center justify-between">
             <div>
                 <div class="font-medium">Tickets</div>
@@ -60,7 +60,7 @@
         </div>
     </a>
 
-    <a href="/dashboard/{{ guild.id }}/tags" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+    <a href="/dashboard/{{ guild.id }}/tags" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
         <div class="flex items-center justify-between">
             <div>
                 <div class="font-medium">Tags</div>
@@ -70,7 +70,7 @@
         </div>
     </a>
 
-    <a href="/dashboard/{{ guild.id }}/starboard" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+    <a href="/dashboard/{{ guild.id }}/starboard" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
         <div class="flex items-center justify-between">
             <div>
                 <div class="font-medium">Starboard</div>
@@ -86,7 +86,7 @@
         </div>
     </a>
 
-    <a href="/dashboard/{{ guild.id }}/stats" class="block bg-discord-darker rounded-xl p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+    <a href="/dashboard/{{ guild.id }}/stats" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
         <div class="flex items-center justify-between">
             <div>
                 <div class="font-medium">Statistics</div>

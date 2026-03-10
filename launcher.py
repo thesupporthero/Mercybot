@@ -172,16 +172,27 @@ def setup_logging():
         discord.utils.setup_logging()
         # __enter__
         max_bytes = 32 * 1024 * 1024  # 32 MiB
+        dt_fmt = '%Y-%m-%d %H:%M:%S'
+        fmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
+
         logging.getLogger('discord').setLevel(logging.INFO)
         logging.getLogger('discord.http').setLevel(logging.WARNING)
         logging.getLogger('discord.state').addFilter(RemoveNoise())
 
         log.setLevel(logging.INFO)
         handler = RotatingFileHandler(filename='logs/Mercybot.log', encoding='utf-8', mode='w', maxBytes=max_bytes, backupCount=5)
-        dt_fmt = '%Y-%m-%d %H:%M:%S'
-        fmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
         handler.setFormatter(fmt)
         log.addHandler(handler)
+
+        # Web server logs go to their own file
+        Path('logs').mkdir(exist_ok=True)
+        web_handler = RotatingFileHandler(filename='logs/web.log', encoding='utf-8', mode='a', maxBytes=max_bytes, backupCount=5)
+        web_handler.setFormatter(fmt)
+        for web_logger_name in ('web', 'aiohttp.access', 'aiohttp.web', 'aiohttp.server'):
+            web_log = logging.getLogger(web_logger_name)
+            web_log.setLevel(logging.INFO)
+            web_log.addHandler(web_handler)
+            web_log.propagate = False  # don't also write to Mercybot.log
 
         yield
     finally:

@@ -1,44 +1,66 @@
-/* Custom scrollbar for dark theme */
-::-webkit-scrollbar {
-    width: 8px;
+/* ── Theme variables ─────────────────────────────────────────────────────── */
+:root {
+    --color-darkest:  #f0f2f5;
+    --color-darker:   #ffffff;
+    --color-dark:     #e4e6ea;
+    --color-border:   rgba(0,0,0,0.10);
+    --color-text:     #111827;
+    --color-subtext:  #6b7280;
+    --scrollbar-track: #e4e6ea;
+    --scrollbar-thumb: #9ca3af;
 }
 
-::-webkit-scrollbar-track {
-    background: #0f0f23;
+html.dark {
+    --color-darkest:  #0f0f23;
+    --color-darker:   #16213e;
+    --color-dark:     #1a1a2e;
+    --color-border:   rgba(255,255,255,0.07);
+    --color-text:     #f3f4f6;
+    --color-subtext:  #9ca3af;
+    --scrollbar-track: #0f0f23;
+    --scrollbar-thumb: #374151;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #374151;
-    border-radius: 4px;
+/* Override Tailwind's discord-* utility classes with variables */
+.bg-discord-darkest { background-color: var(--color-darkest) !important; }
+.bg-discord-darker  { background-color: var(--color-darker)  !important; }
+.bg-discord-dark    { background-color: var(--color-dark)    !important; }
+.border-gray-700\/50 { border-color: var(--color-border) !important; }
+.text-gray-100      { color: var(--color-text) !important; }
+.text-gray-400      { color: var(--color-subtext) !important; }
+
+/* Body text color follows theme */
+body {
+    color: var(--color-text);
+    background-color: var(--color-darkest);
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #4b5563;
+/* Light mode: darken hover backgrounds */
+html:not(.dark) .hover\:bg-gray-700\/50:hover {
+    background-color: rgba(0,0,0,0.06) !important;
 }
 
-/* Smooth transitions */
-a, button, input, select {
-    transition: all 0.15s ease;
-}
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4b5563; }
 
-/* Focus styles */
+/* ── Transitions ─────────────────────────────────────────────────────────── */
+a, button, input, select { transition: all 0.15s ease; }
+
+/* ── Focus styles ────────────────────────────────────────────────────────── */
 input:focus, select:focus {
     outline: none;
     border-color: #5865F2;
     box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.25);
 }
 
-/* Checkbox styling */
-input[type="checkbox"] {
-    accent-color: #5865F2;
-}
+input[type="checkbox"] { accent-color: #5865F2; }
 
-/* Pulsing status indicator */
+/* ── Pulse animation ─────────────────────────────────────────────────────── */
 @keyframes pulse-dot {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50%       { opacity: 0.5; }
 }
-
-.animate-pulse-dot {
-    animation: pulse-dot 2s ease-in-out infinite;
-}
+.animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }

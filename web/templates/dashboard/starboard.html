@@ -7,7 +7,7 @@
 <h1 class="text-2xl font-bold mb-6">Starboard</h1>
 
 {% if not config %}
-<div class="bg-discord-darker rounded-xl p-12 text-center border border-gray-700/50">
+<div class="bg-discord-darker rounded-lg p-12 text-center border border-gray-700/50">
     <p class="text-gray-400 mb-2">Starboard is not configured for this server.</p>
     <p class="text-sm text-gray-500">Use the <code class="bg-gray-700 px-1.5 py-0.5 rounded">!m star</code> commands in Discord to set it up.</p>
 </div>
@@ -21,15 +21,15 @@
 
 <!-- Stats -->
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Channel</div>
         <div class="text-lg font-semibold">{{ '#' + star_channel if star_channel else 'Not set' }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Total Entries</div>
         <div class="text-lg font-semibold">{{ total_entries | format_number }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Status</div>
         <div class="text-lg font-semibold">{{ 'Locked' if config.locked else 'Active' }}</div>
     </div>
@@ -39,7 +39,7 @@
 <form method="POST" action="/dashboard/{{ guild.id }}/starboard">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-    <div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50 mb-6">
+    <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
         <h2 class="text-lg font-semibold mb-4">Settings</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>

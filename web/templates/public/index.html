@@ -24,19 +24,19 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16" id="stats-grid">
-        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+        <div class="bg-discord-darker rounded-lg p-6 text-center border border-gray-700/50">
             <div class="text-3xl font-bold text-discord-blurple" id="stat-guilds">{{ stats.guild_count }}</div>
             <div class="text-sm text-gray-400 mt-1">Servers</div>
         </div>
-        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+        <div class="bg-discord-darker rounded-lg p-6 text-center border border-gray-700/50">
             <div class="text-3xl font-bold text-discord-green" id="stat-members">{{ stats.total_members | format_number }}</div>
             <div class="text-sm text-gray-400 mt-1">Members</div>
         </div>
-        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+        <div class="bg-discord-darker rounded-lg p-6 text-center border border-gray-700/50">
             <div class="text-3xl font-bold text-discord-yellow" id="stat-commands">{{ stats.commands_run | format_number }}</div>
             <div class="text-sm text-gray-400 mt-1">Commands Run</div>
         </div>
-        <div class="bg-discord-darker rounded-xl p-6 text-center border border-gray-700/50">
+        <div class="bg-discord-darker rounded-lg p-6 text-center border border-gray-700/50">
             <div class="text-3xl font-bold text-discord-fuchsia" id="stat-uptime">{{ stats.uptime_seconds | format_uptime }}</div>
             <div class="text-sm text-gray-400 mt-1">Uptime</div>
         </div>
@@ -54,7 +54,7 @@
     {% if stats.top_commands %}
     <div class="max-w-2xl mx-auto">
         <h2 class="text-2xl font-bold text-center mb-6">Top Commands</h2>
-        <div class="bg-discord-darker rounded-xl border border-gray-700/50 divide-y divide-gray-700/50">
+        <div class="bg-discord-darker rounded-lg border border-gray-700/50 divide-y divide-gray-700/50">
             {% for cmd in stats.top_commands %}
             <div class="flex items-center justify-between px-6 py-3">
                 <span class="text-gray-300 font-mono">{{ cmd.name }}</span>

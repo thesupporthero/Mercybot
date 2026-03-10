@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,6 +45,11 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
+                    <!-- Light/Dark toggle -->
+                    <button id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"
+                        class="w-8 h-8 flex items-center justify-center rounded-md text-gray-400 hover:text-white hover:bg-gray-700/50 transition text-lg">
+                        <span id="theme-icon">☀️</span>
+                    </button>
                     {% if user %}
                     <div class="flex items-center space-x-2">
                         <img src="{{ user.avatar_url }}" alt="" class="w-8 h-8 rounded-full">
@@ -72,6 +77,30 @@
     </footer>
 
     <script src="/static/js/dashboard.js"></script>
+    <script>
+        // Apply saved theme immediately (before paint)
+        (function() {
+            const saved = localStorage.getItem('theme');
+            const html = document.getElementById('html-root');
+            if (saved === 'light') {
+                html.classList.remove('dark');
+            }
+            updateThemeIcon();
+        })();
+
+        function updateThemeIcon() {
+            const isDark = document.getElementById('html-root').classList.contains('dark');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const html = document.getElementById('html-root');
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

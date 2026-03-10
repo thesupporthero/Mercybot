@@ -7,7 +7,7 @@
 <h1 class="text-2xl font-bold mb-6">Ticket System</h1>
 
 {% if not config %}
-<div class="bg-discord-darker rounded-xl p-12 text-center border border-gray-700/50">
+<div class="bg-discord-darker rounded-lg p-12 text-center border border-gray-700/50">
     <p class="text-gray-400 mb-2">Tickets are not configured for this server.</p>
     <p class="text-sm text-gray-500">Use the <code class="bg-gray-700 px-1.5 py-0.5 rounded">!m ticket setup</code> command in Discord to get started.</p>
 </div>
@@ -15,26 +15,26 @@
 
 <!-- Stats -->
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Open Tickets</div>
         <div class="text-2xl font-bold text-discord-green">{{ stats.open_count }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Closed Tickets</div>
         <div class="text-2xl font-bold text-gray-400">{{ stats.closed_count }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Panel Channel</div>
         <div class="text-lg font-semibold">{{ '#' + panel_channel if panel_channel else 'Not set' }}</div>
     </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+    <div class="bg-discord-darker rounded-lg p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Close Behavior</div>
         <div class="text-lg font-semibold">{{ 'Auto-delete' if config.auto_delete else 'Keep (read-only)' }}</div>
     </div>
 </div>
 
 <!-- Configuration -->
-<div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50 mb-6">
+<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
     <h2 class="text-lg font-semibold mb-4">Configuration</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
@@ -49,7 +49,7 @@
 </div>
 
 <!-- Categories -->
-<div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50 mb-6">
+<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
     <h2 class="text-lg font-semibold mb-4">Categories</h2>
     {% if categories %}
     <div class="divide-y divide-gray-700/50">
@@ -68,7 +68,7 @@
 </div>
 
 <!-- Support Roles -->
-<div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50">
+<div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50">
     <h2 class="text-lg font-semibold mb-4">Support Roles</h2>
     {% if support_roles %}
     <div class="flex flex-wrap gap-2">

@@ -315,6 +315,12 @@ class Mercybot(commands.AutoShardedBot):
             self.uptime = discord.utils.utcnow()
 
         log.info('Ready: %s (ID: %s)', self.user, self.user.id)
+        await self.change_presence(
+            activity=discord.Activity(
+                type=discord.ActivityType.watching,
+                name='https://bot.thesupporthero.com',
+            )
+        )
 
     async def on_shard_resumed(self, shard_id: int):
         log.info('Shard ID %s has resumed...', shard_id)
