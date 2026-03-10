@@ -13,36 +13,86 @@
 </div>
 {% else %}
 
+{% if request.query.get('saved') %}
+<div class="bg-green-900/30 border border-green-700/50 text-green-300 rounded-lg px-4 py-3 mb-6">
+    Settings saved successfully.
+</div>
+{% endif %}
+
+<!-- Stats -->
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
     <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Channel</div>
         <div class="text-lg font-semibold">{{ '#' + star_channel if star_channel else 'Not set' }}</div>
     </div>
     <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
-        <div class="text-sm text-gray-400 mb-1">Threshold</div>
-        <div class="text-lg font-semibold">{{ config.threshold }} stars</div>
-    </div>
-    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
         <div class="text-sm text-gray-400 mb-1">Total Entries</div>
         <div class="text-lg font-semibold">{{ total_entries | format_number }}</div>
     </div>
-</div>
-
-<div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50">
-    <h2 class="text-lg font-semibold mb-4">Configuration</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <div>
-            <span class="text-gray-400">Locked:</span>
-            <span class="ml-2">{{ 'Yes' if config.locked else 'No' }}</span>
-        </div>
-        {% if config.max_age %}
-        <div>
-            <span class="text-gray-400">Max Message Age:</span>
-            <span class="ml-2">{{ config.max_age }}</span>
-        </div>
-        {% endif %}
+    <div class="bg-discord-darker rounded-xl p-5 border border-gray-700/50">
+        <div class="text-sm text-gray-400 mb-1">Status</div>
+        <div class="text-lg font-semibold">{{ 'Locked' if config.locked else 'Active' }}</div>
     </div>
 </div>
+
+<!-- Settings Form -->
+<form method="POST" action="/dashboard/{{ guild.id }}/starboard">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <div class="bg-discord-darker rounded-xl p-6 border border-gray-700/50 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Starboard Channel</label>
+                <select name="channel_id"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                    <option value="">Keep current</option>
+                    {% for channel in guild.channels %}
+                    <option value="{{ channel.id }}" {% if config.channel_id == channel.id %}selected{% endif %}>
+                        #{{ channel.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Channel where starred messages appear</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Star Threshold</label>
+                <input type="number" name="threshold" min="1" max="100"
+                       value="{{ config.threshold or 1 }}"
+                       class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-discord-blurple">
+                <p class="text-xs text-gray-500 mt-1">Stars required for a message to appear (1-100)</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Max Message Age (days)</label>
+                <input type="number" name="max_age_days" min="1" max="3650"
+                       value="{{ config.max_age.days if config.max_age else '' }}"
+                       placeholder="No limit"
+                       class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-discord-blurple">
+                <p class="text-xs text-gray-500 mt-1">How old a message can be to receive stars (leave blank for no limit)</p>
+            </div>
+
+            <div class="flex items-start pt-7">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" name="locked" value="1" {% if config.locked %}checked{% endif %}
+                           class="w-4 h-4 rounded bg-gray-700 border-gray-600 text-discord-blurple focus:ring-discord-blurple">
+                    <div>
+                        <div class="text-sm font-medium">Locked</div>
+                        <div class="text-xs text-gray-500">Prevent new messages from being starred</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-end">
+        <button type="submit"
+                class="px-6 py-2.5 rounded-lg font-medium bg-discord-blurple text-white hover:bg-indigo-500 transition">
+            Save Changes
+        </button>
+    </div>
+</form>
 
 {% endif %}
 {% endblock %}

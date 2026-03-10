@@ -252,13 +252,62 @@ async def starboard_view(request: aiohttp.web.Request) -> dict:
 
     # Resolve channel name
     star_channel = guild.get_channel(config['channel_id']) if config and config['channel_id'] else None
+    csrf_token = await generate_csrf_token(request)
 
     return {
-        'guild': _guild_dict(guild),
+        'guild': _guild_dict(
+            guild,
+            channels=[{'id': c.id, 'name': c.name} for c in guild.text_channels],
+        ),
         'config': dict(config) if config else None,
         'star_channel': star_channel.name if star_channel else None,
         'total_entries': total_entries or 0,
+        'csrf_token': csrf_token,
     }
+
+
+@routes.post('/dashboard/{guild_id}/starboard')
+async def starboard_save(request: aiohttp.web.Request) -> aiohttp.web.Response:
+    """Save starboard settings."""
+    guild_id = int(request.match_info['guild_id'])
+    await require_guild_access(request, guild_id)
+    await validate_csrf_token(request)
+
+    bot = get_bot(request)
+    pool = request.app['pool']
+
+    # Check if starboard exists
+    existing = await pool.fetchrow('SELECT * FROM starboard WHERE id = $1', guild_id)
+    if not existing:
+        raise aiohttp.web.HTTPBadRequest(text='Starboard is not set up. Use the bot command to create it first.')
+
+    data = await request.post()
+
+    channel_id = int(data['channel_id']) if data.get('channel_id') else existing['channel_id']
+    threshold = min(max(int(data.get('threshold', 1)), 1), 100)
+    locked = bool(data.get('locked'))
+
+    # Handle max_age
+    max_age_days = data.get('max_age_days')
+    if max_age_days and max_age_days.strip():
+        days = min(max(int(max_age_days), 1), 3650)
+        max_age_sql = f"'{days} days'::interval"
+    else:
+        max_age_sql = 'NULL'
+
+    query = f"""
+        UPDATE starboard
+        SET channel_id = $2, threshold = $3, locked = $4, max_age = {max_age_sql}
+        WHERE id = $1
+    """
+    await pool.execute(query, guild_id, channel_id, threshold, locked)
+
+    # Invalidate the bot's starboard cache
+    stars_cog = bot.get_cog('Stars')
+    if stars_cog and hasattr(stars_cog, 'get_starboard'):
+        stars_cog.get_starboard.invalidate(stars_cog, guild_id)
+
+    raise aiohttp.web.HTTPFound(f'/dashboard/{guild_id}/starboard?saved=1')
 
 
 @routes.get('/dashboard/{guild_id}/stats')
