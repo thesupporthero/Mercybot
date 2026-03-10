@@ -24,7 +24,7 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 class TicketConfig:
-    __slots__ = ('bot', 'id', 'channel_id', 'log_channel_id', 'category_id', 'auto_delete')
+    __slots__ = ('bot', 'id', 'channel_id', 'log_channel_id', 'category_id', 'auto_delete', 'ping_roles')
 
     def __init__(self) -> None:
         pass
@@ -38,6 +38,7 @@ class TicketConfig:
         self.log_channel_id: Optional[int] = record['log_channel_id']
         self.category_id: Optional[int] = record['category_id']
         self.auto_delete: bool = record['auto_delete']
+        self.ping_roles: bool = record.get('ping_roles', False)
         return self
 
     @property
@@ -163,6 +164,7 @@ class TicketSetupView(discord.ui.View):
         self.categories: list[dict[str, Optional[str]]] = []
         self.support_roles: list[discord.Role] = []
         self.log_channel: Optional[discord.TextChannel] = None
+        self.ping_roles: bool = False
         self.auto_delete: bool = False
         self._update_items()
 
@@ -182,6 +184,8 @@ class TicketSetupView(discord.ui.View):
             self.add_item(LogChannelSelect())
             self.add_item(SkipButton(self))
         elif self.step == 5:
+            self.add_item(PingRolesSelect())
+        elif self.step == 6:
             self.add_item(CloseBehaviorSelect())
 
     def build_embed(self) -> discord.Embed:
@@ -193,6 +197,7 @@ class TicketSetupView(discord.ui.View):
             'Add your ticket categories (at least one required)',
             'Select support staff roles (or skip)',
             'Select a logging channel (or skip)',
+            'Ping support roles when a ticket is opened?',
             'Choose what happens when a ticket is closed',
         ]
 
@@ -221,6 +226,8 @@ class TicketSetupView(discord.ui.View):
         if self.log_channel:
             fields.append(f'**Log Channel:** {self.log_channel.mention}')
         if self.step > 5:
+            fields.append(f'**Ping Roles:** {"Yes" if self.ping_roles else "No"}')
+        if self.step > 6:
             fields.append(f'**Close Behavior:** {"Auto-delete" if self.auto_delete else "Keep (read-only)"}')
 
         if fields:
@@ -238,7 +245,7 @@ class TicketSetupView(discord.ui.View):
 
     async def advance(self, interaction: discord.Interaction) -> None:
         self.step += 1
-        if self.step > 5:
+        if self.step > 6:
             await self.finish(interaction)
             return
         await self.refresh(interaction)
@@ -250,12 +257,13 @@ class TicketSetupView(discord.ui.View):
 
         # Upsert config
         query = """
-            INSERT INTO ticket_config (id, channel_id, log_channel_id, category_id, auto_delete)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO ticket_config (id, channel_id, log_channel_id, category_id, ping_roles, auto_delete)
+            VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (id) DO UPDATE SET
                 channel_id = EXCLUDED.channel_id,
                 log_channel_id = EXCLUDED.log_channel_id,
                 category_id = EXCLUDED.category_id,
+                ping_roles = EXCLUDED.ping_roles,
                 auto_delete = EXCLUDED.auto_delete;
         """
         await pool.execute(
@@ -264,6 +272,7 @@ class TicketSetupView(discord.ui.View):
             self.panel_channel.id if self.panel_channel else None,
             self.log_channel.id if self.log_channel else None,
             self.discord_category.id if self.discord_category else None,
+            self.ping_roles,
             self.auto_delete,
         )
 
@@ -412,6 +421,29 @@ class LogChannelSelect(discord.ui.ChannelSelect):
             await interaction.response.send_message('Could not resolve that channel.', ephemeral=True)
             return
         self.view.log_channel = channel  # type: ignore
+        await interaction.response.defer()
+        await self.view.advance(interaction)
+
+
+class PingRolesSelect(discord.ui.Select):
+    def __init__(self) -> None:
+        options = [
+            discord.SelectOption(
+                label='Yes — ping support roles',
+                value='yes',
+                description='Support roles are mentioned when a ticket opens',
+            ),
+            discord.SelectOption(
+                label='No — do not ping',
+                value='no',
+                description='No roles are pinged when a ticket opens',
+            ),
+        ]
+        super().__init__(placeholder='Ping support roles on new tickets?', options=options, min_values=1, max_values=1)
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        assert self.view is not None and isinstance(self.view, TicketSetupView)
+        self.view.ping_roles = self.values[0] == 'yes'
         await interaction.response.defer()
         await self.view.advance(interaction)
 
@@ -587,6 +619,16 @@ class TicketCreateSelect(discord.ui.DynamicItem[discord.ui.Select], template=r't
 
         view = TicketControlView(ticket_id)
         await channel.send(embed=embed, view=view)
+
+        # Ping support roles if enabled
+        if config.ping_roles and support_role_ids:
+            pings = []
+            for role_id in support_role_ids:
+                role = interaction.guild.get_role(role_id)
+                if role:
+                    pings.append(role.mention)
+            if pings:
+                await channel.send(' '.join(pings), delete_after=5)
 
         await interaction.followup.send(f'Ticket created: {channel.mention}', ephemeral=True)
 
