@@ -187,6 +187,9 @@ class TicketSetupView(discord.ui.View):
             self.add_item(PingRolesSelect())
         elif self.step == 6:
             self.add_item(CloseBehaviorSelect())
+        elif self.step == 7:
+            self.add_item(ConfirmSetupButton(self))
+            self.add_item(CancelSetupButton(self))
 
     def build_embed(self) -> discord.Embed:
         e = discord.Embed(title='Ticket System Setup', colour=0x5865F2)
@@ -199,6 +202,7 @@ class TicketSetupView(discord.ui.View):
             'Select a logging channel (or skip)',
             'Ping support roles when a ticket is opened?',
             'Choose what happens when a ticket is closed',
+            'Review and confirm your configuration',
         ]
 
         desc_parts: list[str] = []
@@ -230,6 +234,10 @@ class TicketSetupView(discord.ui.View):
         if self.step > 6:
             fields.append(f'**Close Behavior:** {"Auto-delete" if self.auto_delete else "Keep (read-only)"}')
 
+        if self.step == 7 and fields:
+            e.colour = 0xFEE75C
+            e.set_footer(text='Review your configuration above, then confirm or cancel.')
+
         if fields:
             e.add_field(name='Configuration', value='\n'.join(fields), inline=False)
 
@@ -245,7 +253,7 @@ class TicketSetupView(discord.ui.View):
 
     async def advance(self, interaction: discord.Interaction) -> None:
         self.step += 1
-        if self.step > 6:
+        if self.step > 7:
             await self.finish(interaction)
             return
         await self.refresh(interaction)
@@ -469,6 +477,34 @@ class CloseBehaviorSelect(discord.ui.Select):
         self.view.auto_delete = self.values[0] == 'delete'
         await interaction.response.defer()
         await self.view.advance(interaction)
+
+
+class ConfirmSetupButton(discord.ui.Button):
+    def __init__(self, wizard: TicketSetupView) -> None:
+        super().__init__(label='Confirm & Save', style=discord.ButtonStyle.green)
+        self.wizard = wizard
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        await interaction.response.defer()
+        await self.wizard.advance(interaction)
+
+
+class CancelSetupButton(discord.ui.Button):
+    def __init__(self, wizard: TicketSetupView) -> None:
+        super().__init__(label='Cancel', style=discord.ButtonStyle.red)
+        self.wizard = wizard
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        self.wizard.stop()
+        embed = self.wizard.build_embed()
+        embed.title = 'Setup Cancelled'
+        embed.colour = 0xED4245
+        embed.set_footer(text='No changes were saved.')
+        self.wizard.clear_items()
+        try:
+            await interaction.response.edit_message(embed=embed, view=self.wizard)
+        except discord.HTTPException:
+            pass
 
 
 # ---------------------------------------------------------------------------
