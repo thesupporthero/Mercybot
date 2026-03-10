@@ -1006,21 +1006,48 @@ class Tickets(commands.Cog):
         app_commands.Choice(value='add', name='Add'),
         app_commands.Choice(value='remove', name='Remove'),
     ])
-    async def ticket_support(self, ctx: GuildContext, action: str, role: discord.Role):
+    async def ticket_support(self, ctx: GuildContext, action: str, role: str):
         """Add or remove a support staff role."""
         config = await get_ticket_config(self.bot, ctx.guild.id)
         if config is None:
             await ctx.send('Ticket system not configured yet. Run `ticket setup` first.')
             return
 
+        # Resolve the role from ID string or name
+        resolved_role = None
+        if role.isdigit():
+            resolved_role = ctx.guild.get_role(int(role))
+        if resolved_role is None:
+            resolved_role = discord.utils.get(ctx.guild.roles, name=role)
+        if resolved_role is None:
+            await ctx.send('Role not found.')
+            return
+
         if action == 'add':
             query = "INSERT INTO ticket_support_roles (guild_id, role_id) VALUES ($1, $2) ON CONFLICT DO NOTHING;"
-            await self.bot.pool.execute(query, ctx.guild.id, role.id)
-            await ctx.send(f'Added {role.mention} as support staff.')
+            await self.bot.pool.execute(query, ctx.guild.id, resolved_role.id)
+            await ctx.send(f'Added {resolved_role.mention} as support staff.')
         elif action == 'remove':
             query = "DELETE FROM ticket_support_roles WHERE guild_id=$1 AND role_id=$2;"
-            await self.bot.pool.execute(query, ctx.guild.id, role.id)
-            await ctx.send(f'Removed {role.mention} from support staff.')
+            await self.bot.pool.execute(query, ctx.guild.id, resolved_role.id)
+            await ctx.send(f'Removed {resolved_role.mention} from support staff.')
+
+    @ticket_support.autocomplete('role')
+    async def _support_role_autocomplete(
+        self, interaction: discord.Interaction, current: str,
+    ) -> list[app_commands.Choice[str]]:
+        """Autocomplete for support role — searches all guild roles by name."""
+        assert interaction.guild is not None
+        roles = [
+            r for r in interaction.guild.roles
+            if r.name != '@everyone' and not r.is_bot_managed()
+            and current.lower() in r.name.lower()
+        ]
+        roles.sort(key=lambda r: r.name.lower())
+        return [
+            app_commands.Choice(name=r.name, value=str(r.id))
+            for r in roles[:25]
+        ]
 
     @ticket.command(name='panel')
     @commands.guild_only()
