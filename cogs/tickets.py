@@ -889,10 +889,9 @@ class TicketClosedControlView(discord.ui.View):
 
 class TicketPanelView(discord.ui.View):
     """The panel posted in the panel channel — contains the create select."""
-    def __init__(self, guild_id: int) -> None:
+    def __init__(self, guild_id: int, categories: Optional[list[dict[str, Any]]] = None) -> None:
         super().__init__(timeout=None)
-        # We add a placeholder select; the DynamicItem handles actual interaction
-        self.add_item(TicketCreateSelect(guild_id))
+        self.add_item(TicketCreateSelect(guild_id, categories))
 
 
 # ---------------------------------------------------------------------------
@@ -928,7 +927,7 @@ class Tickets(commands.Cog):
             desc = cat.get('description') or 'No description'
             embed.add_field(name=cat['name'], value=desc, inline=False)
 
-        view = TicketPanelView(guild_id)
+        view = TicketPanelView(guild_id, categories)
         await channel.send(embed=embed, view=view)
 
     # -- Commands --
