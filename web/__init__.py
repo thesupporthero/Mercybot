@@ -76,7 +76,7 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
     env = aiohttp_jinja2.setup(
         app,
         loader=jinja2.FileSystemLoader(str(BASE_DIR / 'templates')),
-        context_processors=[default_context],
+        context_processors=[aiohttp_jinja2.request_processor, default_context],
     )
 
     env.filters['format_number'] = format_number
