@@ -44,14 +44,15 @@ def format_uptime(seconds: int) -> str:
 
 def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
     """Create and configure the aiohttp web application."""
-    app = aiohttp.web.Application(middlewares=[error_middleware, auth_middleware])
+    # Only error_middleware at creation — auth_middleware is added later
+    # because it needs the session middleware to have run first.
+    app = aiohttp.web.Application(middlewares=[error_middleware])
 
     # Store bot and pool references
     app['bot'] = bot
     app['pool'] = pool
 
-    # Set up encrypted cookie sessions FIRST
-    # (must be before jinja2 setup so session middleware runs before context processors)
+    # 1. Session middleware (must be first — auth and jinja2 context processors need it)
     secret_key = getattr(bot.config, 'dashboard_secret_key', None)
     if not secret_key:
         log.warning('dashboard_secret_key not set in config.py — generating a temporary key. Sessions will not persist across restarts.')
@@ -69,16 +70,18 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
 
     setup_session(app, EncryptedCookieStorage(secret_key, cookie_name='mercybot_session', max_age=3600))
 
-    # Set up Jinja2 templates AFTER session (context processors need session access)
+    # 2. Jinja2 templates (context processors need session access)
     env = aiohttp_jinja2.setup(
         app,
         loader=jinja2.FileSystemLoader(str(BASE_DIR / 'templates')),
         context_processors=[default_context],
     )
 
-    # Register custom filters
     env.filters['format_number'] = format_number
     env.filters['format_uptime'] = format_uptime
+
+    # 3. Auth middleware LAST (needs session to be initialized first)
+    app.middlewares.append(auth_middleware)
 
     # Set up static file serving
     app.router.add_static('/static', str(BASE_DIR / 'static'), name='static')
