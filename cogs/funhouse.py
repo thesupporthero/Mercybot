@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from .utils.translator import translate
 
+from discord import app_commands
 from discord.ext import commands
 import discord
 import io
@@ -47,7 +48,7 @@ class Funhouse(commands.Cog):
             # left the channel
             await voice_room.set_permissions(member, read_messages=None)
 
-    @commands.command(hidden=True)
+    @commands.hybrid_command()
     async def cat(self, ctx: Context):
         """Gives you a random cat."""
         async with ctx.session.get('https://api.thecatapi.com/v1/images/search') as resp:
@@ -56,7 +57,7 @@ class Funhouse(commands.Cog):
             js = await resp.json()
             await ctx.send(embed=discord.Embed(title='Random Cat').set_image(url=js[0]['url']))
 
-    @commands.command(hidden=True)
+    @commands.hybrid_command()
     async def dog(self, ctx: Context):
         """Gives you a random dog."""
         async with ctx.session.get('https://random.dog/woof') as resp:
