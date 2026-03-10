@@ -149,9 +149,9 @@ class Profile(commands.Cog):
         self.voice_xp_sweep.stop()
         self.config_refresh_loop.stop()
 
-    async def cog_load(self) -> None:
+    @commands.Cog.listener()
+    async def on_ready(self) -> None:
         # Populate voice tracking for members already in VC
-        await self.bot.wait_until_ready()
         now = discord.utils.utcnow().timestamp()
         for guild in self.bot.guilds:
             for channel in guild.channels:
