@@ -72,17 +72,35 @@
     <!-- Level Speed -->
     <div class="bg-discord-darker rounded-lg p-6 border border-gray-700/50 mb-6">
         <h2 class="text-lg font-semibold mb-4">Leveling Speed</h2>
-        <div class="max-w-xs">
-            <label class="block text-sm font-medium text-gray-300 mb-2">Level Speed</label>
-            <select name="level_formula"
-                    class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
-                {% set current_formula = config.level_formula if config else 50 %}
-                <option value="80" {% if current_formula == 80 %}selected{% endif %}>Slow (more XP needed per level)</option>
-                <option value="50" {% if current_formula == 50 %}selected{% endif %}>Normal</option>
-                <option value="30" {% if current_formula == 30 %}selected{% endif %}>Fast</option>
-                <option value="15" {% if current_formula == 15 %}selected{% endif %}>Very Fast (less XP needed per level)</option>
-            </select>
-            <p class="text-xs text-gray-500 mt-1">Controls how much XP is needed to level up</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="max-w-xs">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Level Speed</label>
+                <select id="level_formula" name="level_formula" onchange="updateBreakdown()"
+                        class="w-full px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-discord-blurple">
+                    {% set current_formula = config.level_formula if config else 50 %}
+                    <option value="80" {% if current_formula == 80 %}selected{% endif %}>Slow (more XP needed per level)</option>
+                    <option value="50" {% if current_formula == 50 %}selected{% endif %}>Normal</option>
+                    <option value="30" {% if current_formula == 30 %}selected{% endif %}>Fast</option>
+                    <option value="15" {% if current_formula == 15 %}selected{% endif %}>Very Fast (less XP needed per level)</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Controls how much XP is needed to level up</p>
+            </div>
+            <div>
+                <div class="text-sm font-medium text-gray-300 mb-2">XP Required per Level</div>
+                <div class="overflow-hidden rounded-lg border border-gray-700/50">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="border-b border-gray-700/50 text-gray-500 uppercase">
+                                <th class="px-3 py-2 text-left">Level</th>
+                                <th class="px-3 py-2 text-right">Total XP</th>
+                                <th class="px-3 py-2 text-right">XP for this level</th>
+                            </tr>
+                        </thead>
+                        <tbody id="xp-breakdown" class="divide-y divide-gray-700/20 text-gray-400">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -93,4 +111,31 @@
         </button>
     </div>
 </form>
+
+<script>
+function xpForLevel(level, base) {
+    return level * level * base;
+}
+
+function updateBreakdown() {
+    const base = parseInt(document.getElementById('level_formula').value);
+    const levels = [1, 2, 3, 5, 10, 15, 20, 30, 50];
+    const tbody = document.getElementById('xp-breakdown');
+    tbody.innerHTML = '';
+    levels.forEach(level => {
+        const total = xpForLevel(level, base);
+        const prev = xpForLevel(level - 1, base);
+        const diff = total - prev;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="px-3 py-1.5 text-gray-300 font-medium">${level}</td>
+            <td class="px-3 py-1.5 text-right">${total.toLocaleString()}</td>
+            <td class="px-3 py-1.5 text-right text-gray-500">+${diff.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+updateBreakdown();
+</script>
 {% endblock %}
