@@ -29,15 +29,17 @@ def _guild_dict(guild, **extra) -> dict:
 @routes.get('/dashboard')
 @aiohttp_jinja2.template('dashboard/guild_list.html')
 async def guild_list(request: aiohttp.web.Request) -> dict:
-    """List guilds the user can manage."""
+    """List guilds the user can manage, plus member-only guilds with leaderboard access."""
     session = await get_session(request)
     guilds = session.get('guilds', [])
+    member_only_guilds = session.get('member_only_guilds', [])
 
-    # Add icon URLs
     for guild in guilds:
         guild['icon_url'] = guild_icon_url(guild['id'], guild.get('icon'))
+    for guild in member_only_guilds:
+        guild['icon_url'] = guild_icon_url(guild['id'], guild.get('icon'))
 
-    return {'guilds': guilds}
+    return {'guilds': guilds, 'member_only_guilds': member_only_guilds}
 
 
 @routes.get('/dashboard/{guild_id}')

@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="max-w-5xl mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-2">Your Servers</h1>
-    <p class="text-gray-400 mb-8">Select a server to manage.</p>
 
     {% if guilds %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <h1 class="text-3xl font-bold mb-2">Your Servers</h1>
+    <p class="text-gray-400 mb-8">Select a server to manage.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
         {% for guild in guilds %}
         <a href="/dashboard/{{ guild.id }}"
            class="bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 hover:bg-discord-dark transition group">
@@ -22,10 +22,35 @@
         </a>
         {% endfor %}
     </div>
-    {% else %}
-    <div class="bg-discord-darker rounded-lg p-12 text-center border border-gray-700/50">
-        <p class="text-gray-400">No servers found where you have Manage Server permission and the bot is present.</p>
+    {% endif %}
+
+    {% if member_only_guilds %}
+    <h2 class="text-xl font-semibold mb-2 {% if guilds %}border-t border-gray-700/50 pt-10{% endif %}">Other Servers</h2>
+    <p class="text-gray-400 mb-6">Servers you're a member of. You can view their leaderboard.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for guild in member_only_guilds %}
+        <a href="/dashboard/{{ guild.id }}/leaderboard"
+           class="bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-gray-600 hover:bg-discord-dark transition group">
+            <div class="flex items-center space-x-4">
+                <img src="{{ guild.icon_url }}" alt="" class="w-12 h-12 rounded-full">
+                <div class="min-w-0 flex-1">
+                    <div class="font-semibold truncate text-gray-300 group-hover:text-white transition">{{ guild.name }}</div>
+                    <div class="text-sm text-gray-500">{{ guild.member_count | format_number }} members</div>
+                </div>
+                <span class="text-xs text-gray-500 shrink-0">Leaderboard &rarr;</span>
+            </div>
+        </a>
+        {% endfor %}
     </div>
     {% endif %}
+
+    {% if not guilds and not member_only_guilds %}
+    <h1 class="text-3xl font-bold mb-2">Your Servers</h1>
+    <p class="text-gray-400 mb-8">Select a server to manage.</p>
+    <div class="bg-discord-darker rounded-lg p-12 text-center border border-gray-700/50">
+        <p class="text-gray-400">No servers found where the bot is present.</p>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

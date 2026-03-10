@@ -7,7 +7,7 @@ import aiohttp
 import aiohttp.web
 from aiohttp_session import get_session
 
-from ..helpers import get_bot, get_manageable_guilds, get_member_guild_ids, user_avatar_url
+from ..helpers import get_bot, get_manageable_guilds, get_member_guild_ids, get_member_only_guilds, user_avatar_url
 
 log = logging.getLogger(__name__)
 
@@ -104,6 +104,7 @@ async def callback(request: aiohttp.web.Request) -> aiohttp.web.Response:
     manageable = get_manageable_guilds(bot, user_guilds)
     manageable_ids = [g['id'] for g in manageable]
     member_guild_ids = get_member_guild_ids(bot, user_guilds)
+    member_only_guilds = get_member_only_guilds(bot, user_guilds, manageable_ids)
 
     # Store in session
     user_id = int(user_data['id'])
@@ -115,6 +116,7 @@ async def callback(request: aiohttp.web.Request) -> aiohttp.web.Response:
     session['guild_ids'] = manageable_ids
     session['member_guild_ids'] = member_guild_ids
     session['guilds'] = manageable
+    session['member_only_guilds'] = member_only_guilds
 
     log.info('User %s (ID: %d) logged in via OAuth2', session['user']['username'], user_id)
 

@@ -24,6 +24,24 @@ def get_member_guild_ids(bot: Mercybot, user_guilds: list[dict]) -> list[int]:
     return [int(g['id']) for g in user_guilds if int(g['id']) in bot_guild_ids]
 
 
+def get_member_only_guilds(bot: Mercybot, user_guilds: list[dict], manageable_ids: list[int]) -> list[dict]:
+    """Return guild details for guilds the user is in but cannot manage."""
+    bot_guild_ids = {g.id for g in bot.guilds}
+    manageable_set = set(manageable_ids)
+    result = []
+    for guild in user_guilds:
+        guild_id = int(guild['id'])
+        if guild_id in bot_guild_ids and guild_id not in manageable_set:
+            bot_guild = bot.get_guild(guild_id)
+            result.append({
+                'id': guild_id,
+                'name': guild['name'],
+                'icon': guild.get('icon'),
+                'member_count': bot_guild.member_count if bot_guild else 0,
+            })
+    return result
+
+
 def get_manageable_guilds(bot: Mercybot, user_guilds: list[dict]) -> list[dict]:
     """Return guilds the user can manage that the bot is also in."""
     bot_guild_ids = {g.id for g in bot.guilds}
