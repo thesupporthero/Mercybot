@@ -24,7 +24,7 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 class TicketConfig:
-    __slots__ = ('bot', 'id', 'channel_id', 'log_channel_id', 'category_id', 'auto_delete', 'ping_roles')
+    __slots__ = ('bot', 'id', 'channel_id', 'log_channel_id', 'category_id', 'auto_delete', 'ping_roles', 'panel_message_id')
 
     def __init__(self) -> None:
         pass
@@ -39,6 +39,7 @@ class TicketConfig:
         self.category_id: Optional[int] = record['category_id']
         self.auto_delete: bool = record['auto_delete']
         self.ping_roles: bool = record.get('ping_roles', False)
+        self.panel_message_id = record.get('panel_message_id')
         return self
 
     @property
@@ -991,7 +992,7 @@ class Tickets(commands.Cog):
         return discord.PartialEmoji(name='\N{TICKET}')
 
     async def post_panel(self, channel: discord.TextChannel, guild_id: int) -> None:
-        """Post (or re-post) the ticket creation panel in the given channel."""
+        """Post or update the ticket creation panel in the given channel."""
         categories = await get_categories(self.bot, guild_id)
         if not categories:
             return
@@ -1006,7 +1007,25 @@ class Tickets(commands.Cog):
             embed.add_field(name=cat['name'], value=desc, inline=False)
 
         view = TicketPanelView(guild_id, categories)
-        await channel.send(embed=embed, view=view)
+
+        # Try to edit the existing panel message instead of posting a new one
+        config = await self.bot.pool.fetchrow('SELECT panel_message_id FROM ticket_config WHERE id = $1', guild_id)
+        panel_message_id = config['panel_message_id'] if config else None
+
+        sent = None
+        if panel_message_id:
+            try:
+                msg = await channel.fetch_message(panel_message_id)
+                await msg.edit(embed=embed, view=view)
+                return  # edited successfully, no need to update the stored ID
+            except discord.HTTPException:
+                pass  # message deleted or wrong channel — fall through to send new
+
+        sent = await channel.send(embed=embed, view=view)
+        await self.bot.pool.execute(
+            'UPDATE ticket_config SET panel_message_id = $1 WHERE id = $2',
+            sent.id, guild_id,
+        )
 
     # -- Commands --
 
