@@ -15,7 +15,10 @@ import discord
 import asyncio
 import asyncpg
 import datetime
+import logging
 import textwrap
+
+log = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -597,6 +600,7 @@ class Reminder(commands.Cog):
                     timer.id,
                 )
         except Exception:
+            log.exception('Error in reminder_set for user %s', interaction.user.id)
             await interaction.followup.send('Something went wrong while setting the reminder. Please try again.', ephemeral=True)
             raise
 
@@ -604,6 +608,9 @@ class Reminder(commands.Cog):
     async def reminder_set_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, time.BadTimeTransform):
             await interaction.response.send_message(str(error), ephemeral=True)
+        else:
+            # Re-raise so the global error handler (stats.py) can log it
+            raise error
 
     @reminder.command(name='list', ignore_extra=False)
     async def reminder_list(self, ctx: Context):
