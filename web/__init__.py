@@ -4,12 +4,16 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import logging
+
 import aiohttp.web
 import aiohttp_jinja2
 import jinja2
 from aiohttp_session import setup as setup_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from cryptography.fernet import Fernet
+
+log = logging.getLogger(__name__)
 
 from .middleware import error_middleware, auth_middleware
 from .routes import setup_routes
@@ -58,11 +62,22 @@ def create_app(bot: Mercybot, pool: asyncpg.Pool) -> aiohttp.web.Application:
     env.filters['format_uptime'] = format_uptime
 
     # Set up encrypted cookie sessions
-    secret_key = bot.config.dashboard_secret_key
+    secret_key = getattr(bot.config, 'dashboard_secret_key', None)
+    if not secret_key:
+        log.warning('dashboard_secret_key not set in config.py — generating a temporary key. Sessions will not persist across restarts.')
+        secret_key = Fernet.generate_key()
     if isinstance(secret_key, str):
         secret_key = secret_key.encode()
 
-    # Fernet key must be 32 url-safe base64-encoded bytes
+    # Fernet key must be url-safe base64-encoded (44 chars). Validate it.
+    try:
+        Fernet(secret_key)
+    except Exception:
+        raise ValueError(
+            'dashboard_secret_key in config.py is invalid. '
+            'Generate one with: python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"'
+        )
+
     setup_session(app, EncryptedCookieStorage(secret_key, cookie_name='mercybot_session', max_age=3600))
 
     # Set up static file serving
