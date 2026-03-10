@@ -18,6 +18,12 @@ def get_bot(request: aiohttp.web.Request) -> Mercybot:
     return request.app['bot']
 
 
+def get_member_guild_ids(bot: Mercybot, user_guilds: list[dict]) -> list[int]:
+    """Return IDs of all guilds the user is in that the bot is also in."""
+    bot_guild_ids = {g.id for g in bot.guilds}
+    return [int(g['id']) for g in user_guilds if int(g['id']) in bot_guild_ids]
+
+
 def get_manageable_guilds(bot: Mercybot, user_guilds: list[dict]) -> list[dict]:
     """Return guilds the user can manage that the bot is also in."""
     bot_guild_ids = {g.id for g in bot.guilds}
@@ -58,6 +64,17 @@ def user_avatar_url(user_id: int, avatar_hash: str | None, discriminator: str = 
         return f'https://cdn.discordapp.com/avatars/{user_id}/{avatar_hash}.{fmt}?size={size}'
     index = (user_id >> 22) % 6
     return f'https://cdn.discordapp.com/embed/avatars/{index}.png'
+
+
+async def require_guild_member(request: aiohttp.web.Request, guild_id: int) -> None:
+    """Raise 403 if the user is not a member of this guild (bot must also be in it)."""
+    bot = get_bot(request)
+
+    if request['user']['id'] == bot.owner_id:
+        return
+
+    if guild_id not in request['member_guild_ids']:
+        raise aiohttp.web.HTTPForbidden(text='You are not a member of this guild.')
 
 
 async def require_guild_access(request: aiohttp.web.Request, guild_id: int) -> None:

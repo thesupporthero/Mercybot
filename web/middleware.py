@@ -38,5 +38,6 @@ async def auth_middleware(request: aiohttp.web.Request, handler) -> aiohttp.web.
 
     request['user'] = user
     request['guild_ids'] = session.get('guild_ids', [])
+    request['member_guild_ids'] = session.get('member_guild_ids', [])
 
     return await handler(request)

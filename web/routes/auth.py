@@ -7,7 +7,7 @@ import aiohttp
 import aiohttp.web
 from aiohttp_session import get_session
 
-from ..helpers import get_bot, get_manageable_guilds, user_avatar_url
+from ..helpers import get_bot, get_manageable_guilds, get_member_guild_ids, user_avatar_url
 
 log = logging.getLogger(__name__)
 
@@ -100,9 +100,10 @@ async def callback(request: aiohttp.web.Request) -> aiohttp.web.Response:
             raise aiohttp.web.HTTPBadRequest(text='Failed to fetch guild list.')
         user_guilds = await resp.json()
 
-    # Determine manageable guilds
+    # Determine manageable guilds and all member guilds
     manageable = get_manageable_guilds(bot, user_guilds)
     manageable_ids = [g['id'] for g in manageable]
+    member_guild_ids = get_member_guild_ids(bot, user_guilds)
 
     # Store in session
     user_id = int(user_data['id'])
@@ -112,6 +113,7 @@ async def callback(request: aiohttp.web.Request) -> aiohttp.web.Response:
         'avatar_url': user_avatar_url(user_id, user_data.get('avatar'), user_data.get('discriminator', '0')),
     }
     session['guild_ids'] = manageable_ids
+    session['member_guild_ids'] = member_guild_ids
     session['guilds'] = manageable
 
     log.info('User %s (ID: %d) logged in via OAuth2', session['user']['username'], user_id)

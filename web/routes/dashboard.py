@@ -7,7 +7,7 @@ import aiohttp.web
 import aiohttp_jinja2
 from aiohttp_session import get_session
 
-from ..helpers import get_bot, require_guild_access, guild_icon_url, generate_csrf_token, validate_csrf_token
+from ..helpers import get_bot, require_guild_access, require_guild_member, guild_icon_url, generate_csrf_token, validate_csrf_token
 
 log = logging.getLogger(__name__)
 
@@ -540,7 +540,7 @@ def _format_voice_time(minutes: int) -> str:
 async def leaderboard_view(request: aiohttp.web.Request) -> dict:
     """View server XP leaderboard."""
     guild_id = int(request.match_info['guild_id'])
-    await require_guild_access(request, guild_id)
+    await require_guild_member(request, guild_id)
 
     bot = get_bot(request)
     pool = request.app['pool']
