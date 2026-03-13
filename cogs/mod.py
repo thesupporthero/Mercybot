@@ -2447,7 +2447,7 @@ class Mod(commands.Cog):
 
             e.add_field(name='Message', value=mcontent, inline=False)
             if message.attachments:
-                attachments = sorted(message.attachments, key=lambda x: x + 1)
+                attachments = message.attachments
                 try:
                  for attachment in attachments:  
                     f = await attachment.to_file(use_cached=True)
