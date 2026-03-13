@@ -5,13 +5,13 @@
 {% block content %}
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Guild Header -->
-    <div class="flex items-center space-x-4 mb-8">
+    <div class="flex flex-wrap items-center gap-4 mb-8">
         <img src="{{ guild.icon_url }}" alt="" class="w-12 h-12 rounded-full">
-        <div>
+        <div class="min-w-0">
             <h1 class="text-2xl font-bold">{{ guild.name }}</h1>
             <p class="text-sm text-gray-500">{{ guild.member_count | format_number }} members</p>
         </div>
-        <div class="ml-auto flex space-x-2">
+        <div class="flex space-x-2 sm:ml-auto">
             {% if is_manager %}
             <a href="/dashboard/{{ guild.id }}"
                class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
@@ -25,8 +25,15 @@
         </div>
     </div>
 
-    <!-- Leaderboard heading -->
-    <h2 class="text-xl font-semibold mb-4">Leaderboard</h2>
+    <!-- Leaderboard heading + your rank -->
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Leaderboard</h2>
+        {% if current_user_rank %}
+        <div class="text-sm text-gray-400">
+            Your rank: <span class="text-discord-blurple font-semibold">#{{ current_user_rank }}</span>
+        </div>
+        {% endif %}
+    </div>
 
     {% if entries %}
     <div class="bg-discord-darker rounded-lg border border-gray-700/50 overflow-hidden">
@@ -43,11 +50,23 @@
             </thead>
             <tbody class="divide-y divide-gray-700/30">
                 {% for entry in entries %}
-                <tr class="hover:bg-gray-700/20 transition">
+                <tr class="{% if entry.user_id == current_user_id %}bg-discord-blurple/10{% endif %} hover:bg-gray-700/20 transition">
                     <td class="px-4 py-3 text-sm {% if entry.rank <= 3 %}text-yellow-400 font-bold{% else %}text-gray-500{% endif %}">
                         {{ entry.rank }}
                     </td>
-                    <td class="px-4 py-3 text-sm font-medium truncate max-w-[200px]">{{ entry.name }}</td>
+                    <td class="px-4 py-3 text-sm font-medium">
+                        <div class="flex items-center space-x-2 min-w-0">
+                            {% if entry.avatar_url %}
+                            <img src="{{ entry.avatar_url }}" alt="" class="w-6 h-6 rounded-full shrink-0">
+                            {% else %}
+                            <div class="w-6 h-6 rounded-full bg-gray-600 shrink-0"></div>
+                            {% endif %}
+                            <span class="truncate max-w-[160px]">{{ entry.name }}</span>
+                            {% if entry.user_id == current_user_id %}
+                            <span class="text-[10px] text-discord-blurple font-semibold uppercase shrink-0">You</span>
+                            {% endif %}
+                        </div>
+                    </td>
                     <td class="px-4 py-3 text-sm text-right text-discord-blurple font-semibold">{{ entry.level }}</td>
                     <td class="px-4 py-3 text-sm text-right text-gray-300">{{ '{:,}'.format(entry.xp) }}</td>
                     <td class="px-4 py-3 text-sm text-right text-gray-400 hidden sm:table-cell">{{ '{:,}'.format(entry.message_count) }}</td>

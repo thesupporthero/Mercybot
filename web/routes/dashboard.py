@@ -83,6 +83,9 @@ async def guild_overview(request: aiohttp.web.Request) -> dict:
     tag_count = await pool.fetchval('SELECT COUNT(*) FROM tags WHERE location_id = $1', guild_id)
     starboard = await pool.fetchrow('SELECT * FROM starboard WHERE id = $1', guild_id)
 
+    xp_config = await pool.fetchrow('SELECT enabled FROM xp_config WHERE guild_id = $1', guild_id)
+    xp_members = await pool.fetchval('SELECT COUNT(*) FROM guild_profiles WHERE guild_id = $1', guild_id) or 0
+
     # Decode automod flags into human-readable labels
     automod_labels = []
     if mod_config:
@@ -110,6 +113,8 @@ async def guild_overview(request: aiohttp.web.Request) -> dict:
         'tag_count': tag_count or 0,
         'starboard': dict(starboard) if starboard else None,
         'star_channel': star_channel,
+        'xp_enabled': xp_config['enabled'] if xp_config else True,
+        'xp_members': xp_members,
     }
 
 
@@ -581,13 +586,14 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
         guild_id, per_page, offset,
     )
 
-    # Resolve member names: guild cache -> global user cache -> fetch from Discord
+    # Resolve member names and avatars
     entries = []
     for i, row in enumerate(rows):
         user_id = row['user_id']
         member = guild.get_member(user_id)
         if member:
             name = member.display_name
+            avatar_url = member.display_avatar.with_size(64).url
         else:
             user = bot.get_user(user_id)
             if user is None:
@@ -596,10 +602,12 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
                 except Exception:
                     user = None
             name = str(user) if user else f'Unknown ({user_id})'
+            avatar_url = user.display_avatar.with_size(64).url if user else None
         entries.append({
             'rank': offset + i + 1,
             'user_id': user_id,
             'name': name,
+            'avatar_url': avatar_url,
             'level': _get_level(row['xp'], base),
             'xp': row['xp'],
             'message_count': row['message_count'],
@@ -609,6 +617,14 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
     total_pages = max(1, (total + per_page - 1) // per_page) if total else 1
 
     is_manager = guild_id in request['guild_ids']
+    current_user_id = request['user']['id']
+
+    # Get current user's rank
+    user_rank = await pool.fetchval(
+        'SELECT COUNT(*) + 1 FROM guild_profiles WHERE guild_id = $1 AND xp > COALESCE((SELECT xp FROM guild_profiles WHERE guild_id = $1 AND user_id = $2), -1)',
+        guild_id, current_user_id,
+    )
+    user_on_board = await pool.fetchval('SELECT EXISTS(SELECT 1 FROM guild_profiles WHERE guild_id = $1 AND user_id = $2)', guild_id, current_user_id)
 
     return {
         'guild': _guild_dict(guild),
@@ -617,4 +633,6 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
         'total': total or 0,
         'total_pages': total_pages,
         'is_manager': is_manager,
+        'current_user_id': current_user_id,
+        'current_user_rank': user_rank if user_on_board else None,
     }

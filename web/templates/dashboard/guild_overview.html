@@ -95,5 +95,17 @@
             <span class="text-gray-500">&rarr;</span>
         </div>
     </a>
+
+    <a href="/dashboard/{{ guild.id }}/levels" class="block bg-discord-darker rounded-lg p-5 border border-gray-700/50 hover:border-discord-blurple/50 transition">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="font-medium">Levels</div>
+                <div class="text-sm text-gray-400">
+                    {% if xp_enabled %}Enabled &middot; {{ xp_members }} tracked members{% else %}Disabled{% endif %}
+                </div>
+            </div>
+            <span class="text-gray-500">&rarr;</span>
+        </div>
+    </a>
 </div>
 {% endblock %}
