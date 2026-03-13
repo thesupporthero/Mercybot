@@ -1,68 +1,91 @@
-{% extends "dashboard/layout.html" %}
-{% set active_page = 'leaderboard' %}
+{% extends "base.html" %}
 
 {% block title %}Leaderboard - {{ guild.name }}{% endblock %}
 
-{% block dashboard_content %}
-<h1 class="text-2xl font-bold mb-6">Leaderboard</h1>
-
-{% if entries %}
-<div class="bg-discord-darker rounded-lg border border-gray-700/50 overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-gray-700/50 text-left text-xs uppercase text-gray-500">
-                <th class="px-4 py-3 w-12">#</th>
-                <th class="px-4 py-3">Member</th>
-                <th class="px-4 py-3 text-right">Level</th>
-                <th class="px-4 py-3 text-right">XP</th>
-                <th class="px-4 py-3 text-right hidden sm:table-cell">Messages</th>
-                <th class="px-4 py-3 text-right hidden md:table-cell">Voice Time</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-700/30">
-            {% for entry in entries %}
-            <tr class="hover:bg-gray-700/20 transition">
-                <td class="px-4 py-3 text-sm {% if entry.rank <= 3 %}text-yellow-400 font-bold{% else %}text-gray-500{% endif %}">
-                    {{ entry.rank }}
-                </td>
-                <td class="px-4 py-3 text-sm font-medium truncate max-w-[200px]">{{ entry.name }}</td>
-                <td class="px-4 py-3 text-sm text-right text-discord-blurple font-semibold">{{ entry.level }}</td>
-                <td class="px-4 py-3 text-sm text-right text-gray-300">{{ '{:,}'.format(entry.xp) }}</td>
-                <td class="px-4 py-3 text-sm text-right text-gray-400 hidden sm:table-cell">{{ '{:,}'.format(entry.message_count) }}</td>
-                <td class="px-4 py-3 text-sm text-right text-gray-400 hidden md:table-cell">{{ entry.voice_time }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- Pagination -->
-{% if total_pages > 1 %}
-<div class="flex items-center justify-between mt-4">
-    <div class="text-sm text-gray-500">
-        Showing {{ (page - 1) * 25 + 1 }}-{{ [page * 25, total] | min }} of {{ total }} members
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Guild Header -->
+    <div class="flex items-center space-x-4 mb-8">
+        <img src="{{ guild.icon_url }}" alt="" class="w-12 h-12 rounded-full">
+        <div>
+            <h1 class="text-2xl font-bold">{{ guild.name }}</h1>
+            <p class="text-sm text-gray-500">{{ guild.member_count | format_number }} members</p>
+        </div>
+        <div class="ml-auto flex space-x-2">
+            {% if is_manager %}
+            <a href="/dashboard/{{ guild.id }}"
+               class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
+                Dashboard
+            </a>
+            {% endif %}
+            <a href="/dashboard"
+               class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
+                &larr; All Servers
+            </a>
+        </div>
     </div>
-    <div class="flex space-x-2">
-        {% if page > 1 %}
-        <a href="/dashboard/{{ guild.id }}/leaderboard?page={{ page - 1 }}"
-           class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
-            Previous
-        </a>
-        {% endif %}
-        {% if page < total_pages %}
-        <a href="/dashboard/{{ guild.id }}/leaderboard?page={{ page + 1 }}"
-           class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
-            Next
-        </a>
-        {% endif %}
-    </div>
-</div>
-{% endif %}
 
-{% else %}
-<div class="bg-discord-darker rounded-lg p-8 border border-gray-700/50 text-center">
-    <div class="text-gray-500 text-lg mb-2">No data yet</div>
-    <p class="text-gray-600 text-sm">Members will appear here once they start earning XP by chatting or joining voice channels.</p>
+    <!-- Leaderboard heading -->
+    <h2 class="text-xl font-semibold mb-4">Leaderboard</h2>
+
+    {% if entries %}
+    <div class="bg-discord-darker rounded-lg border border-gray-700/50 overflow-hidden">
+        <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-700/50 text-left text-xs uppercase text-gray-500">
+                    <th class="px-4 py-3 w-12">#</th>
+                    <th class="px-4 py-3">Member</th>
+                    <th class="px-4 py-3 text-right">Level</th>
+                    <th class="px-4 py-3 text-right">XP</th>
+                    <th class="px-4 py-3 text-right hidden sm:table-cell">Messages</th>
+                    <th class="px-4 py-3 text-right hidden md:table-cell">Voice Time</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700/30">
+                {% for entry in entries %}
+                <tr class="hover:bg-gray-700/20 transition">
+                    <td class="px-4 py-3 text-sm {% if entry.rank <= 3 %}text-yellow-400 font-bold{% else %}text-gray-500{% endif %}">
+                        {{ entry.rank }}
+                    </td>
+                    <td class="px-4 py-3 text-sm font-medium truncate max-w-[200px]">{{ entry.name }}</td>
+                    <td class="px-4 py-3 text-sm text-right text-discord-blurple font-semibold">{{ entry.level }}</td>
+                    <td class="px-4 py-3 text-sm text-right text-gray-300">{{ '{:,}'.format(entry.xp) }}</td>
+                    <td class="px-4 py-3 text-sm text-right text-gray-400 hidden sm:table-cell">{{ '{:,}'.format(entry.message_count) }}</td>
+                    <td class="px-4 py-3 text-sm text-right text-gray-400 hidden md:table-cell">{{ entry.voice_time }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="flex items-center justify-between mt-4">
+        <div class="text-sm text-gray-500">
+            Showing {{ (page - 1) * 25 + 1 }}-{{ [page * 25, total] | min }} of {{ total }} members
+        </div>
+        <div class="flex space-x-2">
+            {% if page > 1 %}
+            <a href="/dashboard/{{ guild.id }}/leaderboard?page={{ page - 1 }}"
+               class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
+                Previous
+            </a>
+            {% endif %}
+            {% if page < total_pages %}
+            <a href="/dashboard/{{ guild.id }}/leaderboard?page={{ page + 1 }}"
+               class="px-3 py-1.5 rounded-md text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 transition">
+                Next
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="bg-discord-darker rounded-lg p-8 border border-gray-700/50 text-center">
+        <div class="text-gray-500 text-lg mb-2">No data yet</div>
+        <p class="text-gray-600 text-sm">Members will appear here once they start earning XP by chatting or joining voice channels.</p>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
 {% endblock %}

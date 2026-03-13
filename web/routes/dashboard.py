@@ -592,10 +592,13 @@ async def leaderboard_view(request: aiohttp.web.Request) -> dict:
 
     total_pages = max(1, (total + per_page - 1) // per_page) if total else 1
 
+    is_manager = guild_id in request['guild_ids']
+
     return {
         'guild': _guild_dict(guild),
         'entries': entries,
         'page': page,
         'total': total or 0,
         'total_pages': total_pages,
+        'is_manager': is_manager,
     }
