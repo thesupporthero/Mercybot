@@ -8,6 +8,10 @@ from discord import app_commands
 from discord.ext import commands
 import discord
 import io
+import random
+import pathlib
+
+SPECIAL_CAT_PATH = pathlib.Path(__file__).parent.parent / 'assets' / 'special_cat.png'
 
 if TYPE_CHECKING:
     from bot import Mercybot
@@ -51,6 +55,9 @@ class Funhouse(commands.Cog):
     @commands.hybrid_command()
     async def cat(self, ctx: Context):
         """Gives you a random cat."""
+        if random.random() < 0.10 and SPECIAL_CAT_PATH.exists():
+            await ctx.send(file=discord.File(SPECIAL_CAT_PATH, filename='special_cat.png'))
+            return
         async with ctx.session.get('https://api.thecatapi.com/v1/images/search') as resp:
             if resp.status != 200:
                 return await ctx.send('No cat found :(')
