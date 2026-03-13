@@ -99,7 +99,13 @@ async def default_context(request: aiohttp.web.Request) -> dict:
     from aiohttp_session import get_session
     session = await get_session(request)
 
+    bot = request.app.get('bot')
+    bot_avatar = None
+    if bot and bot.user:
+        bot_avatar = bot.user.display_avatar.with_size(128).url
+
     return {
         'user': session.get('user'),
         'bot_name': 'Mercybot',
+        'bot_avatar': bot_avatar,
     }
