@@ -42,6 +42,22 @@ async def guild_list(request: aiohttp.web.Request) -> dict:
     return {'guilds': guilds, 'member_only_guilds': member_only_guilds}
 
 
+@routes.get('/dashboard/leaderboard')
+@aiohttp_jinja2.template('dashboard/leaderboard_list.html')
+async def leaderboard_list(request: aiohttp.web.Request) -> dict:
+    """List all servers the user is in for leaderboard access."""
+    session = await get_session(request)
+    guilds = list(session.get('guilds', []))
+    member_only_guilds = list(session.get('member_only_guilds', []))
+
+    # Combine both lists — any server the user is in can show a leaderboard
+    all_guilds = guilds + member_only_guilds
+    for guild in all_guilds:
+        guild['icon_url'] = guild_icon_url(guild['id'], guild.get('icon'))
+
+    return {'guilds': all_guilds}
+
+
 @routes.get('/dashboard/{guild_id}')
 @aiohttp_jinja2.template('dashboard/guild_overview.html')
 async def guild_overview(request: aiohttp.web.Request) -> dict:
